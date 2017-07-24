@@ -1,0 +1,35 @@
+# Compiled python files
+*.py[cod]
+
+# iPython notebook backups
+.ipynb_checkpoints
+
+# Virtualenv
+env/
+venv/
+
+# local test outputs
+.cache
+
+# Excel file temporary builds
+~*.xlsx
+
+.DS_Store
+
+# Egg info
+*.egg-info
+
+# Sample data files
+data/
+
+# Key files
+*.pem
+
+manifest.txt
+
+# PyCharm
+.idea/*
+
+# Node modules
+node_modules/*
+package-lock.json
