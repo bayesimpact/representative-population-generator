@@ -1,4 +1,6 @@
 """This module contains a greedy implementation of a farthest-first traversal algorithm."""
+from network_adequacy.representative_population_points import distance_metrics
+
 import numpy as np
 
 
@@ -11,11 +13,14 @@ class FarthestFirstTraversal(object):
     k: int
         The number of points to select.
 
-    distance_metric: two-argument callable
-        A function that measures the distance between two input geometries.
-        Defaults to the Euclidean distance between points.
-        Note that the default metric is inaccurate if the input geometries are coordinates
-        in a non-Euclidean space (e.g., latitude and longitude).
+    distance_metric: str
+        The name of a metric contained in the distance_metrics module.
+        Defaults to the great circle distance between two points as (longitude, latitude) pairs.
+
+        Available options:
+            'great_circle'
+            'vincenty'
+            'euclidean'
 
     method_to_select_first_point: one-argument callable
         A function that selects a single point from an array of geometric objects.
@@ -42,12 +47,13 @@ class FarthestFirstTraversal(object):
     def __init__(
         self,
         k,
-        distance_metric=lambda p1, p2: p1.distance(p2),
+        distance_metric='great_circle',
         method_to_select_first_point=np.random.choice,
     ):
         """Initialize self."""
         self.k = k
-        self._distance_metric = distance_metric
+        self.distance_metric = distance_metric
+        self._distance_function = distance_metrics.get_metric(distance_metric)
         self._method_to_select_first_point = method_to_select_first_point
         self.is_fitted = False
 
@@ -57,7 +63,7 @@ class FarthestFirstTraversal(object):
 
         Parameters
         ----------
-        data: Array of geometric objects implementing self._distance_metric.
+        data: Array of geometric objects implementing self._distance_function.
         """
         self._choose_first_point(data)
 
@@ -72,7 +78,7 @@ class FarthestFirstTraversal(object):
         self.selected_points = [point]
 
         self.distances_to_selected_points = np.asarray(
-            [self._distance_metric(x, point) for x in data]
+            [self._distance_function(p0, point) for p0 in data]
         )
 
         self._distances_as_function_of_k = [self.distances_to_selected_points]
@@ -93,7 +99,7 @@ class FarthestFirstTraversal(object):
 
         # Calculate distances to the new point.
         distances_to_new_point = np.asarray(
-            [self._distance_metric(x, new_point) for x in data]
+            [self._distance_function(p0, new_point) for p0 in data]
         )
 
         # Set the distance to the selected points as the minimum distance over all selected points.
