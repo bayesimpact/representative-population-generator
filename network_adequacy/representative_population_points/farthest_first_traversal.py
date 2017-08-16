@@ -37,11 +37,14 @@ class FarthestFirstTraversal(object):
     distances_to_selected_points: np.array
         Array containing the final distance from each input point to the selected points.
 
-    assignments_to_selected_points: np.array
+    labels: np.array
         Final assignments for each input point to the nearest selected point.
 
     _distances_as_function_of_k: list(np.array)
         List of the historical values of `distances_to_selected_points` after each new point
+
+    _labels_as_function_of_k: np.array
+        Final assignments for each input point to the nearest selected point.
     """
 
     def __init__(
@@ -81,9 +84,10 @@ class FarthestFirstTraversal(object):
             [self._distance_function(p0, point) for p0 in data]
         )
 
-        self._distances_as_function_of_k = [self.distances_to_selected_points]
+        self._distances_as_function_of_k = [np.copy(self.distances_to_selected_points)]
 
-        self.assignments_to_selected_points = np.zeros(shape=data.shape, dtype=int)
+        self.labels = np.zeros(shape=data.shape, dtype=int)
+        self._labels_as_function_of_k = [np.copy(self.labels)]
 
         return point
 
@@ -109,10 +113,12 @@ class FarthestFirstTraversal(object):
         )
 
         # Reassign nearby data points to the new selected point as needed.
-        self.assignments_to_selected_points[
+        self.labels[
             self.distances_to_selected_points == distances_to_new_point
         ] = len(self.selected_points) - 1
 
-        self._distances_as_function_of_k.append(self.distances_to_selected_points)
+        self._labels_as_function_of_k.append(np.copy(self.labels))
+
+        self._distances_as_function_of_k.append(np.copy(self.distances_to_selected_points))
 
         return new_point
