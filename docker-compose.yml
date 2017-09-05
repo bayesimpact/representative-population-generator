@@ -11,3 +11,17 @@ services:
       - 8888:8888
     environment:
       - PYTHONPATH=/home/jovyan/work
+  backend:
+    build: backend 
+    ports:
+      - "8080:80"
+  frontend:
+    volumes:
+      - ./frontend/src:/usr/src/app/src
+      - ./frontend/public:/usr/src/app/public
+    command: npm run start
+    build: ./frontend
+    links:
+      - backend
+    ports:
+      - 3000:3000
