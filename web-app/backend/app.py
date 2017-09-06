@@ -19,6 +19,7 @@ def get_zip_county_points(zipcode, county):
     number = str(random.randint(1, 100))  # TODO: replace this with model
     return number
 
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.config['DEBUG'] = True

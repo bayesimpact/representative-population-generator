@@ -13,7 +13,7 @@ services:
           - PYTHONPATH=/home/jovyan/work
     
     backend:
-        build: ./backend
+        build: ./web-app/backend
         ports:
             - "80:5000"
     mongo:
@@ -28,10 +28,10 @@ services:
 
     webapp:
         volumes:
-          - ./frontend/src:/usr/src/app/src
-          - ./frontend/public:/usr/src/app/public
+          - ./web-app/frontend/src:/usr/src/app/src
+          - ./web-app/frontend/public:/usr/src/app/public
         command: npm run start
-        build: ./frontend
+        build: ./web-app/frontend
         links:
           - backend
         ports:
