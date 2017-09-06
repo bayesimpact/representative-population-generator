@@ -4,7 +4,6 @@ import flask
 from flask_pymongo import PyMongo
 import os
 
-
 app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/representativepoints'
 
