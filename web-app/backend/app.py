@@ -2,10 +2,11 @@
 
 import os
 
+from backend.lib import api_exceptions
+
 import flask
 
 from flask_pymongo import PyMongo
-
 
 app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/representativepoints'
@@ -15,8 +16,43 @@ with app.app_context():
     repr_points = mongo.db.pointA
 
 
+@app.errorhandler(api_exceptions.UnavailableZipCounty)
+def handle_invalid_usage(error):
+    """Function to handle an internal server error."""
+    response = flask.jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+
+@app.route('/area', methods=['GET'])
+def get_single_zip_county_points():
+    """
+    Given a single zip/county pair, return the corresponding points.
+
+    input: two params, zip and county
+    E.g ?"county":"sanFrancisco","zip":94102
+    returns: json object with info about area and a list of points.
+    """
+    county = flask.request.args['county']
+    zipcode = int(flask.request.args['zip'])
+    point_a = repr_points.find_one({'zip': zipcode, 'county': county})
+    if point_a:
+        output = {
+            'area_info': {
+                'county': county,
+                'zip': zipcode
+            },
+            'points': point_a['points']
+        }
+    else:
+        raise api_exceptions.UnavailableZipCounty(
+            message='Zip/County pair unavailable.',
+            status_code=500)
+    return flask.jsonify(output)
+
+
 @app.route('/areas', methods=['GET'])
-def get_zip_county_points():
+def get_multiple_zip_county_points():
     """
     Given a list of areas return the list of corresponding points.
 
@@ -30,17 +66,17 @@ def get_zip_county_points():
     areas = eval(flask.request.args['areas'])
     outputs = []
     for area in areas:
-        points = repr_points.find_one(area)
+        point_a = repr_points.find_one(area)
         output = {
             'area_info': {
                 'county': area['county'],
                 'zip': area['zip']
             }
         }
-        if points:
-            output['points'] = points['points']
+        if point_a:
+            output['points'] = point_a['points']
         else:
-            output['points'] = 'No such zip/county'
+            output['points'] = 'Zip/County pair unavailable.'
         outputs.append(output)
     return flask.jsonify({'result': outputs})
 
