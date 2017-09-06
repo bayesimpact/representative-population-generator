@@ -1,20 +1,23 @@
 version: "2"
 services:
-    explorer:
-        build: ./models
-        volumes:
-          - ./:/home/jovyan/work:rw
-          - ./models/:/usr/local/lib/python3.6/site-packages/network-adequacy:ro
-        command: bash -c "start-notebook.sh --NotebookApp.token=''"
-        ports:
-          - 8888:8888
-        environment:
-          - PYTHONPATH=/home/jovyan/work
+    # explorer:
+    #     build: ./models
+    #     volumes:
+    #       - ./:/home/jovyan/work:rw
+    #       - ./models/:/usr/local/lib/python3.6/site-packages/network-adequacy:ro
+    #     command: bash -c "start-notebook.sh --NotebookApp.token=''"
+    #     ports:
+    #       - 8888:8888
+    #     environment:
+    #       - PYTHONPATH=/home/jovyan/work
 
     backend:
-        build: ./web-app/backend
+        volumes:
+          - ./backend/app.py:/var/local/app.py
         ports:
             - "80:5000"
+        command: python app.py
+
     mongo:
         image: mongo:3.4.0
         ports:
