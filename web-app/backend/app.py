@@ -21,10 +21,11 @@ def get_zip_county_points():
     Given a list of areas return the list of corresponding points.
 
     input: list of zip and county objects.
-    areas = [
+    E.g. areas = [
         {"county": "sanFrancisco", "zip": 94102},
         {"county": "sanFrancisco", "zip": 94705}
     ]
+    returns: json object with info about area and a list of points.
     """
     areas = eval(flask.request.args['areas'])
     outputs = []
