@@ -19,9 +19,6 @@ venv/
 # Egg info
 *.egg-info
 
-# Sample data files
-data/
-
 # Key files
 *.pem
 

@@ -16,14 +16,17 @@ services:
         build: ./backend
         ports:
             - "80:5000"
-        depends_on:
-            - mongo
     mongo:
         image: mongo:3.4.0
         ports:
           - "27017:27017"
 
-    frontend:
+    mongo-seed:
+        build: ./data
+        links:
+          - mongo
+
+    webapp:
         volumes:
           - ./frontend/src:/usr/src/app/src
           - ./frontend/public:/usr/src/app/public
@@ -33,3 +36,7 @@ services:
           - backend
         ports:
           - 3000:3000
+        depends_on:
+          - mongo
+          - mongo-seed
+          - backend
