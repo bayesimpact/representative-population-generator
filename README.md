@@ -6,6 +6,7 @@ For the Network Adequacy project with CA DMHC.
 
 Frontend is built on react.js and backend is built on Flask microservice. To start the development environment run
 
+    docker-compose up -d mongo-seed
     docker-compose up -d backend
     docker-compose up -d frontend
 

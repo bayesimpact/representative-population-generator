@@ -23,6 +23,11 @@ services:
         ports:
           - "27017:27017"
 
+    mongo-seed:
+        build: ./data
+        links:
+          - mongo
+
     frontend:
         volumes:
           - ./frontend/src:/usr/src/app/src
