@@ -2,11 +2,11 @@
 
 import os
 
+from backend.lib import api_exceptions
+
 import flask
 
 from flask_pymongo import PyMongo
-
-from backend.lib import api_exceptions
 
 app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/representativepoints'
