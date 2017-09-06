@@ -7,10 +7,10 @@ machine:
     - docker
 dependencies:
   pre:
-    - docker-compose build explorer
+    - docker-compose build backend
 
   post:
-    - docker-compose run explorer make lint
+    - docker-compose run backend make lint
 test:
   override:
-    - docker-compose run explorer make test
+    - docker-compose run backend make test

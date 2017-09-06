@@ -1,15 +1,15 @@
 version: "2"
 services:
-    explorer:
-        build: ./models
-        volumes:
-          - ./:/home/jovyan/work:rw
-          - ./models/:/usr/local/lib/python3.6/site-packages/network-adequacy:ro
-        command: bash -c "start-notebook.sh --NotebookApp.token=''"
-        ports:
-          - 8888:8888
-        environment:
-          - PYTHONPATH=/home/jovyan/work
+    # explorer:
+    #     build: ./models
+    #     volumes:
+    #       - ./:/home/jovyan/work:rw
+    #       - ./models/:/usr/local/lib/python3.6/site-packages/network-adequacy:ro
+    #     command: bash -c "start-notebook.sh --NotebookApp.token=''"
+    #     ports:
+    #       - 8888:8888
+    #     environment:
+    #       - PYTHONPATH=/home/jovyan/work
 
     backend:
         volumes:
