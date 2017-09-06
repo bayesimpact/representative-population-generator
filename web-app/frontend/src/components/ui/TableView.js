@@ -10,7 +10,8 @@ import {
 import TextField from 'material-ui/TextField';
 import Toggle from 'material-ui/Toggle';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import CsvDownloadButton from './CsvDownloadButton.js'
+import CsvDownloadButton from './CsvDownloadButton.js';
+import RepresentativePointsTableRow from './RepresentativePointsTableRow.js';
 
 const styles = {
   headline: {
@@ -37,37 +38,20 @@ export default class TableView extends React.Component {
               enableSelectAll={false}
             >
               <TableRow>
-                <TableHeaderColumn>ID</TableHeaderColumn>
-                <TableHeaderColumn>Name</TableHeaderColumn>
-                <TableHeaderColumn>Status</TableHeaderColumn>
+                <TableHeaderColumn>Number</TableHeaderColumn>
+                <TableHeaderColumn>Zip Code</TableHeaderColumn>
+                <TableHeaderColumn>County</TableHeaderColumn>
+                <TableHeaderColumn>Latitude</TableHeaderColumn>
+                <TableHeaderColumn>Longitude</TableHeaderColumn>
+                <TableHeaderColumn>No. Residents</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
-              <TableRow>
-                <TableRowColumn>1</TableRowColumn>
-                <TableRowColumn>John Smith</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>2</TableRowColumn>
-                <TableRowColumn>Randal White</TableRowColumn>
-                <TableRowColumn>Unemployed</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>3</TableRowColumn>
-                <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>4</TableRowColumn>
-                <TableRowColumn>Steve Brown</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>5</TableRowColumn>
-                <TableRowColumn>Christopher Nolan</TableRowColumn>
-                <TableRowColumn>Unemployed</TableRowColumn>
-              </TableRow>
+              {this.props.points.map((point, i) =>
+                <RepresentativePointsTableRow number={i} point={point}/>
+                )
+              }
+            }
             </TableBody>
           </Table>
         </div>

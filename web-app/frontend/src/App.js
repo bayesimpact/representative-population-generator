@@ -13,6 +13,39 @@ import CsvUploadDialog from './components/ui/CsvUploadDialog.js';
 import './App.css';
 class App extends Component {
   render() {
+
+    let points = [{
+                    "geometry": {
+                        "coordinates": [
+                            -122.42320641999999,
+                            37.777893832000075
+                        ],
+                        "type": "Point"
+                    },
+                    "properties": {
+                        "county": "sanFrancisco",
+                        "residents": 1334,
+                        "zip": "94102"
+                    },
+                    "type": "Feature"
+                },
+                {
+                    "geometry": {
+                        "coordinates": [
+                            -0,
+                            49
+                        ],
+                        "type": "Point"
+                    },
+                    "properties": {
+                        "county": "sanFran",
+                        "residents": 666,
+                        "zip": "90210"
+                    },
+                    "type": "Feature"
+                }
+
+]
     return (
       <MuiThemeProvider>
       <div className="App">
@@ -22,7 +55,7 @@ class App extends Component {
             <CsvUploadDialog/>
           }
           right={
-            <TableView/>
+            <TableView points={points}/>
           } />
         <Button />
         <PurpleButton name="Button"/>
