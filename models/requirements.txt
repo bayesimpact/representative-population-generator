@@ -4,6 +4,7 @@ geopandas==0.2.1
 geopy==1.11.0
 PySAL==1.14.0
 xlrd==1.0.0
+flask-cors
 # Used by `make test` only:
 mock==2.0.0
 pytest==3.0.6
