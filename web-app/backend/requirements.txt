@@ -1,2 +1,2 @@
 flask
-pymongo
+Flask-PyMongo==0.5.1
