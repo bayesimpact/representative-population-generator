@@ -1,8 +1,11 @@
 """Routing for backend API."""
 
-import flask
-from flask_pymongo import PyMongo
 import os
+
+import flask
+
+from flask_pymongo import PyMongo
+
 
 app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/representativepoints'
@@ -12,10 +15,10 @@ with app.app_context():
     repr_points = mongo.db.pointA
 
 
-@app.route("/areas", methods=['GET'])
+@app.route('/areas', methods=['GET'])
 def get_zip_county_points():
     """
-    Given a list of zip code and counties return the list of corresponding points.
+    Given a list of areas return the list of corresponding points.
 
     input: list of zip and county objects.
     areas = [
@@ -28,19 +31,20 @@ def get_zip_county_points():
     for area in areas:
         points = repr_points.find_one(area)
         output = {
-            "area_info": {
-                "county": area["county"],
-                "zip": area["zip"]
+            'area_info': {
+                'county': area['county'],
+                'zip': area['zip']
             }
         }
         if points:
-            output["points"] = points["points"]
+            output['points'] = points['points']
         else:
-            output["points"] = "No such zip/county"
+            output['points'] = 'No such zip/county'
         outputs.append(output)
     return flask.jsonify({'result': outputs})
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.config["DEBUG"] = True
-    app.run(host="0.0.0.0", port=port)
+
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.config['DEBUG'] = True
+    app.run(host='0.0.0.0', port=port)
