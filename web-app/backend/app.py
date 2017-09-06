@@ -46,7 +46,7 @@ def get_single_zip_county_points():
         }
     else:
         raise api_exceptions.UnavailableZipCounty(
-            message='No such zip/county',
+            message='Zip/County pair unavailable.',
             status_code=500)
     return flask.jsonify(output)
 
@@ -76,7 +76,7 @@ def get_multiple_zip_county_points():
         if point_a:
             output['points'] = point_a['points']
         else:
-            output['points'] = 'No such zip/county'
+            output['points'] = 'Zip/County pair unavailable.'
         outputs.append(output)
     return flask.jsonify({'result': outputs})
 
