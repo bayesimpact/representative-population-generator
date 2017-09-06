@@ -1,17 +1,16 @@
 version: "2"
 services:
     explorer:
-        build:
-          context: .
+        build: ./models
         volumes:
           - ./:/home/jovyan/work:rw
-          - .:/usr/local/lib/python3.6/site-packages/claims_to_quality:ro
+          - ./models/:/usr/local/lib/python3.6/site-packages/network-adequacy:ro
         command: bash -c "start-notebook.sh --NotebookApp.token=''"
         ports:
           - 8888:8888
         environment:
           - PYTHONPATH=/home/jovyan/work
-    
+
     backend:
         build: ./web-app/backend
         ports:

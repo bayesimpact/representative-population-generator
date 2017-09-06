@@ -1,5 +1,5 @@
 """This module contains a greedy implementation of a farthest-first traversal algorithm."""
-from network_adequacy.representative_population_points import distance_metrics
+from models.representative_population_points import distance_metrics
 
 import numpy as np
 

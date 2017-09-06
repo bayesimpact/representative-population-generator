@@ -30,3 +30,7 @@ manifest.txt
 # Node modules
 node_modules/*
 package-lock.json
+
+# Private folders
+secret-data/
+.coverage

@@ -1,5 +1,5 @@
 """Tests for the distance_metrics module."""
-from network_adequacy.representative_population_points import distance_metrics
+from models.representative_population_points import distance_metrics
 
 import pytest
 
