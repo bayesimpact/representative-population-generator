@@ -12,3 +12,13 @@ coverage:
 
 # [Dummy dependency to force a make command to always run.]
 FORCE:
+
+# Webapp tests
+webapp-lint:
+	docker-compose run --no-deps backend bash -c "flake8 ."
+	docker-compose run --no-deps backend bash -c "pep257 ."
+	docker-compose run --no-deps webapp echo "I want lint"
+
+webapp-test:
+	docker-compose run --no-deps backend echo "I want tests"
+	docker-compose run --no-deps webapp echo "I want tests"

@@ -14,6 +14,8 @@ services:
     backend:
         volumes:
           - ./backend/app.py:/var/local/app.py
+          - .flake8:/var/local/.flake8:ro
+        build: ./web-app/backend
         ports:
             - "80:5000"
         command: python app.py

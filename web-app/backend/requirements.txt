@@ -1,2 +1,8 @@
 flask
 pymongo
+# Used by `make lint` only:
+flake8==3.3.0
+flake8-import-order==0.12
+flake8-quotes==0.11.0
+pep257==0.7.0
+

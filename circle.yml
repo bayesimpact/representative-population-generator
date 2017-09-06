@@ -7,10 +7,9 @@ machine:
     - docker
 dependencies:
   pre:
-    - docker-compose build backend
-
+    - docker-compose build webapp
   post:
-    - docker-compose run backend make lint
+    - make webapp-lint
 test:
   override:
-    - docker-compose run backend make test
+     - make webapp-test
