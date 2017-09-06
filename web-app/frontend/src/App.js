@@ -1,37 +1,35 @@
-import React, { Component } from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import React, { Component } from 'react';
+import logo from './logo.svg';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import Button from './components/ui/Button.js';
+import NavBar from './components/ui/NavBar.js';
+import PurpleButton from './components/ui/PurpleButton.js';
+import RequestButton from './components/ui/RequestButton.js';
+import SplitPane from './components/ui/SplitPane.js';
+import TableView from './components/ui/TableView.js';
+import CsvUploadDialog from './components/ui/CsvUploadDialog.js';
+
+import './App.css';
 class App extends Component {
-  state = {
-    message: "Hello react!"
-  };
-
-  componentDidMount() {
-    window.setTimeout(() => {
-      fetch("/api").then(res => res.text()).then(message => {
-        this.setState({
-          message
-        });
-      });
-    }, 1500);
-  }
-
   render() {
     return (
+      <MuiThemeProvider>
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          {this.state.message}
-        </p>
+        <NavBar />
+        <SplitPane
+          left={
+            <CsvUploadDialog/>
+          }
+          right={
+            <TableView/>
+          } />
+        <Button />
+        <PurpleButton name="Button"/>
+        <RequestButton />
       </div>
-    );
+      </MuiThemeProvider>
+    )
   }
 }
 

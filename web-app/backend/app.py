@@ -6,10 +6,14 @@ from backend.lib import api_exceptions
 
 import flask
 
+from flask_cors import CORS
+
 from flask_pymongo import PyMongo
 
 app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/representativepoints'
+
+CORS(app)
 
 mongo = PyMongo(app)
 with app.app_context():
@@ -78,8 +82,14 @@ def get_multiple_zip_county_points():
         else:
             output['points'] = 'Zip/County pair unavailable.'
         outputs.append(output)
+
     return flask.jsonify({'result': outputs})
 
+
+@app.route('/areas', methods=['OPTIONS'])
+def no_op_handler():
+    """Return 200 to any OPTIONS request."""
+    return None
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
