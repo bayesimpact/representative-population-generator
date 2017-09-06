@@ -1,6 +1,9 @@
 """Routing for backend API."""
-
+import csv
+import json
 import os
+
+from io import StringIO
 
 from backend.lib import api_exceptions
 
@@ -10,14 +13,50 @@ from flask_cors import CORS
 
 from flask_pymongo import PyMongo
 
+
 app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/representativepoints'
-
 CORS(app)
 
 mongo = PyMongo(app)
 with app.app_context():
     repr_points = mongo.db.pointA
+
+
+# TODO - Move helper functions to lib.
+def get_areas_data(areas):
+    """Process a list of zipcode/county pair."""
+    outputs = []
+    invalid_areas = []
+    for area in areas:
+        # Force int casting.
+        area['zip'] = int(area['zip'])
+        point_a = repr_points.find_one(area)
+        output = {
+            'area_info': {
+                'county': area['county'],
+                'zip': area['zip']
+            }
+        }
+        app.logger.info(point_a)
+        if point_a:
+            output['points'] = point_a['points']
+            outputs.append(output)
+        else:
+            output['points'] = 'Zip/County pair unavailable.'
+            invalid_areas.append(output)
+
+    return outputs, invalid_areas
+
+
+def csv2json(data):
+    """Transform a csv into json."""
+    reader = csv.DictReader(data, delimiter=',', fieldnames=['county', 'zip'])
+    # Exclude header.
+    json_list = list(reader)[1:]
+    json_output = json.dumps(json_list)
+    app.logger.info('JSON parsed!')
+    return json_output
 
 
 @app.errorhandler(api_exceptions.UnavailableZipCounty)
@@ -68,28 +107,31 @@ def get_multiple_zip_county_points():
     returns: json object with info about area and a list of points.
     """
     areas = eval(flask.request.args['areas'])
-    outputs = []
-    for area in areas:
-        point_a = repr_points.find_one(area)
-        output = {
-            'area_info': {
-                'county': area['county'],
-                'zip': area['zip']
-            }
-        }
-        if point_a:
-            output['points'] = point_a['points']
-        else:
-            output['points'] = 'Zip/County pair unavailable.'
-        outputs.append(output)
-
+    outputs, _ = get_areas_data(areas)
     return flask.jsonify({'result': outputs})
 
 
-@app.route('/areas', methods=['OPTIONS'])
-def no_op_handler():
-    """Return 200 to any OPTIONS request."""
-    return None
+@app.route('/csv/', methods=['GET', 'POST'])
+def convert():
+    """
+    Convert a POSTed csv into json.
+
+    Given a list of areas as csv, return the info about the areas
+    and list of points.
+
+    returns: json object with info about area and a list of points.
+    """
+    f = flask.request.files['data_file']
+    if not f:
+        app.logger.info('No file')
+        return 'No file'
+    file_contents = f.stream.read().decode('utf-8')
+    file_contents = StringIO(file_contents)
+    areas = csv2json(file_contents)
+    app.logger.info('Areas {}'.format(areas))
+    outputs, _ = get_areas_data(eval(areas))
+    return flask.jsonify({'result': outputs})
+
 
 
 if __name__ == '__main__':
