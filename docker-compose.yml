@@ -12,10 +12,10 @@ services:
     #       - PYTHONPATH=/home/jovyan/work
 
     backend:
-        volumes:
-          - ./backend/app.py:/var/local/app.py
-          - .flake8:/var/local/.flake8:ro
         build: ./web-app/backend
+        volumes:
+          - ./web-app/backend/app.py:/var/local/app.py
+          - .flake8:/var/local/.flake8:ro
         ports:
             - "80:5000"
         command: python app.py

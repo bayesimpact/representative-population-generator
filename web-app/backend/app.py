@@ -1,26 +1,48 @@
 """Routing for backend API."""
 
 import os
-import random
 
 import flask
 
-import pymongo
+from flask_pymongo import PyMongo
 
 
 app = flask.Flask(__name__)
-client = pymongo.MongoClient('mongo', 27017)
+app.config['MONGO_URI'] = 'mongodb://mongo:27017/representativepoints'
+
+mongo = PyMongo(app)
+with app.app_context():
+    repr_points = mongo.db.pointA
 
 
-@app.route('/get/area/<int:zipcode>/<int:county>')
-def get_zip_county_points(zipcode, county):
+@app.route('/areas', methods=['GET'])
+def get_zip_county_points():
     """
-    Given a zip code and a county return the list of corresponding points.
+    Given a list of areas return the list of corresponding points.
 
-    input: zip and county
+    input: list of zip and county objects.
+    E.g. areas = [
+        {"county": "sanFrancisco", "zip": 94102},
+        {"county": "sanFrancisco", "zip": 94705}
+    ]
+    returns: json object with info about area and a list of points.
     """
-    number = str(random.randint(1, 100))  # TODO: replace this with model
-    return number
+    areas = eval(flask.request.args['areas'])
+    outputs = []
+    for area in areas:
+        points = repr_points.find_one(area)
+        output = {
+            'area_info': {
+                'county': area['county'],
+                'zip': area['zip']
+            }
+        }
+        if points:
+            output['points'] = points['points']
+        else:
+            output['points'] = 'No such zip/county'
+        outputs.append(output)
+    return flask.jsonify({'result': outputs})
 
 
 if __name__ == '__main__':
