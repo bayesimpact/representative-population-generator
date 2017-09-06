@@ -1,5 +1,5 @@
 """Tests for the farthest-first algorithm and implementation."""
-from network_adequacy.representative_population_points import farthest_first_traversal
+from models.representative_population_points import farthest_first_traversal
 
 import pytest
 
