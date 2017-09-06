@@ -14,8 +14,11 @@ services:
     
     backend:
         build: ./backend
+        volumes:
+          - ./backend/app.py:/var/local/app.py
         ports:
             - "80:5000"
+        command: python app.py
     mongo:
         image: mongo:3.4.0
         ports:
