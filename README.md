@@ -1,4 +1,4 @@
-# network-adequacy
+# Network-Adequacy
 For the Network Adequacy project with CA DMHC.
 
 
@@ -12,6 +12,13 @@ This spins up a webserver for frontend (node), and a mircoservice for the backen
 
 It also loads sample data into MongoDB. Use your favorite client (e.g. Robot 3T) to browse the db on port 27017 with no user or password.
 
-The backend API can be accessed via:
-
-    http://localhost/get/area/<zipcode>/<county>
+The backend API has 3 endpoints:
+	
+	- http://localhost/area/<zipcode>/<county>
+	This endpoint will received a zipcode/county info and return the associated data as json.
+	
+	- http://localhost/areas/	
+	This endpoint will received a json-formatted list of zipcode/county info and return the associated data as json.
+	
+	- http://localhost/csv/
+	This endpoint will received a csv with county,zip info and return the associated data as json.
