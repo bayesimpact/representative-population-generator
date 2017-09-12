@@ -1,0 +1,13 @@
+{
+  "name": "network-adequacy-utils-data",
+  "version": "1.0.0",
+  "description": "For the Network Adequacy project with CA DMHC.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bayesimpact/network-adequacy.git"
+  },
+  "dependencies": {
+    "command-line-args": "^4.0.7",
+    "uuid": "^3.1.0"
+  }
+}
