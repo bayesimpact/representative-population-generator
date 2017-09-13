@@ -1,5 +1,6 @@
 """This module contains a greedy implementation of a farthest-first traversal algorithm."""
 from models.representative_population_points import distance_metrics
+from models.representative_population_points import initial_point_selection
 
 import numpy as np
 
@@ -11,7 +12,8 @@ class FarthestFirstTraversal(object):
     Parameters
     ----------
     k: int
-        The number of points to select.
+        The maximum number of points to select.
+        If `distance_cutoff` is provided,
 
     distance_metric: str
         The name of a metric contained in the distance_metrics module.
@@ -22,9 +24,19 @@ class FarthestFirstTraversal(object):
             'vincenty'
             'euclidean'
 
-    method_to_select_first_point: one-argument callable
-        A function that selects a single point from an array of geometric objects.
-        Defaults to uniform random selection using numpy.
+    method_to_select_first_point: str
+        The name of a method to select a single point contained in initial_point_selection module.
+        Defaults to the medoid.
+
+        Available options:
+            'weighted_medoid'
+            'random'
+
+    distance_cutoff: float
+        Once all points are within this distance from their nearest selected point, no additional
+        points are selected.
+        Defaults to infinity.
+        Measured in the same units as distance_metric.
 
     Attributes
     ----------
@@ -43,6 +55,9 @@ class FarthestFirstTraversal(object):
     _distances_as_function_of_k: list(np.array)
         List of the historical values of `distances_to_selected_points` after each new point
 
+    _max_distances_as_function_of_k: list(int)
+        List of the maximum value of `distances_to_selected_points` after each new point
+
     _labels_as_function_of_k: np.array
         Final assignments for each input point to the nearest selected point.
     """
@@ -51,33 +66,51 @@ class FarthestFirstTraversal(object):
         self,
         k,
         distance_metric='great_circle',
-        method_to_select_first_point=np.random.choice,
+        method_to_select_first_point='weighted_medoid',
+        distance_cutoff=0.0
     ):
         """Initialize self."""
         self.k = k
         self.distance_metric = distance_metric
+        self.distance_cutoff = distance_cutoff
+
         self._distance_function = distance_metrics.get_metric(distance_metric)
-        self._method_to_select_first_point = method_to_select_first_point
+        self._method_to_select_first_point = initial_point_selection.get_selection_method(
+            method_to_select_first_point
+        )
+
         self.is_fitted = False
 
-    def fit(self, data):
+    def fit(self, data, weights=None):
         """
         Select k points using the farthest first traversal algorithm.
+
+        If fewer than k points are provided, all points are selected.
 
         Parameters
         ----------
         data: Array of geometric objects implementing self._distance_function.
         """
-        self._choose_first_point(data)
+        self._choose_first_point(data, weights)
 
-        for i in range(1, self.k):
+        # Stop adding points when:
+        # a) All points are added
+        # b) k has been reached
+        # c) All points are within the specified distance cutoff.
+        # Otherwise, continue adding points.
+        while (
+            len(self.selected_points) < min(len(data), self.k) and
+            self._max_distances_as_function_of_k[-1] > self.distance_cutoff
+        ):
             self._choose_next_point(data)
 
         self.is_fitted = True
 
-    def _choose_first_point(self, data):
+        return self.selected_points
+
+    def _choose_first_point(self, data, weights):
         """Choose the first point and update attributes."""
-        point = self._method_to_select_first_point(data)
+        point = self._method_to_select_first_point(data, weights, metric=self._distance_function)
         self.selected_points = [point]
 
         self.distances_to_selected_points = np.asarray(
@@ -85,6 +118,7 @@ class FarthestFirstTraversal(object):
         )
 
         self._distances_as_function_of_k = [np.copy(self.distances_to_selected_points)]
+        self._max_distances_as_function_of_k = [np.max(self._distances_as_function_of_k)]
 
         self.labels = np.zeros(shape=data.shape, dtype=int)
         self._labels_as_function_of_k = [np.copy(self.labels)]
@@ -120,5 +154,6 @@ class FarthestFirstTraversal(object):
         self._labels_as_function_of_k.append(np.copy(self.labels))
 
         self._distances_as_function_of_k.append(np.copy(self.distances_to_selected_points))
+        self._max_distances_as_function_of_k.append(np.max(self._distances_as_function_of_k[-1]))
 
         return new_point

@@ -19,6 +19,9 @@ venv/
 # Egg info
 *.egg-info
 
+# Sample data files
+data/etl/
+
 # Key files
 *.pem
 
@@ -37,6 +40,8 @@ secret-data/
 
 # Datasets
 data/*.json
+data/*.tsv
+data/*.csv
 
 # Editor config.
 network-adequacy.sublime-project

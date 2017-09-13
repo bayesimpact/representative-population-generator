@@ -9,8 +9,12 @@ dependencies:
   pre:
     - docker-compose build frontend
     - docker-compose build backend
+    - docker-compose build explorer
   post:
     - make webapp-lint
+    - make models-lint
 test:
   override:
      - make webapp-test
+     - make models-test
+     - make models-coverage

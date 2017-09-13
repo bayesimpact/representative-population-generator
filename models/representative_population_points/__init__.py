@@ -1,1 +1,1 @@
-"""This is the top-level module for the network adequacy project."""
+"""This module contains methods for selecting representative population points."""

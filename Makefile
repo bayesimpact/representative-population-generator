@@ -1,20 +1,21 @@
 local:
-	docker-compose up
+	docker-compose up frontend
 
 rebuild:
-	docker-compose build --no-cache
+	docker-compose build --no-cache frontend
 
 models-lint:
-	flake8 models models/tests
-	pep257 models
+	docker-compose run --no-deps explorer bash -c "flake8 ./models"
+	docker-compose run --no-deps explorer bash -c "pep257 ./models"
 
 # Run test suite locally.
 models-test: FORCE
-	py.test -s models/tests
+	docker-compose run --no-deps explorer pytest -s models/tests
+
 
 # Run coverage.
 models-coverage:
-	pytest --cov=models --cov-config .coveragerc --cov-fail-under=80 --cov-report term-missing
+	docker-compose run --no-deps explorer pytest --cov=models --cov-config .coveragerc --cov-fail-under=90 --cov-report term-missing
 
 # [Dummy dependency to force a make command to always run.]
 FORCE:

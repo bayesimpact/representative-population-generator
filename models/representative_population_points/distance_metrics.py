@@ -8,7 +8,7 @@ import geopy.distance
 
 def great_circle(p1, p2):
     """
-    Calculate the great circle distance (in kilometers).
+    Calculate the great circle distance (in miles).
 
     Treats the Earth as a sphere using the average radius.
     """
@@ -16,12 +16,12 @@ def great_circle(p1, p2):
     return geopy.distance.great_circle(
         (p1.y, p1.x),
         (p2.y, p2.x)
-    ).km
+    ).miles
 
 
 def vincenty(p1, p2):
     """
-    Calculate the Vicenty distance (in kilometers).
+    Calculate the Vicenty distance (in miles).
 
     Treats the Earth as an ellipsoid.
     """
@@ -29,7 +29,7 @@ def vincenty(p1, p2):
     return geopy.distance.vincenty(
         (p1.y, p1.x),
         (p2.y, p2.x)
-    ).km
+    ).miles
 
 
 def euclidean(p1, p2):

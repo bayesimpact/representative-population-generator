@@ -1,5 +1,6 @@
 """Tests for the distance_metrics module."""
 from models.representative_population_points import distance_metrics
+from models.tests.assets import helpers
 
 import pytest
 
@@ -17,16 +18,29 @@ class TestMetrics():
     def test_great_circle_distance(self):
         """Check that the great circle distance matches expectations."""
         assert (
-            distance_metrics.great_circle(self.newport_ri, self.cleveland_oh) == 864.4567616296598
+            helpers.almost_equals(
+                distance_metrics.great_circle(self.newport_ri, self.cleveland_oh),
+                537.1485284062817
+            )
         )
 
     def test_vincenty_distance(self):
         """Check that the Vincenty distance matches expectations."""
-        assert distance_metrics.vincenty(self.newport_ri, self.cleveland_oh) == 866.4554329011002
+        assert (
+            helpers.almost_equals(
+                distance_metrics.vincenty(self.newport_ri, self.cleveland_oh),
+                538.3904451566326
+            )
+        )
 
     def test_euclidean_distance(self):
         """Check that the Euclidean distance matches expectation."""
-        assert distance_metrics.euclidean(self.newport_ri, self.cleveland_oh) == 10.382599271509466
+        assert (
+            helpers.almost_equals(
+                distance_metrics.euclidean(self.newport_ri, self.cleveland_oh),
+                10.382599271509466
+            )
+        )
 
 
 def test_get_metric():
