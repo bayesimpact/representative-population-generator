@@ -16,10 +16,14 @@ The backend API has the following endpoints and methods:
 
 | Endpoint   |      Method  |  Options |
 |----------- |:------------:|:------|
-| /area?	 |  GET	 		| params: zip=94102,county=sanFrancisco |
 | /areas? 	 |  GET	 		| params: zipcounties=[{"county": "sanFrancisco", "zip": "94102"},{"county": "sanFrancisco", "zip": "94103"}] |
 | /areas 	 |  POST	 		| body: zipcounties=[{"county": "sanFrancisco", "zip": "94102"},{"county": "sanFrancisco", "zip": "94103"}] |
 | /areas 	 |  POST	 		| body: zipcounty_file=<zipcounty_csv_file> |
+
+Input must have at least one of the following columns (regardless of whitespaces or case):
+
+- `zip` or `zipcode`
+- `county` or `countyname`
 
 Return object is in the following format:
 
@@ -27,17 +31,36 @@ Return object is in the following format:
 	    "result": [
 	        {
 	            "area_info": {
-	                "county": "sanFrancisco",
-	                "zip": "94105"
-	            },
+                    "county": "sanFrancisco",
+                    "zip": "94105"
+                },
+                "availability_status": {
+                    "is_service_area_available": true,
+                    "message": "Service area available."
+                },
 	            "points": [point_1, ..., point_200]
-	        },
-	        {
-	            "area_info": {
-	                "county": "sanFrancisco",
-	                "zip": "94107"
-	            },
-	            "points": [point_1, ..., point_200]
+            },
+            {
+                "area_info": {
+                    "county": "sanFrancisco",
+                    "zip": "94107"
+                },
+                "availability_status": {
+                    "is_service_area_available": true,
+                    "message": "Service area available."
+                },
+                "points": [point_1, ..., point_200]
+            },
+            {
+                "area_info": {
+                    "county": "san Diego",
+                    "zip": "94130"
+                },
+                "availability_status": {
+                    "is_service_area_available": false,
+                    "message": "Service area unavailable."
+                },
+	            "points": []
 	        },
 	        ....
 	    ]

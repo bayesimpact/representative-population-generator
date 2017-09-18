@@ -1,8 +1,7 @@
 """Routing for backend API."""
 import os
 
-from backend.lib import api_exceptions
-from backend.lib.helper import get_areas_data
+from backend.lib.helper import fetch_point_as
 from backend.lib.helper import get_service_areas_from_input_file
 
 import flask
@@ -21,41 +20,6 @@ with app.app_context():
     repr_points = mongo.db.pointA
 
 
-@app.errorhandler(api_exceptions.UnavailableZipCounty)
-def handle_invalid_usage(error):
-    """Function to handle an internal server error."""
-    response = flask.jsonify(error.to_dict())
-    response.status_code = error.status_code
-    return response
-
-
-@app.route('/area', methods=['GET'])
-def get_single_zip_county_points():
-    """
-    Given a single zip/county pair, return the corresponding points.
-
-    input: two params, zip and county
-    E.g ?"county":"sanFrancisco","zip":94102
-    returns: json object with info about area and a list of points.
-    """
-    county = flask.request.args['county']
-    zipcode = flask.request.args['zip']
-    point_a = repr_points.find_one({'zip': zipcode, 'county': county})
-    if point_a:
-        output = {
-            'area_info': {
-                'county': county,
-                'zip': zipcode
-            },
-            'points': point_a['points']
-        }
-    else:
-        raise api_exceptions.UnavailableZipCounty(
-            message='Zip/County pair unavailable.',
-            status_code=500)
-    return flask.jsonify(output)
-
-
 @app.route('/areas', methods=['GET', 'POST'])
 def get_multiple_zip_county_points():
     """
@@ -66,8 +30,9 @@ def get_multiple_zip_county_points():
         - list of zip-county objects as params of GET request
         - list of zip-county as a csv file in body of POST request
     E.g. areas = [
-        {"county": "sanFrancisco", "zip": 94102},
-        {"county": "sanFrancisco", "zip": 94705}
+        {"county": "sanFrancisco", "zip": "94102"},
+        {"county": "sanFrancisco"},
+        {"zip": "94705"}
     ]
     returns: json object with info about area and a list of points.
     """
@@ -81,8 +46,8 @@ def get_multiple_zip_county_points():
                 zipcounties_file = flask.request.files['zipcounty_file']
                 zipcounties = get_service_areas_from_input_file(zipcounties_file, logger=app.logger)
             except:
-                return flask.jsonify({'result': 'Zip/County unavailable.'})
-    outputs = get_areas_data(repr_points, zipcounties, logger=app.logger)
+                return flask.jsonify({'result': 'Something went wrong. Check your input.'})
+    outputs = fetch_point_as(repr_points, zipcounties, logger=app.logger)
     return flask.jsonify({'result': outputs})
 
 

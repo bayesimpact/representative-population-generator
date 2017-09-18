@@ -20,5 +20,5 @@ webapp-lint:
 	docker-compose run --no-deps webapp echo "I want lint"
 
 webapp-test:
-	docker-compose run --no-deps backend echo "I want tests"
+	docker-compose run --no-deps backend pytest -s tests
 	docker-compose run --no-deps webapp echo "I want tests"

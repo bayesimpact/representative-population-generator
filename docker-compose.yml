@@ -14,6 +14,7 @@ services:
     backend:
         volumes:
           - ./web-app/backend/app.py:/var/local/app.py
+          - ./web-app/backend/tests:/var/local/tests:ro
           - .flake8:/var/local/.flake8:ro
           - ./web-app/backend:/usr/local/lib/python3.6/site-packages/backend
         build: ./web-app/backend

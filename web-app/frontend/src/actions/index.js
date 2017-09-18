@@ -21,7 +21,7 @@ export const requestPointAs = zipcounty => ({
 const concat_arrays = array_2d => {
   var new_arr = []
   for(var i = 0; i < array_2d.length; i++){
-    if (array_2d[i].points !== "Zip/County pair unavailable.") {
+    if (array_2d[i].availability_status.is_service_area_available) {
       new_arr = new_arr.concat(array_2d[i].points)
     }
   }
