@@ -1,11 +1,9 @@
 """Routing for backend API."""
 import os
 
-from io import StringIO
-
 from backend.lib import api_exceptions
-from backend.lib.helper import csv2json
 from backend.lib.helper import get_areas_data
+from backend.lib.helper import get_service_areas_from_input_file
 
 import flask
 
@@ -81,12 +79,10 @@ def get_multiple_zip_county_points():
         except:
             try:
                 zipcounties_file = flask.request.files['zipcounty_file']
-                file_contents = zipcounties_file.stream.read().decode('utf-8')
-                file_contents = StringIO(file_contents)
-                zipcounties = eval(csv2json(file_contents, logger=app.logger))
+                zipcounties = get_service_areas_from_input_file(zipcounties_file, logger=app.logger)
             except:
                 return flask.jsonify({'result': 'Zip/County unavailable.'})
-    outputs, _ = get_areas_data(repr_points, zipcounties, logger=app.logger)
+    outputs = get_areas_data(repr_points, zipcounties, logger=app.logger)
     return flask.jsonify({'result': outputs})
 
 

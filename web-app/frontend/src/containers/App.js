@@ -35,7 +35,7 @@ class App extends Component {
     const {dispatch} = this.props
     dispatch(uploadDocumentRequest({
        document: e.target.files[0],
-       name: 'data_file'
+       name: 'zipcounty_file'
     }))
   }
 
