@@ -84,3 +84,11 @@ Each point is a geojson object of type Point:
         "type": "Feature"
     }
 
+## Test and Lint
+To run webapp tests locally simply run
+
+    make webapp-test
+
+To run the linter
+
+    make webapp-lint
