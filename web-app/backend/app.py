@@ -1,4 +1,5 @@
 """Routing for backend API."""
+import json
 import os
 
 from backend.lib.helper import fetch_point_as
@@ -37,10 +38,10 @@ def get_multiple_zip_county_points():
     returns: json object with info about area and a list of points.
     """
     try:
-        zipcounties = eval(flask.request.values['zipcounties'])
+        zipcounties = json.loads(flask.request.values['zipcounties'])
     except:
         try:
-            zipcounties = eval(flask.request.args['zipcounties'])
+            zipcounties = json.loads(flask.request.args['zipcounties'])
         except:
             try:
                 zipcounties_file = flask.request.files['zipcounty_file']

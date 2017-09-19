@@ -1,7 +1,6 @@
 """Helper functions for the backend."""
 
 import csv
-import json
 import io
 import re
 
@@ -29,7 +28,7 @@ def fetch_point_as(point_a_db, service_areas, logger=None):
 
 def get_service_areas_from_input_file(zipcounty_file, logger=None):
     """Transform a csv into json."""
-    json_zipcounty_input = jsonify_input(zipcounty_file.read().decode('utf-8'))
+    json_zipcounty_input = jsonify_input(zipcounty_file.read().decode('utf-8'), logger)
     json_zipcounty_output = clean_input(json_zipcounty_input)
     if logger:
         logger.info('Input CSV file parsed into JSON format!')
@@ -47,11 +46,11 @@ def clean_input(input_json):
     return output_json
 
 
-def jsonify_input(input_string):
+def jsonify_input(input_string, logger=None):
     """Convert input CSV file into a JSON object."""
     file_content = io.StringIO(input_string)
     raw_input = list(csv.DictReader(file_content))
-    return eval(json.dumps(raw_input))
+    return raw_input
 
 
 def standardize_input_keys(input_dict):
