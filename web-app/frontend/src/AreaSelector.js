@@ -10,37 +10,47 @@ class AreaSelector extends Component {
     selectedCounties: [],
   }
 
-  handleChange = (event, index, values) => {
+  handleCountyChange = (event, index, values) => {
     this.setState({selectedCounties: values})
   }
 
-  menuItems(values) {
-    const {counties} = this.props
-    const {selectedCounties} = this.state
-    return Object.keys(counties || {}).map(countyKey => (
-      <MenuItem
-        key={countyKey}
-        insetChildren={true}
-        checked={selectedCounties && selectedCounties.includes(countyKey)}
-        value={countyKey}
-        primaryText={counties[countyKey].displayName}
-      />
-    ));
-  }
-
   render() {
-    const {counties} = this.props
+    const {counties, isLoading} = this.props
     const {selectedCounties} = this.state
+    if (isLoading) {
+      return <div>loading</div>
+    }
     return (
       <div>
-        <SelectField
+        <CountySelector
+            selectedCounties={selectedCounties}
+            counties={counties}
+            onChange={this.handleCountyChange} />
+      </div>
+    )
+  }
+}
+
+
+class CountySelector extends Component {
+
+  render() {
+    const {counties, selectedCounties, onChange} = this.props
+    return (
+      <SelectField
           multiple={true}
           hintText="Select counties"
           value={selectedCounties}
-          onChange={this.handleChange}>
-          {this.menuItems(selectedCounties)}
-        </SelectField>
-      </div>
+          onChange={onChange}>
+        {Object.keys(counties || {}).map(countyKey => (
+          <MenuItem
+              key={countyKey}
+              insetChildren={true}
+              checked={selectedCounties && selectedCounties.includes(countyKey)}
+              value={countyKey}
+              primaryText={counties[countyKey].displayName} />
+        ))}
+      </SelectField>
     )
   }
 }
