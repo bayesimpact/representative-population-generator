@@ -16,3 +16,10 @@ export function getCounties() {
     }, 2)
   })
 }
+
+// TODO: Request data from backend.
+export function getAreas(countyZips) {
+  return fetch('http://localhost/areas?zipcounties=' + JSON.stringify(countyZips))
+  .then(response => response.json())
+  .then(response => response.result)
+}

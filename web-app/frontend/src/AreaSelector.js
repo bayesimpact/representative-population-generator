@@ -8,7 +8,7 @@ import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Checkbox from 'material-ui/Checkbox';
 
-import {fetchCounties} from './actions'
+import {fetchCounties, fetchAreas} from './actions'
 
 class AreaSelector extends Component {
 
@@ -28,7 +28,11 @@ class AreaSelector extends Component {
 
   handleCountyZipChange = selectedCountyZips => {
     this.setState({selectedCountyZips})
-    console.log('>>', selectedCountyZips)
+    const countyZips = selectedCountyZips.map(countyZip => {
+      const [county, zip] = countyZip.split('-')
+      return {county, zip}
+    })
+    this.props.dispatch(fetchAreas(countyZips))
   }
 
   render() {
@@ -114,7 +118,7 @@ class ZipCodeSelector extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLoading: state.isLoading.counties || state.isLoading.points,
+  isLoading: state.isLoading.counties || state.isLoading.areas,
   counties: state.data.counties,
 })
 
