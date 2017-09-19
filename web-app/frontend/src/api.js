@@ -13,6 +13,6 @@ export function getCounties() {
           zips: [94605, 94606],
         }
       })
-    }, 2000)
+    }, 2)
   })
 }

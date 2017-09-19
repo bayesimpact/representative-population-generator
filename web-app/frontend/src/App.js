@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import {createStore, applyMiddleware, compose} from 'redux'
-import {connect, Provider} from 'react-redux';
+import {Provider} from 'react-redux';
 import thunk from 'redux-thunk'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import './App.css';
-import {fetchCounties} from './actions'
 import {mainReducer} from './reducers'
 import AreaSelector from './AreaSelector'
 
@@ -17,11 +16,6 @@ const store = createStore(mainReducer, composeEnhancers(
 
 class App extends Component {
 
-  constructor(props) {
-    super(props)
-    props.dispatch(fetchCounties())
-  }
-
   render() {
     return (
       <div>
@@ -31,7 +25,6 @@ class App extends Component {
     );
   }
 }
-const ConnectedApp = connect()(App)
 
 class AppContainer extends Component {
 
@@ -39,7 +32,7 @@ class AppContainer extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider>
-          <ConnectedApp />
+          <App />
         </MuiThemeProvider>
       </Provider>
     )
