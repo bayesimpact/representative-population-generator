@@ -7,6 +7,7 @@ import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Checkbox from 'material-ui/Checkbox';
 
+import LoadingOverlay from './LoadingOverlay'
 
 class AreaSelector extends Component {
 
@@ -15,11 +16,9 @@ class AreaSelector extends Component {
       counties, isLoading, selectedCounties, selectedCountyZips,
       onCountyChange, onCountyZipChange
     } = this.props
-    if (isLoading) {
-      return <div>loading</div>
-    }
     return (
-      <div>
+      <div style={{position: 'relative'}}>
+        {isLoading ? <LoadingOverlay /> : null}
         <StateSelector />
         <CountySelector
             selectedCounties={selectedCounties}
@@ -84,6 +83,9 @@ class ZipCodeSelector extends Component {
 
   render() {
     const {counties, selectedCounties, selectedCountyZips, style} = this.props
+    if (!counties) {
+      return null
+    }
     return (
       <div style={style}>
         {(selectedCounties || []).map(countyKey => {
