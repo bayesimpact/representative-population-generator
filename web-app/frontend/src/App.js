@@ -9,6 +9,7 @@ import {mainReducer} from './reducers'
 import AreaSelector from './AreaSelector'
 import TableView from './TableView'
 import MapView from './MapView'
+import Header from './Header'
 
 // Redux DevTools extension, install from here: https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -21,7 +22,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1>Network Adequacy</h1>
+        <Header />
         <AreaSelector />
         {/* <TableView /> */}
         <MapView />
