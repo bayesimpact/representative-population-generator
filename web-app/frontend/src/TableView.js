@@ -69,7 +69,7 @@ class TableView extends Component {
 const mapStateToProps = state => {
   const points = [];
   (state.data.areas || []).forEach(area => {
-    area.points.forEach(point => {
+    area.points.slice(0, state.app.nPoints).forEach(point => {
       points.push({
         zipCode: point.properties.zip,
         county: point.properties.county,

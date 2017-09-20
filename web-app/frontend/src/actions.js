@@ -55,3 +55,11 @@ export function setViewMode(viewMode) {
     variable: 'viewMode',
   }
 }
+
+export function setPointNumber(nPoints) {
+  return {
+    type: SET_APP_VARIABLE,
+    value: nPoints,
+    variable: 'nPoints',
+  }
+}

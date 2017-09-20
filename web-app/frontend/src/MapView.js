@@ -56,7 +56,7 @@ class MapView extends Component {
 
 const mapStateToProps = state => {
   const allPoints = (state.data.areas || []).reduce((accu, area) => {
-    return accu.concat(area.points)
+    return accu.concat(area.points.slice(0, state.app.nPoints))
   }, [])
   const allPointsCollection = {
     type: 'FeatureCollection',

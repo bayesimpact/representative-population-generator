@@ -11,6 +11,7 @@ const initialState = {
     selectedCounties: ['sanFrancisco'],
     selectedCountyZips: ['sanFrancisco-94103'],
     viewMode: 'table',
+    nPoints: 50,
   },
 }
 

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import _ from 'underscore'
 
 import PlaceIcon from 'material-ui/svg-icons/maps/place'
 import PointsIcon from 'material-ui/svg-icons/image/grain'
@@ -7,7 +8,13 @@ import FlatButton from 'material-ui/FlatButton'
 
 import AreaSelector from './AreaSelector'
 import PointNumberSelector from './PointNumberSelector'
-import {fetchCounties, fetchAreas, setSelectedCounties, setSelectedCountyZips} from './actions'
+import {
+  fetchCounties,
+  fetchAreas,
+  setSelectedCounties,
+  setSelectedCountyZips,
+  setPointNumber,
+} from './actions'
 
 
 class Sidebar extends Component {
@@ -29,8 +36,12 @@ class Sidebar extends Component {
     dispatch(fetchAreas(selectedCountyZips))
   }
 
+  handlePointNumberChange = _.throttle(nPoints => {
+    this.props.dispatch(setPointNumber(nPoints))
+  }, 300)
+
   render() {
-    const {counties, isLoading, selectedCounties, selectedCountyZips, style} = this.props
+    const {counties, isLoading, selectedCounties, selectedCountyZips, nPoints, style} = this.props
     const sidebarStyle = {
       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
       background: '#FAFAFA',
@@ -51,6 +62,12 @@ class Sidebar extends Component {
               selectedCountyZips={selectedCountyZips}
               onCountyChange={this.handleCountyChange}
               onCountyZipChange={this.handleCountyZipChange} />
+        </SidebarContent>
+        <SidebarHeadline icon={PointsIcon} text="Enrolees" />
+        <SidebarContent>
+          <PointNumberSelector
+              value={nPoints}
+              onChange={this.handlePointNumberChange} />
         </SidebarContent>
       </div>
     )
@@ -120,6 +137,7 @@ const mapStateToProps = state => ({
   counties: state.data.counties,
   selectedCounties: state.app.selectedCounties,
   selectedCountyZips: state.app.selectedCountyZips,
+  nPoints: state.app.nPoints,
 })
 
 export default connect(mapStateToProps)(Sidebar)
