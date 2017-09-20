@@ -13,12 +13,12 @@ import {
 class TableView extends Component {
 
   render() {
-    const {isLoading, points} = this.props
+    const {isLoading, points, style} = this.props
     if (isLoading) {
       return <div>loading</div>
     }
     return (
-      <div>
+      <div style={style}>
         <h2>Representative Points of Enrollees</h2>
         <Table selectable={false}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {createStore, applyMiddleware, compose} from 'redux'
-import {Provider} from 'react-redux';
+import {Provider, connect} from 'react-redux';
 import thunk from 'redux-thunk'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
@@ -10,6 +10,8 @@ import AreaSelector from './AreaSelector'
 import TableView from './TableView'
 import MapView from './MapView'
 import Header from './Header'
+import ViewModeSwitcher from './ViewModeSwitcher'
+import {setViewMode} from './actions'
 
 // Redux DevTools extension, install from here: https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -19,19 +21,49 @@ const store = createStore(mainReducer, composeEnhancers(
 
 class App extends Component {
 
+  handleViewModeChange = viewMode => {
+    this.props.dispatch(setViewMode(viewMode))
+  }
+
   render() {
+    const {viewMode} = this.props
+    const fullContainerStyle = {
+      height: '100%',
+      width: '100%',
+    }
+    const switcherStyle = {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      height: 80,
+    }
     return (
       <div style={{height: '100%'}}>
         <Header />
         <div style={{display: 'flex', height: '100%'}}>
           <AreaSelector style={{height: '100%'}} />
-        {/* <TableView /> */}
-          <MapView style={{height: '100%', width: '100%'}} />
+          <div style={{position: 'relative', ...fullContainerStyle}}>
+            <ViewModeSwitcher
+                style={switcherStyle}
+                viewMode={viewMode}
+                onViewModeClick={this.handleViewModeChange} />
+            {viewMode === 'map' ?
+              <MapView style={fullContainerStyle} /> :
+              <TableView style={{paddingTop: 80}} />
+            }
+          </div>
         </div>
       </div>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  viewMode: state.app.viewMode,
+})
+
+const ConnectedApp = connect(mapStateToProps)(App)
 
 class AppContainer extends Component {
 
@@ -39,7 +71,7 @@ class AppContainer extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider>
-          <App />
+          <ConnectedApp />
         </MuiThemeProvider>
       </Provider>
     )

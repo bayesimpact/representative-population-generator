@@ -10,6 +10,7 @@ const initialState = {
   app: {
     selectedCounties: ['sanFrancisco'],
     selectedCountyZips: ['sanFrancisco-94103'],
+    viewMode: 'table',
   },
 }
 

@@ -47,3 +47,11 @@ export function setSelectedCountyZips(selectedCountyZips) {
     variable: 'selectedCountyZips',
   }
 }
+
+export function setViewMode(viewMode) {
+  return {
+    type: SET_APP_VARIABLE,
+    value: viewMode,
+    variable: 'viewMode',
+  }
+}
