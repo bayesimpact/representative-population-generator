@@ -6,7 +6,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import './App.css';
 import {mainReducer} from './reducers'
-import AreaSelector from './AreaSelector'
+import Sidebar from './Sidebar'
 import TableView from './TableView'
 import MapView from './MapView'
 import Header from './Header'
@@ -42,7 +42,7 @@ class App extends Component {
       <div style={{height: '100%'}}>
         <Header />
         <div style={{display: 'flex', height: '100%'}}>
-          <AreaSelector style={{height: '100%', width: 330}} />
+          <Sidebar style={{height: '100%', width: 330}} />
           <div style={{position: 'relative', ...fullContainerStyle}}>
             <ViewModeSwitcher
                 style={switcherStyle}
