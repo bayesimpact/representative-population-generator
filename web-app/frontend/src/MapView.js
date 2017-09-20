@@ -23,13 +23,14 @@ const Map = ReactMapboxGl({ accessToken });
 class MapView extends Component {
 
   render() {
-    const {isLoading, allPoints, allPointsCollection} = this.props
+    const {isLoading, allPoints, allPointsCollection, style} = this.props
+    const fullContainerStyle = {height: '100%', width: '100%'}
     if (isLoading) {
       return <div>loading</div>
     }
     const bounds = bbox(allPointsCollection)
     return (
-      <div style={{height: 500, width: 500}}>
+      <div style={style}>
         <Map
           style="mapbox://styles/mapbox/streets-v8"
           zoom={[3]}
@@ -38,10 +39,7 @@ class MapView extends Component {
             [bounds[0], bounds[1]],
             [bounds[2], bounds[3]],
           ]}
-          containerStyle={{
-            height: "100%",
-            width: "500px"
-          }}>
+          containerStyle={fullContainerStyle}>
             <Layer
               type="symbol"
               id="marker"

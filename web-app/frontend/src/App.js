@@ -21,11 +21,13 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{height: '100%'}}>
         <Header />
-        <AreaSelector />
+        <div style={{display: 'flex', height: '100%'}}>
+          <AreaSelector style={{height: '100%'}} />
         {/* <TableView /> */}
-        <MapView />
+          <MapView style={{height: '100%', width: '100%'}} />
+        </div>
       </div>
     );
   }

@@ -30,12 +30,12 @@ class AreaSelector extends Component {
   }
 
   render() {
-    const {counties, isLoading, selectedCounties, selectedCountyZips} = this.props
+    const {counties, isLoading, selectedCounties, selectedCountyZips, style} = this.props
     if (isLoading) {
       return <div>loading</div>
     }
     return (
-      <div>
+      <div style={style}>
         <CountySelector
             selectedCounties={selectedCounties}
             counties={counties}
