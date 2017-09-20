@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
 import _ from 'underscore'
 
 import SelectField from 'material-ui/SelectField';
@@ -7,31 +6,15 @@ import MenuItem from 'material-ui/MenuItem';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Checkbox from 'material-ui/Checkbox';
-import FlatButton from 'material-ui/FlatButton'
 
-import {fetchCounties, fetchAreas, setSelectedCounties, setSelectedCountyZips} from './actions'
 
 class AreaSelector extends Component {
 
-  constructor(props) {
-    super(props)
-    props.dispatch(fetchCounties())
-    // TODO: Remove, this is only for debugging.
-    props.dispatch(fetchAreas(props.selectedCountyZips))
-  }
-
-  handleCountyChange = selectedCounties => {
-    this.props.dispatch(setSelectedCounties(selectedCounties))
-  }
-
-  handleCountyZipChange = selectedCountyZips => {
-    const {dispatch} = this.props
-    dispatch(setSelectedCountyZips(selectedCountyZips))
-    dispatch(fetchAreas(selectedCountyZips))
-  }
-
   render() {
-    const {counties, isLoading, selectedCounties, selectedCountyZips, style} = this.props
+    const {
+      counties, isLoading, selectedCounties, selectedCountyZips,
+      onCountyChange, onCountyZipChange
+    } = this.props
     if (isLoading) {
       return <div>loading</div>
     }
@@ -41,12 +24,12 @@ class AreaSelector extends Component {
         <CountySelector
             selectedCounties={selectedCounties}
             counties={counties}
-            onChange={this.handleCountyChange} />
+            onChange={onCountyChange} />
         <ZipCodeSelector
             selectedCounties={selectedCounties}
             selectedCountyZips={selectedCountyZips}
             counties={counties}
-            onChange={this.handleCountyZipChange} />
+            onChange={onCountyZipChange} />
       </div>
     )
   }
@@ -124,11 +107,4 @@ class ZipCodeSelector extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  isLoading: state.isLoading.counties || state.isLoading.areas,
-  counties: state.data.counties,
-  selectedCounties: state.app.selectedCounties,
-  selectedCountyZips: state.app.selectedCountyZips,
-})
-
-export default connect(mapStateToProps)(AreaSelector)
+export default AreaSelector

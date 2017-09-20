@@ -1,13 +1,36 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+
 import PlaceIcon from 'material-ui/svg-icons/maps/place'
+import PointsIcon from 'material-ui/svg-icons/image/grain'
 import FlatButton from 'material-ui/FlatButton'
 
 import AreaSelector from './AreaSelector'
+import PointNumberSelector from './PointNumberSelector'
+import {fetchCounties, fetchAreas, setSelectedCounties, setSelectedCountyZips} from './actions'
+
 
 class Sidebar extends Component {
 
+  constructor(props) {
+    super(props)
+    props.dispatch(fetchCounties())
+    // TODO: Remove, this is only for debugging.
+    props.dispatch(fetchAreas(props.selectedCountyZips))
+  }
+
+  handleCountyChange = selectedCounties => {
+    this.props.dispatch(setSelectedCounties(selectedCounties))
+  }
+
+  handleCountyZipChange = selectedCountyZips => {
+    const {dispatch} = this.props
+    dispatch(setSelectedCountyZips(selectedCountyZips))
+    dispatch(fetchAreas(selectedCountyZips))
+  }
+
   render() {
-    const {style} = this.props
+    const {counties, isLoading, selectedCounties, selectedCountyZips, style} = this.props
     const sidebarStyle = {
       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
       background: '#FAFAFA',
@@ -21,7 +44,13 @@ class Sidebar extends Component {
         <SidebarContent>
           <CSVUploader />
           <InputSeparator />
-          <AreaSelector />
+          <AreaSelector
+              counties={counties}
+              isLoading={isLoading}
+              selectedCounties={selectedCounties}
+              selectedCountyZips={selectedCountyZips}
+              onCountyChange={this.handleCountyChange}
+              onCountyZipChange={this.handleCountyZipChange} />
         </SidebarContent>
       </div>
     )
@@ -50,7 +79,7 @@ class SidebarContent extends Component {
 
   render() {
     return (
-      <div style={{paddingLeft: 46, paddingTop: 20, display: 'flex', flexDirection: 'column'}}>
+      <div style={{marginBottom: 15, paddingLeft: 46, paddingTop: 20, display: 'flex', flexDirection: 'column'}}>
         {this.props.children}
       </div>
     )
@@ -86,5 +115,11 @@ class InputSeparator extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  isLoading: state.isLoading.counties || state.isLoading.areas,
+  counties: state.data.counties,
+  selectedCounties: state.app.selectedCounties,
+  selectedCountyZips: state.app.selectedCountyZips,
+})
 
-export default Sidebar
+export default connect(mapStateToProps)(Sidebar)
