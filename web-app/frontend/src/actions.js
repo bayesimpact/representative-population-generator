@@ -3,6 +3,8 @@ import {getCounties, getAreas} from './api'
 export const FETCH_COUNTIES = 'FETCH_COUNTIES'
 export const START_REQUEST = 'START_REQUEST'
 export const FINISH_REQUEST = 'FINISH_REQUEST'
+export const SET_APP_VARIABLE = 'SET_APP_VARIABLE'
+
 
 export const fetchCounties = () => dispatch => {
   dispatch({type: START_REQUEST, resource: 'counties'})
@@ -15,8 +17,12 @@ export const fetchCounties = () => dispatch => {
   })
 }
 
-export const fetchAreas = countyZips => dispatch => {
+export const fetchAreas = selectedCountyZips => dispatch => {
   dispatch({type: START_REQUEST, resource: 'areas'})
+  const countyZips = selectedCountyZips.map(countyZip => {
+    const [county, zip] = countyZip.split('-')
+    return {county, zip}
+  })
   getAreas(countyZips).then(areas => {
     dispatch({
       type: FINISH_REQUEST,
@@ -24,4 +30,20 @@ export const fetchAreas = countyZips => dispatch => {
       result: areas,
     })
   })
+}
+
+export function setSelectedCounties(selectedCounties) {
+  return {
+    type: SET_APP_VARIABLE,
+    value: selectedCounties,
+    variable: 'selectedCounties',
+  }
+}
+
+export function setSelectedCountyZips(selectedCountyZips) {
+  return {
+    type: SET_APP_VARIABLE,
+    value: selectedCountyZips,
+    variable: 'selectedCountyZips',
+  }
 }
