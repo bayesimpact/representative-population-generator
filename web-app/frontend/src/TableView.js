@@ -14,13 +14,19 @@ class TableView extends Component {
 
   render() {
     const {isLoading, points, style} = this.props
+    const tableViewStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      paddingLeft: 20,
+      paddingRight: 20,
+    }
     if (isLoading) {
       return <div>loading</div>
     }
     return (
-      <div style={style}>
-        <h2>Representative Points of Enrollees</h2>
-        <Table selectable={false}>
+      <div style={{...tableViewStyle, ...style}}>
+        <div style={{fontSize: 20, paddingTop: 30}}>Representative Points of Enrollees</div>
+        <Table selectable={false} wrapperStyle={{height: '100%'}}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn></TableHeaderColumn>
@@ -31,7 +37,7 @@ class TableView extends Component {
               <TableHeaderColumn>No. Residents</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody displayRowCheckbox={false}>
+          <TableBody displayRowCheckbox={false} style={{overflowY: 'scroll'}}>
             {points.map((point, i) => (
               <TableRow key={i}>
                 <TableRowColumn>{i}</TableRowColumn>
