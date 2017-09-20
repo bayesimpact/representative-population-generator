@@ -15,6 +15,8 @@ import {connect} from 'react-redux'
 import ReactMapboxGl, {Layer, Feature} from 'react-mapbox-gl';
 import bbox from 'geojson-bbox'
 
+import LoadingOverlay from './LoadingOverlay'
+
 // Mapbox Access Token.
 const accessToken = 'pk.eyJ1IjoiZGVkYW4iLCJhIjoiY2o3c29wcThlM3ZlZjMzdXdzczQ3bzIwMSJ9.pvxNu-R28kuQ6CXsHJST_w'
 const Map = ReactMapboxGl({ accessToken });
@@ -25,12 +27,10 @@ class MapView extends Component {
   render() {
     const {isLoading, allPoints, allPointsCollection, style} = this.props
     const fullContainerStyle = {height: '100%', width: '100%'}
-    if (isLoading) {
-      return <div>loading</div>
-    }
     const bounds = bbox(allPointsCollection)
     return (
-      <div style={style}>
+      <div style={{position: 'relative', ...style}}>
+        {isLoading ? <LoadingOverlay /> : null}
         <Map
           style="mapbox://styles/mapbox/streets-v8"
           zoom={[3]}

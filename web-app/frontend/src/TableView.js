@@ -13,6 +13,8 @@ import FlatButton from 'material-ui/FlatButton'
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download'
 import {CSVLink} from 'react-csv'
 
+import LoadingOverlay from './LoadingOverlay'
+
 class TableView extends Component {
 
   render() {
@@ -22,12 +24,11 @@ class TableView extends Component {
       flexDirection: 'column',
       paddingLeft: 20,
       paddingRight: 20,
-    }
-    if (isLoading) {
-      return <div>loading</div>
+      position: 'relative',
     }
     return (
       <div style={{...tableViewStyle, ...style}}>
+        {isLoading ? <LoadingOverlay /> : null}
         <div style={{display: 'flex', alignItems: 'center', paddingTop: 30}}>
           <div style={{fontSize: 20}}>
             Representative Points of Enrollees
