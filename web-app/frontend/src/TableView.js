@@ -9,6 +9,9 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import FlatButton from 'material-ui/FlatButton'
+import FileDownloadIcon from 'material-ui/svg-icons/file/file-download'
+import {CSVLink} from 'react-csv'
 
 class TableView extends Component {
 
@@ -25,7 +28,15 @@ class TableView extends Component {
     }
     return (
       <div style={{...tableViewStyle, ...style}}>
-        <div style={{fontSize: 20, paddingTop: 30}}>Representative Points of Enrollees</div>
+        <div style={{display: 'flex', alignItems: 'center', paddingTop: 30}}>
+          <div style={{fontSize: 20}}>
+            Representative Points of Enrollees
+          </div>
+          <div style={{flex: '1'}} />
+          <CSVLink filename="service_area_points.csv" data={points}>
+            <FlatButton style={{color: '#3F51B5'}} label="csv" icon={<FileDownloadIcon />} />
+          </CSVLink>
+        </div>
         <Table selectable={false} wrapperStyle={{height: '100%'}}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
