@@ -64,7 +64,7 @@ class App extends Component {
         </CSVLink>
         <Picker value={selectedZipCounty}
                 onChange={this.handleChange}
-                options={[ '[{"county":"sanFrancisco","zip":"94102"}]', '[{"county":"sanFrancisco","zip":"94103"}]' ]} />
+                options={[ '[{"county":"Alameda","zip":"94505"}]', '[{"county":"Alameda","zip":"94530"}]' ]} />
         <p>
           {lastUpdated &&
             <span>

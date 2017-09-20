@@ -8,7 +8,7 @@ Frontend is built on react.js and backend is built on Flask microservice. To sta
 
     docker-compose up -d webapp
 
-This spins up a webserver for frontend (node), and a mircoservice for the backend. Open a browser and point to localhost:3000 to see the frontend react app.
+This spins up a webserver for frontend (node), and a mircoservice for the backend on port 8080. Open a browser and point to `localhost` (port 80) to see the frontend react app.
 
 It also loads sample data into MongoDB. Use your favorite client (e.g. Robot 3T) to browse the db on port 27017 with no user or password.
 

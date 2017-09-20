@@ -18,7 +18,7 @@ CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
 
 mongo = PyMongo(app)
 with app.app_context():
-    repr_points = mongo.db.pointA
+    repr_points = mongo.db.pointAs
 
 
 @app.route('/areas', methods=['GET', 'POST'])

@@ -3,6 +3,8 @@ export const RECEIVE_POINTS = 'RECEIVE_POINTS'
 export const SELECT_ZIPCOUNTY = 'SELECT_ZIPCOUNTY'
 export const UPLOAD_ZIPCOUNTY = 'UPLOAD_ZIPCOUNTY'
 
+const API_URL = window.location.href.slice(0, -1)+ ':8080'
+
 export const selectZipCounty = zipcounty => ({
   type: SELECT_ZIPCOUNTY,
   zipcounty
@@ -42,7 +44,7 @@ export const uploadDocumentRequest = ( {document, name} ) => dispatch => {
   data.append('zipcounty_file', document)
   data.append('name', name)
 
-  return fetch('http://localhost/areas', {
+  return fetch(API_URL + '/areas', {
       method: 'POST',
       body: data
     })
@@ -52,7 +54,7 @@ export const uploadDocumentRequest = ( {document, name} ) => dispatch => {
 
 const fetchPointAs = zipcounty => dispatch => {
   dispatch(requestPointAs(zipcounty))
-  return fetch(`http://localhost/areas?zipcounties=${zipcounty}`)
+  return fetch(API_URL + `/areas?zipcounties=${zipcounty}`)
     .then(
       response => response.json(),
       error => console.log('An error occured.', error))

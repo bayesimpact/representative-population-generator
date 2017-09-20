@@ -17,7 +17,7 @@ def fetch_point_as(point_a_db, service_areas, logger=None):
         try:
             area_regex = dict((k, _regexifgy_input(v)) for k, v in service_area.items())
             point_a = point_a_db.find_one(area_regex)
-            output['points'] = point_a['points']
+            output['points'] = point_a['ReprPopPoints']['PointA']
             output['availability_status'] = _flag_service_area_availability(True)
         except:
             output['points'] = []
@@ -58,14 +58,14 @@ def standardize_input_keys(input_dict):
     standard_area = {}
     for k, v in input_dict.items():
         if k.replace(' ', '').lower() in ['zip', 'zipcode']:
-            standard_area['zip'] = v
+            standard_area['ServiceArea.ZipCode'] = v
         if k.replace(' ', '').lower() in ['county', 'countyname']:
-            standard_area['county'] = v
+            standard_area['ServiceArea.CountyName'] = v
     return standard_area
 
 
 def _regexifgy_input(input_value):
-    return re.compile(input_value.replace(' ', ''), re.IGNORECASE)
+    return re.compile(input_value, re.IGNORECASE)
 
 
 def _flag_service_area_availability(is_available=True):

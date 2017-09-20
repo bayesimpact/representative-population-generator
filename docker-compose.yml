@@ -19,18 +19,15 @@ services:
           - ./web-app/backend:/usr/local/lib/python3.6/site-packages/backend
         build: ./web-app/backend
         ports:
-            - "80:5000"
+            - "8080:5000"
         command: python app.py
 
     mongo:
-        image: mongo:3.4.0
+        build: 
+          context: ./data
+          dockerfile: Dockerfile
         ports:
           - "27017:27017"
-
-    mongo-seed:
-        build: ./data
-        links:
-          - mongo
 
     webapp:
         volumes:
@@ -41,8 +38,7 @@ services:
         links:
           - backend
         ports:
-          - 3000:3000
+          - 80:3000
         depends_on:
           - mongo
-          - mongo-seed
           - backend

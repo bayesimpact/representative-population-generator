@@ -1,4 +1,12 @@
-FROM mongo
+FROM mongo:latest
 
-COPY sample_data.json /sample_data.json
-CMD mongoimport --host mongo --db representativepoints --collection pointA --type json --file /sample_data.json --jsonArray --drop
+RUN mkdir /data/localdb && chown mongodb /data/localdb
+RUN apt-get -qq update
+RUN apt-get -qqy install curl && apt-get install -qqy psmisc
+COPY sample_eddm_data.json ./eddm_data.json
+
+
+COPY populate.sh ./
+RUN gosu mongodb /bin/bash ./populate.sh --dbpath=/data/localdb
+
+CMD ["mongod",  "--dbpath=/data/localdb"]

@@ -8,7 +8,7 @@ const PointAs = ({pointas}) => (
       <td>{pointa.geometry.coordinates}</td>
       <td>{pointa.properties.county}</td>
       <td>{pointa.properties.zip}</td>
-      <td>{pointa.properties.residents}</td>
+      <td>{pointa.properties.population}</td>
     </tr>
     )}
   </tbody></table>

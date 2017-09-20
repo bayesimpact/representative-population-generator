@@ -12,7 +12,10 @@ def test_standardize_input_keys():
     input_dict_1 = {'county': 'abc', 'Zip': '21421'}
     input_dict_2 = {'countyname': 'abc', 'zip code': '21421', }
     input_dict_3 = {'CountyName': 'abc', 'zipCode': '21421', 'populationpointsperzipcode': 50}
-    expected_output = {'county': 'abc', 'zip': '21421'}
+    expected_output = {
+        'ServiceArea.CountyName': 'abc',
+        'ServiceArea.ZipCode': '21421'
+    }
     assert (standardize_input_keys(input_dict_1) == expected_output)
     assert (standardize_input_keys(input_dict_2) == expected_output)
     assert (standardize_input_keys(input_dict_3) == expected_output)

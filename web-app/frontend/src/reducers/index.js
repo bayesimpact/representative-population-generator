@@ -4,7 +4,7 @@ import {
   REQUEST_POINTS, RECEIVE_POINTS
 } from '../actions'
 
-const selectedZipCounty = (state = '[{"county":"sanFrancisco","zip":"94102"}]', action) => {
+const selectedZipCounty = (state = '[{"county":"Alameda","zip":"94505"}]', action) => {
   switch (action.type) {
     case SELECT_ZIPCOUNTY:
       return action.zipcounty
