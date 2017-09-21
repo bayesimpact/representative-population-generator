@@ -6,6 +6,7 @@ import PlaceIcon from 'material-ui/svg-icons/maps/place'
 import PointsIcon from 'material-ui/svg-icons/image/grain'
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
+import Paper from 'material-ui/Paper'
 
 import AreaSelector from './AreaSelector'
 import PointNumberSelector from './PointNumberSelector'
@@ -18,6 +19,7 @@ import {
   setPointNumber,
   resetAreaSelector,
 } from './actions'
+import styles from './styles'
 
 
 class Sidebar extends Component {
@@ -59,14 +61,12 @@ class Sidebar extends Component {
       nPoints, style, selectedCSVFileName,
     } = this.props
     const sidebarStyle = {
-      boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-      background: '#FAFAFA',
       zIndex: 2,
       padding: '30px 25px',
     }
 
     return (
-      <div style={{...sidebarStyle, ...style}}>
+      <Paper style={{...sidebarStyle, ...style}}>
         <SidebarHeadline icon={PlaceIcon} text="Service Area" />
         <SidebarContent>
           <CSVUploader
@@ -91,7 +91,7 @@ class Sidebar extends Component {
           onClick={this.handleClearInputsClick}
           primary={true}
           label="clear inputs" />
-      </div>
+      </Paper>
     )
   }
 }
@@ -102,10 +102,22 @@ class SidebarHeadline extends Component {
   render() {
     const {icon, text} = this.props
     const IconTag = icon
+    const style = {
+      display: 'flex',
+      alignItems: 'center',
+    }
+    const iconStyle = {
+      color: styles.secondaryText
+    }
+    const textStyle = {
+      color: styles.primaryText,
+      marginLeft: 23,
+      textTransform: 'uppercase'
+    }
     return (
-      <div style={{display: 'flex', alignItems: 'center'}}>
-        <IconTag style={{color: 'rgba(0, 0, 0, 0.54)'}} />
-        <div style={{color: 'rgba(0, 0, 0, 0.87)', marginLeft: 23, textTransform: 'uppercase'}}>
+      <div style={style}>
+        <IconTag style={iconStyle} />
+        <div style={textStyle}>
           {text}
         </div>
       </div>
@@ -117,8 +129,15 @@ class SidebarHeadline extends Component {
 class SidebarContent extends Component {
 
   render() {
+    const style = {
+      marginBottom: 15,
+      paddingLeft: 46,
+      paddingTop: 20,
+      display: 'flex',
+      flexDirection: 'column',
+    }
     return (
-      <div style={{marginBottom: 15, paddingLeft: 46, paddingTop: 20, display: 'flex', flexDirection: 'column'}}>
+      <div style={style}>
         {this.props.children}
       </div>
     )
@@ -135,9 +154,15 @@ class CSVUploader extends Component {
 
   render() {
     const {selectedCSVFileName} = this.props
+    const commentStyle = {
+      fontSize: 14,
+      color: styles.secondaryText,
+      lineHeight: '20px',
+      marginBottom: 15,
+    }
     return (
       <div>
-        <div style={{fontSize: 14, color: 'rgba(0, 0, 0, 0.54)', lineHeight: '20px', marginBottom: 15}}>
+        <div style={commentStyle}>
           Choose a CSV file containing a list of valid Zip Codes and/or Counties.
         </div>
         <RaisedButton
@@ -159,11 +184,28 @@ class CSVUploader extends Component {
 class InputSeparator extends Component {
 
   render() {
+    const style = {
+      display: 'flex',
+      alignItems: 'center',
+      margin: '20px 0',
+    }
+    const lineStyle = {
+      height: 0,
+      borderTop: `1px solid ${styles.secondaryText}`,
+      width: '40%',
+    }
+    const textStyle = {
+      textAlign: 'center',
+      flex: 1,
+      color: styles.secondaryText,
+      fontSize: 14,
+      margin: '0 auto',
+    }
     return (
-      <div style={{display: 'flex', alignItems: 'center', margin: '20px 0'}}>
-        <div style={{height: 0, borderTop: '1px solid rgba(0, 0, 0, 0.54)', width: '40%'}} />
-        <div style={{textAlign: 'center', flex: 1, color: 'rgba(0, 0, 0, 0.541327)', fontSize: 14, margin: '0 auto'}}>OR</div>
-        <div style={{height: 0, borderTop: '1px solid rgba(0, 0, 0, 0.54)', width: '40%'}} />
+      <div style={style}>
+        <div style={lineStyle} />
+        <div style={textStyle}>OR</div>
+        <div style={lineStyle} />
       </div>
     )
   }
