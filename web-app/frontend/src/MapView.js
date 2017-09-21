@@ -17,6 +17,8 @@ import bbox from 'geojson-bbox'
 
 import LoadingOverlay from './LoadingOverlay'
 
+const CENTER_OF_CALIFORNIA = [-119.182111, 36.250471]
+
 // Mapbox Access Token.
 const accessToken = 'pk.eyJ1IjoiZGVkYW4iLCJhIjoiY2o3c29wcThlM3ZlZjMzdXdzczQ3bzIwMSJ9.pvxNu-R28kuQ6CXsHJST_w'
 const Map = ReactMapboxGl({ accessToken });
@@ -40,8 +42,7 @@ class MapView extends Component {
         {isLoading ? <LoadingOverlay /> : null}
         <Map
           style="mapbox://styles/mapbox/streets-v8"
-          zoom={[3]}
-          center={[-119.182111, 36.250471]}
+          center={CENTER_OF_CALIFORNIA}
           fitBounds={boundingBoxCoordinates}
           containerStyle={fullContainerStyle}>
             <Layer
