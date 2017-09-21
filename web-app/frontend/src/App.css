@@ -2,3 +2,7 @@
 body,html,#root{
   height:100%;
 }
+
+.thing .mapboxgl-popup-content{
+  background-color: rgba(0, 0, 0, 0.85);
+}

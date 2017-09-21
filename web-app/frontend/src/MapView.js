@@ -12,7 +12,7 @@ and I have used it in the past.
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-import ReactMapboxGl, {Layer, Feature} from 'react-mapbox-gl';
+import ReactMapboxGl, {Layer, Feature, Popup} from 'react-mapbox-gl';
 import bbox from 'geojson-bbox'
 
 import LoadingOverlay from './LoadingOverlay'
@@ -26,8 +26,13 @@ const Map = ReactMapboxGl({ accessToken });
 
 class MapView extends Component {
 
+  state = {
+    hoveredPointIndex: null,
+  }
+
   render() {
     const {isLoading, allPoints, allPointsCollection, style} = this.props
+    const {hoveredPointIndex} = this.state
     const fullContainerStyle = {height: '100%', width: '100%'}
     let boundingBoxCoordinates = null
     if (allPointsCollection.features.length) {
@@ -46,19 +51,57 @@ class MapView extends Component {
           fitBounds={boundingBoxCoordinates}
           fitBoundsOptions={{padding: 30}}
           containerStyle={fullContainerStyle}>
-            <Layer
-              type="symbol"
-              id="marker"
-              layout={{ "icon-image": "marker-15" }}>
+            <Layer type="symbol" id="marker" layout={{"icon-image": "marker-15" }}>
               {allPoints.map((point, i) => (
-                <Feature key={i} coordinates={point.geometry.coordinates}/>
+                <Feature
+                    onMouseEnter={() => this.setState({hoveredPointIndex: i})}
+                    onMouseLeave={() => this.setState({hoveredPointIndex: null})}
+                    key={i}
+                    coordinates={point.geometry.coordinates}/>
               ))}
             </Layer>
+            <div className="thing">
+              {hoveredPointIndex !== null && <DetailsPopup point={allPoints[hoveredPointIndex]} />}
+            </div>
         </Map>
       </div>
     )
   }
 }
+
+
+class DetailsPopup extends Component {
+
+  render() {
+    const {point} = this.props
+    const pointProps = point.properties
+    return (
+      <Popup
+          offset={[0, -20]}
+          anchor="bottom"
+          coordinates={point.geometry.coordinates} >
+        <table style={{fontSize: 14, color: '#ddd'}}>
+          <tbody>
+            <TableRow name="County" value={pointProps.county} />
+            <TableRow name="Zip" value={pointProps.zip} />
+            <TableRow name="No. Residents" value={pointProps.residents} />
+            <TableRow name="Lat" value={point.geometry.coordinates[1].toFixed(6)} />
+            <TableRow name="Long" value={point.geometry.coordinates[0].toFixed(6)} />
+          </tbody>
+        </table>
+      </Popup>
+    )
+  }
+}
+
+
+const TableRow = ({name, value}) => (
+  <tr>
+    <td>{name}</td>
+    <td style={{paddingLeft: 10}}>{value}</td>
+  </tr>
+)
+
 
 const mapStateToProps = state => {
   const allPoints = (state.data.areas || []).reduce((accu, area) => {
