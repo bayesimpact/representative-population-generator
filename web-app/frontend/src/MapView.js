@@ -41,9 +41,10 @@ class MapView extends Component {
       <div style={{position: 'relative', ...style}}>
         {isLoading ? <LoadingOverlay /> : null}
         <Map
-          style="mapbox://styles/mapbox/streets-v8"
+          style="mapbox://styles/mapbox/light-v9"
           center={CENTER_OF_CALIFORNIA}
           fitBounds={boundingBoxCoordinates}
+          fitBoundsOptions={{padding: 30}}
           containerStyle={fullContainerStyle}>
             <Layer
               type="symbol"
