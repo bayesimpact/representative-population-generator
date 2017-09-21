@@ -1,12 +1,16 @@
 import React, {Component} from 'react'
 import Slider from 'material-ui/Slider'
 
+// Material UI uses a slider value between 0 and 1 which has to be mapped
+// to the scale we want (max number of points).
+const SLIDER_FACTOR = 200
+
 class PointNumberSelector extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      value: props.value / 100,
+      value: props.value / SLIDER_FACTOR,
     }
   }
 
@@ -16,7 +20,7 @@ class PointNumberSelector extends Component {
 
   handleDragStop = () => {
     const {onChange} = this.props
-    onChange && onChange(this.state.value * 100)
+    onChange && onChange(this.state.value * SLIDER_FACTOR)
   }
 
   render() {
@@ -27,12 +31,13 @@ class PointNumberSelector extends Component {
         <div style={{display: 'flex', alignItems: 'center'}}>
           <Slider
               value={value}
-              step={0.01}
+              min={0.05}
+              step={0.005}
               style={{flex: 1}}
               onChange={this.handleSliderChange}
               onDragStop={this.handleDragStop}
               sliderStyle={{marginTop: 10, marginBottom: 10}} />
-          <div>{Math.round(value * 100)}/100</div>
+          <div>{Math.round(value * SLIDER_FACTOR)}/{SLIDER_FACTOR}</div>
         </div>
       </div>
     )
