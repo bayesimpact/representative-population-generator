@@ -100,7 +100,7 @@ class DetailsPopup extends Component {
 const TableRow = ({name, value}) => (
   <tr>
     <td>{name}</td>
-    <td style={{paddingLeft: 10}}>{value}</td>
+    <td style={{paddingLeft: 15}}>{value}</td>
   </tr>
 )
 

@@ -37,7 +37,9 @@ class PointNumberSelector extends Component {
               onChange={this.handleSliderChange}
               onDragStop={this.handleDragStop}
               sliderStyle={{marginTop: 10, marginBottom: 10}} />
-          <div>{Math.round(value * SLIDER_FACTOR)}/{SLIDER_FACTOR}</div>
+          <div style={{marginLeft: 15}}>
+            {Math.round(value * SLIDER_FACTOR)}/{SLIDER_FACTOR}
+          </div>
         </div>
       </div>
     )

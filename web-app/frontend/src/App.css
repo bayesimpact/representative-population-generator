@@ -1,6 +1,7 @@
 
 body,html,#root{
   height:100%;
+  font-family: 'Roboto', sans-serif;
 }
 
 .thing .mapboxgl-popup-content{
