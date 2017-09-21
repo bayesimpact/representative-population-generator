@@ -5,6 +5,7 @@ import _ from 'underscore'
 import PlaceIcon from 'material-ui/svg-icons/maps/place'
 import PointsIcon from 'material-ui/svg-icons/image/grain'
 import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
 
 import AreaSelector from './AreaSelector'
 import PointNumberSelector from './PointNumberSelector'
@@ -131,16 +132,15 @@ class CSVUploader extends Component {
         <div style={{fontSize: 14, color: 'rgba(0, 0, 0, 0.54)', lineHeight: '20px', marginBottom: 15}}>
           Choose a CSV file containing a list of valid Zip Codes and/or Counties.
         </div>
-        <FlatButton
+        <RaisedButton
             containerElement="label"
-            style={{color: "#F2F2F2"}}
-            backgroundColor="#3F51B5"
+            primary={true}
             label="upload CSV">
           <input
             onChange={this.handleFileSelect}
             type="file"
             style={{display: 'none'}} />
-        </FlatButton>
+        </RaisedButton>
         <div>{selectedCSVFileName}</div>
       </div>
     )

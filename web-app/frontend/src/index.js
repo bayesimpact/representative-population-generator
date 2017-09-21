@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import AppContainer from './AppContainer';
 import registerServiceWorker from './registerServiceWorker';
 
 const rootEl = document.getElementById('root')
 
 ReactDOM.render(
-  <App />,
+  <AppContainer />,
   rootEl
 )
 
 if (module.hot) {
-  module.hot.accept('./App', () => {
-    const NextApp = require('./App').default
+  module.hot.accept('./AppContainer', () => {
+    const NextApp = require('./AppContainer').default
     ReactDOM.render(
       <NextApp />,
       rootEl
