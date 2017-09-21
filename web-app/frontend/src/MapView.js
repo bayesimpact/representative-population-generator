@@ -27,7 +27,14 @@ class MapView extends Component {
   render() {
     const {isLoading, allPoints, allPointsCollection, style} = this.props
     const fullContainerStyle = {height: '100%', width: '100%'}
-    const bounds = bbox(allPointsCollection)
+    let boundingBoxCoordinates = null
+    if (allPointsCollection.features.length) {
+      const boundingBox = bbox(allPointsCollection)
+      boundingBoxCoordinates = [
+        [boundingBox[0], boundingBox[1]],
+        [boundingBox[2], boundingBox[3]],
+      ]
+    }
     return (
       <div style={{position: 'relative', ...style}}>
         {isLoading ? <LoadingOverlay /> : null}
@@ -35,10 +42,7 @@ class MapView extends Component {
           style="mapbox://styles/mapbox/streets-v8"
           zoom={[3]}
           center={[-119.182111, 36.250471]}
-          fitBounds={[
-            [bounds[0], bounds[1]],
-            [bounds[2], bounds[3]],
-          ]}
+          fitBounds={boundingBoxCoordinates}
           containerStyle={fullContainerStyle}>
             <Layer
               type="symbol"
