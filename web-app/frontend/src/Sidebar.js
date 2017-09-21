@@ -11,9 +11,11 @@ import PointNumberSelector from './PointNumberSelector'
 import {
   fetchCounties,
   fetchAreas,
+  fetchAreasFromCSVFile,
   setSelectedCounties,
   setSelectedCountyZips,
   setPointNumber,
+  resetAreaSelector,
 } from './actions'
 
 
@@ -28,20 +30,29 @@ class Sidebar extends Component {
 
   handleCountyChange = selectedCounties => {
     this.props.dispatch(setSelectedCounties(selectedCounties))
-  }
+  };
 
   handleCountyZipChange = selectedCountyZips => {
     const {dispatch} = this.props
     dispatch(setSelectedCountyZips(selectedCountyZips))
     dispatch(fetchAreas(selectedCountyZips))
-  }
+  };
 
   handlePointNumberChange = _.throttle(nPoints => {
     this.props.dispatch(setPointNumber(nPoints))
-  }, 300)
+  }, 300);
+
+  handleCSVFileSelected = file => {
+    const {dispatch} = this.props
+    dispatch(resetAreaSelector())
+    dispatch(fetchAreasFromCSVFile(file))
+  };
 
   render() {
-    const {counties, isLoading, selectedCounties, selectedCountyZips, nPoints, style} = this.props
+    const {
+      counties, isLoading, selectedCounties, selectedCountyZips,
+      nPoints, style, selectedCSVFileName,
+    } = this.props
     const sidebarStyle = {
       boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
       background: '#FAFAFA',
@@ -53,7 +64,9 @@ class Sidebar extends Component {
       <div style={{...sidebarStyle, ...style}}>
         <SidebarHeadline icon={PlaceIcon} text="Service Area" />
         <SidebarContent>
-          <CSVUploader />
+          <CSVUploader
+              selectedCSVFileName={selectedCSVFileName}
+              onFileSelected={this.handleCSVFileSelected} />
           <InputSeparator />
           <AreaSelector
               counties={counties}
@@ -106,13 +119,29 @@ class SidebarContent extends Component {
 
 class CSVUploader extends Component {
 
+  handleFileSelect = e => {
+    const {onFileSelected} = this.props
+    onFileSelected && onFileSelected(e.target.files[0])
+  }
+
   render() {
+    const {selectedCSVFileName} = this.props
     return (
       <div>
         <div style={{fontSize: 14, color: 'rgba(0, 0, 0, 0.54)', lineHeight: '20px', marginBottom: 15}}>
           Choose a CSV file containing a list of valid Zip Codes and/or Counties.
         </div>
-        <FlatButton style={{color: "#F2F2F2"}} backgroundColor="#3F51B5" label="upload CSV" />
+        <FlatButton
+            containerElement="label"
+            style={{color: "#F2F2F2"}}
+            backgroundColor="#3F51B5"
+            label="upload CSV">
+          <input
+            onChange={this.handleFileSelect}
+            type="file"
+            style={{display: 'none'}} />
+        </FlatButton>
+        <div>{selectedCSVFileName}</div>
       </div>
     )
   }
@@ -138,6 +167,7 @@ const mapStateToProps = state => ({
   selectedCounties: state.app.selectedCounties,
   selectedCountyZips: state.app.selectedCountyZips,
   nPoints: state.app.nPoints,
+  selectedCSVFileName: state.app.selectedCSVFileName,
 })
 
 export default connect(mapStateToProps)(Sidebar)
