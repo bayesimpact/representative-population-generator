@@ -18,6 +18,7 @@ import bbox from 'geojson-bbox'
 import LoadingOverlay from './LoadingOverlay'
 
 const CENTER_OF_CALIFORNIA = [-119.182111, 36.250471]
+const INITIAL_ZOOM_LEVEL = [3]
 
 // Mapbox Access Token.
 const accessToken = 'pk.eyJ1IjoiZGVkYW4iLCJhIjoiY2o3c29wcThlM3ZlZjMzdXdzczQ3bzIwMSJ9.pvxNu-R28kuQ6CXsHJST_w'
@@ -48,6 +49,7 @@ class MapView extends Component {
         <Map
           style="mapbox://styles/mapbox/light-v9"
           center={CENTER_OF_CALIFORNIA}
+          zoom={INITIAL_ZOOM_LEVEL}
           fitBounds={boundingBoxCoordinates}
           fitBoundsOptions={{padding: 30}}
           containerStyle={fullContainerStyle}>
