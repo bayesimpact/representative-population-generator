@@ -49,6 +49,10 @@ class Sidebar extends Component {
     dispatch(fetchAreasFromCSVFile(file))
   };
 
+  handleClearInputsClick = () => {
+    this.props.dispatch(resetAreaSelector())
+  }
+
   render() {
     const {
       counties, isLoading, selectedCounties, selectedCountyZips,
@@ -83,6 +87,10 @@ class Sidebar extends Component {
               value={nPoints}
               onChange={this.handlePointNumberChange} />
         </SidebarContent>
+        <FlatButton
+          onClick={this.handleClearInputsClick}
+          primary={true}
+          label="clear inputs" />
       </div>
     )
   }
