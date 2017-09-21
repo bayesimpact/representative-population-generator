@@ -33,7 +33,7 @@ class App extends Component {
       <div style={{height: '100%'}}>
         <Header />
         <div style={{display: 'flex', height: '100%'}}>
-          <Sidebar style={{height: '100%', width: 330}} />
+          <Sidebar style={{height: '100%'}} />
           <div style={{position: 'relative', ...fullContainerStyle}}>
             <ViewModeSwitcher
                 style={switcherStyle}
