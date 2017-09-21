@@ -57,7 +57,7 @@ class CountySelector extends Component {
           hintText="Select counties"
           value={selectedCounties}
           onChange={(event, index, values) => onChange(values)}>
-        {Object.keys(counties || {}).map(countyKey => (
+        {Object.keys(counties || {}).sort().map(countyKey => (
           <MenuItem
               key={countyKey}
               insetChildren={true}
@@ -88,11 +88,11 @@ class ZipCodeSelector extends Component {
     }
     return (
       <div style={style}>
-        {(selectedCounties || []).map(countyKey => {
+        {(selectedCounties || []).sort().map(countyKey => {
           const county = counties[countyKey]
           return <List key={countyKey}>
             <Subheader>{county.displayName}</Subheader>
-            {county.zips.map(zip => {
+            {county.zips.sort().map(zip => {
               const countyZipKey = countyKey + '-' + zip
               const checkbox = <Checkbox
                   checked={selectedCountyZips.includes(countyZipKey)}

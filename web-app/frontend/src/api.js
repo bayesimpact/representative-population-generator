@@ -11,7 +11,7 @@ export function getCounties() {
         alemeda: {
           displayName: 'Alameda',
           zips: [94605, 94606],
-        }
+        },
       })
     }, 2)
   })
