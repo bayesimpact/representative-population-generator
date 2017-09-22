@@ -38,7 +38,7 @@ class TableView extends Component {
             <FlatButton style={{color: '#3F51B5'}} label="csv" icon={<FileDownloadIcon />} />
           </CSVLink>
         </div>
-        <Table selectable={false} wrapperStyle={{height: '100%'}}>
+        <Table selectable={false} wrapperStyle={{flex: 1, display: 'flex', flexDirection: 'column'}}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn></TableHeaderColumn>
@@ -49,7 +49,7 @@ class TableView extends Component {
               <TableHeaderColumn>No. Residents</TableHeaderColumn>
             </TableRow>
           </TableHeader>
-          <TableBody displayRowCheckbox={false} style={{overflowY: 'scroll'}}>
+          <TableBody displayRowCheckbox={false} style={{overflowY: 'scroll', flex: 1}}>
             {points.map((point, i) => (
               <TableRow key={i}>
                 <TableRowColumn>{i}</TableRowColumn>

@@ -50,7 +50,7 @@ class App extends Component {
                 onViewModeClick={this.handleViewModeChange} />
             {viewMode === 'map' ?
               <MapView style={fullContainerStyle} /> :
-              <TableView style={{paddingTop: 80}} />
+              <TableView style={{paddingTop: 80, height: 'calc(100% - 80px)'}} />
             }
           </div>
         </div>
