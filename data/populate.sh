@@ -7,6 +7,7 @@ while read LOGLINE
 do
   if [[ "${LOGLINE}" == *"waiting for connections"* ]]; then
     mongoimport --db "representativepoints" -c "pointAs" --jsonArray --file="eddm_data.json"
+    mongoimport --db "representativepoints" -c "service_areas" --jsonArray --file="service_areas.json"
     killall mongod
   fi
   if [[ "${LOGLINE}" == *"dbexit"* ]]; then

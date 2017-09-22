@@ -14,18 +14,37 @@ It also loads sample data into MongoDB. Use your favorite client (e.g. Robot 3T)
 
 The backend API has the following endpoints and methods:
 
-| Endpoint   |      Method  |  Options |
-|----------- |:------------:|:------|
-| /areas? 	 |  GET	 		| params: zipcounties=[{"county": "sanFrancisco", "zip": "94102"},{"county": "sanFrancisco", "zip": "94103"}] |
-| /areas 	 |  POST	 		| body: zipcounties=[{"county": "sanFrancisco", "zip": "94102"},{"county": "sanFrancisco", "zip": "94103"}] |
-| /areas 	 |  POST	 		| body: zipcounty_file=<zipcounty_csv_file> |
+| Endpoint                  |      Method  |  Options |
+|-------------------------- |:------------:|:------|
+| /available-service-areas|  GET         |  |
+| /areas?    |  GET         | params: zipcounties=[{"county": "sanFrancisco", "zip": "94102"},{"county": "sanFrancisco", "zip": "94103"}] |
+| /areas     |  POST            | body: zipcounties=[{"county": "sanFrancisco", "zip": "94102"},{"county": "sanFrancisco", "zip": "94103"}] |
+| /areas     |  POST            | body: zipcounty_file=<zipcounty_csv_file> |
 
-Input must have at least one of the following columns (regardless of whitespaces or case):
+
+The return object of `/available-service-areas` endpoint is the following:
+
+    {
+      "result": [
+        {
+            "Alameda": {
+                "zips": ["94501", "94502", ...]
+            }, 
+            "Marin": {
+                "zips": ["91501", "97332", ...]
+            }, 
+            ...
+        }
+      ]
+    }
+
+
+For `/areas` endpoint, input (for `GET` or `POST`) must have at least one of the following columns (regardless of whitespaces or case):
 
 - `zip` or `zipcode`
 - `county` or `countyname`
 
-Return object is in the following format:
+And the return object is in the following format:
 
 	{
 	    "result": [
@@ -38,7 +57,7 @@ Return object is in the following format:
                     "isServiceAreaAvailable": true,
                     "message": "Service area available."
                 },
-	            "points": [point_1, ..., point_200]
+                "points": [point_1, ..., point_200]
             },
             {
                 "areaInfo": {
@@ -60,11 +79,11 @@ Return object is in the following format:
                     "isServiceAreaAvailable": false,
                     "message": "Service area unavailable."
                 },
-	            "points": []
-	        },
-	        ....
-	    ]
-	}
+                "points": []
+            },
+            ....
+        ]
+    }
 
 ## Exceptions
 If the input file is not parsable by the backend, it throws a `HTTP 400` error with the following message:
@@ -77,7 +96,7 @@ If the payload key is invalid (e.g. `zipcountyfile` instead of `zipcounty_file`)
 
 Each point is a geojson object of type Point:
 
-	{
+    {
         "geometry": {
             "coordinates": [
                 -122.39987717199995,
@@ -92,6 +111,7 @@ Each point is a geojson object of type Point:
         },
         "type": "Feature"
     }
+
 
 ## Test and Lint
 To run webapp tests locally simply run

@@ -21,6 +21,14 @@ CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
 mongo = PyMongo(app)
 with app.app_context():
     repr_points = mongo.db.pointAs
+    service_areas = mongo.db.service_areas
+
+
+@app.route('/available-service-areas', methods=['GET'])
+def fetch_available_service_areas():
+    """Fetch and return all available service areas from db."""
+    fetched_areas = list(service_areas.find({}, {'_id': 0}))
+    return flask.jsonify({'result': fetched_areas})
 
 
 @app.route('/areas', methods=['GET', 'POST'])
