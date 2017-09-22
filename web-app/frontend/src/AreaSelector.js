@@ -125,10 +125,11 @@ class ZipCodeSelector extends Component {
     return (
       <div style={style}>
         <ZipCodeSelectorHeadline selectedCountyZips={selectedCountyZips} />
-        <Checkbox
-          checked={isSelectAllChecked}
-          label="Select All"
-          onCheck={(e, isInputChecked) => this.handleSelectAllChange(isInputChecked)} />
+        {selectedCounties.length ? <Checkbox
+            checked={isSelectAllChecked}
+            label="Select All"
+            onCheck={(e, isInputChecked) => this.handleSelectAllChange(isInputChecked)} /> :
+          null}
         {(selectedCounties || []).sort().map(countyKey => {
           const county = counties[countyKey]
           return <List key={countyKey}>
