@@ -30,34 +30,34 @@ Return object is in the following format:
 	{
 	    "result": [
 	        {
-	            "area_info": {
-                    "county": "sanFrancisco",
-                    "zip": "94105"
+	            "areaInfo": {
+                    "countyName": "San Francisco",
+                    "zipCode": "94105"
                 },
-                "availability_status": {
-                    "is_service_area_available": true,
+                "availabilityStatus": {
+                    "isServiceAreaAvailable": true,
                     "message": "Service area available."
                 },
 	            "points": [point_1, ..., point_200]
             },
             {
-                "area_info": {
-                    "county": "sanFrancisco",
-                    "zip": "94107"
+                "areaInfo": {
+                    "countyName": "San Francisco",
+                    "zipCode": "94107"
                 },
-                "availability_status": {
-                    "is_service_area_available": true,
+                "availabilityStatus": {
+                    "isServiceAreaAvailable": true,
                     "message": "Service area available."
                 },
                 "points": [point_1, ..., point_200]
             },
             {
-                "area_info": {
-                    "county": "san Diego",
-                    "zip": "94130"
+                "areaInfo": {
+                    "countyName": "San Diego",
+                    "zipCode": "94130"
                 },
-                "availability_status": {
-                    "is_service_area_available": false,
+                "availabilityStatus": {
+                    "isServiceAreaAvailable": false,
                     "message": "Service area unavailable."
                 },
 	            "points": []
@@ -65,6 +65,15 @@ Return object is in the following format:
 	        ....
 	    ]
 	}
+
+## Exceptions
+If the input file is not parsable by the backend, it throws a `HTTP 400` error with the following message:
+
+    Invalid CSV file. Was not able to parse.
+
+If the payload key is invalid (e.g. `zipcountyfile` instead of `zipcounty_file`), it throws a `HTTP 400` error with the following message:
+
+    Payload key is invalid.
 
 Each point is a geojson object of type Point:
 

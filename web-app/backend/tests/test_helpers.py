@@ -1,49 +1,83 @@
 """Test methods for all helper functions."""
 
-import codecs
+from backend.lib.helper import prepare_return_object
+from backend.lib.helper import remove_empty_items
+from backend.lib.helper import standardize_keys
+from backend.lib.helper import standardize_request
 
-from backend.lib.helper import clean_input
-from backend.lib.helper import jsonify_input
-from backend.lib.helper import standardize_input_keys
 
-
-def test_standardize_input_keys():
-    """Test standardize_input_keys function."""
+def test_standardize_keys():
+    """Test standardize_keys function."""
     input_dict_1 = {'county': 'abc', 'Zip': '21421'}
     input_dict_2 = {'countyname': 'abc', 'zip code': '21421', }
     input_dict_3 = {'CountyName': 'abc', 'zipCode': '21421', 'populationpointsperzipcode': 50}
     expected_output = {
-        'ServiceArea.CountyName': 'abc',
-        'ServiceArea.ZipCode': '21421'
+        'countyName': 'abc',
+        'zipCode': '21421'
     }
-    assert (standardize_input_keys(input_dict_1) == expected_output)
-    assert (standardize_input_keys(input_dict_2) == expected_output)
-    assert (standardize_input_keys(input_dict_3) == expected_output)
+    assert (standardize_keys(input_dict_1) == expected_output)
+    assert (standardize_keys(input_dict_2) == expected_output)
+    assert (standardize_keys(input_dict_3) == expected_output)
 
 
-def test_jsonify_input():
-    """Test jasonify_input method."""
-    with codecs.open('tests/assets/test.csv', 'r') as test_file:
-        output_json = jsonify_input(test_file.read())
-    expected_output = [
+def test_remove_empty_items():
+    """Test remove_empty_items helper method."""
+    input_json_1 = {'a': '', 'b': '1'}
+    expected_output_1 = {'b': '1'}
+
+    input_json_2 = {'c': None}
+    expected_output_2 = None
+    assert (remove_empty_items(input_json_1) == expected_output_1)
+    assert (remove_empty_items(input_json_2) == expected_output_2)
+
+
+def test_standardize_request():
+    """Test standardize_request helper method."""
+    input_json = [
         {
-            'CountyName': 'San Diego',
+            'County name': 'San Diego',
             'City': 'Vista',
-            'ZipCode': '92084',
+            'zip': '92084',
             'PopulationPointsPerZipCode': '100'
         },
         {
             'CountyName': 'sanfrancisco',
             'City': 'san Francisco',
-            'ZipCode': '94117',
-            'PopulationPointsPerZipCode': '1001'
+            'ZipCode': '',
+            'abc': '1001'
         }
     ]
-    assert (output_json == expected_output)
+    expected_output = [
+        {
+            'countyName': 'San Diego',
+            'zipCode': '92084'
+        },
+        {
+            'countyName': 'sanfrancisco'
+        }
+    ]
+    assert(standardize_request(input_json) == expected_output)
 
 
-def test_clean_input():
-    """Test clean_input helper method."""
-    input_json = [{'a': '', 'b': '1'}, {'c': None}]
-    expected_output = [{'b': '1'}]
-    assert (clean_input(input_json) == expected_output)
+def test_prepare_return_object_valid_points():
+    """Test prepare_return_object method when recieving valid list of points."""
+    points = [1, 2, 3]
+    area = {'countyName': 'a', 'zipCode': '90000'}
+    res = prepare_return_object(points, area)
+    assert (res['points'] == points)
+    assert (res['availabilityStatus']['isServiceAreaAvailable'])
+
+
+def test_prepare_return_object_no_points():
+    """Test prepare_return_object method when recieving no points."""
+    points = []
+    area = {'countyName': 'a', 'zipCode': '90000'}
+    expected = {
+        'areaInfo': area,
+        'points': points,
+        'availabilityStatus': {
+            'isServiceAreaAvailable': False,
+            'message': 'Service area unavailable.'
+        }
+    }
+    assert (prepare_return_object(points, area) == expected)

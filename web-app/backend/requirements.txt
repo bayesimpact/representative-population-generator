@@ -4,6 +4,7 @@ flask-cors
 # Used by `make test` only:
 mock==2.0.0
 pytest==3.2.2
+Flask-Testing
 # Used by `make lint` only:
 flake8==3.3.0
 flake8-import-order==0.12

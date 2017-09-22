@@ -2,8 +2,10 @@
 import json
 import os
 
+from backend.lib.exceptions import InvalidPayload
 from backend.lib.helper import fetch_point_as
-from backend.lib.helper import get_service_areas_from_input_file
+from backend.lib.helper import parse_csv_to_json
+from backend.lib.helper import standardize_request
 
 import flask
 
@@ -37,19 +39,46 @@ def get_multiple_zip_county_points():
     ]
     returns: json object with info about area and a list of points.
     """
-    try:
-        zipcounties = json.loads(flask.request.values['zipcounties'])
-    except:
-        try:
-            zipcounties = json.loads(flask.request.args['zipcounties'])
-        except:
-            try:
-                zipcounties_file = flask.request.files['zipcounty_file']
-                zipcounties = get_service_areas_from_input_file(zipcounties_file, logger=app.logger)
-            except:
-                return flask.jsonify({'result': 'Something went wrong. Check your input.'})
+    zipcounties = exctract_zip_counties(app)
     outputs = fetch_point_as(repr_points, zipcounties, logger=app.logger)
     return flask.jsonify({'result': outputs})
+
+
+def exctract_zip_counties(app):
+    """
+    Extract zipcounties from different flask input methods.
+
+    There are three different methods to send zip/county payload.
+    There is a try-catch section for each one.
+    """
+    with app.app_context():
+        try:
+            raw_zipcounties = json.loads(flask.request.values['zipcounties'])
+        except:
+            try:
+                raw_zipcounties = json.loads(flask.request.args['zipcounties'])
+            except:
+                try:
+                    zipcounties_file = flask.request.files['zipcounty_file']
+                    raw_zipcounties = parse_csv_to_json(zipcounties_file, logger=app.logger)
+                except KeyError:
+                    msg = 'The CSV file has to be given as a form parameter named zipcounty_file.'
+                    raise InvalidPayload(msg)
+        try:
+            zipcounties = standardize_request(raw_zipcounties)
+            if not zipcounties:
+                raise InvalidPayload(message='Invalid CSV file. No Zip or County columns found.')
+        except:
+            raise InvalidPayload(message='Invalid CSV file. Was not able to parse.')
+    return zipcounties
+
+
+@app.errorhandler(InvalidPayload)
+def handle_invalid_payload(error):
+    """Handle exception when the payload is invalid."""
+    response = flask.jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
 
 
 if __name__ == '__main__':
