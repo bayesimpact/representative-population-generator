@@ -1,4 +1,6 @@
 
+const apiHostname = process.env.REACT_APP_API_HOSTNAME
+
 // TODO: Request data from backend when endpoint exists.
 export function getCounties() {
   return new Promise((resolve, reject) => {
@@ -18,7 +20,7 @@ export function getCounties() {
 }
 
 export function getAreas(countyZips) {
-  return fetch('http://localhost/areas?zipcounties=' + JSON.stringify(countyZips))
+  return fetch(apiHostname + '/areas?zipcounties=' + JSON.stringify(countyZips))
   .then(response => response.json())
   .then(response => response.result)
 }
@@ -27,7 +29,7 @@ export function getAreasFromFile(file) {
   const data = new FormData()
   data.append('zipcounty_file', file)
 
-  return fetch('http://localhost/areas', {
+  return fetch(apiHostname + '/areas', {
       method: 'POST',
       body: data
     })
