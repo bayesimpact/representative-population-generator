@@ -47,24 +47,24 @@ class MapView extends Component {
       <div style={{position: 'relative', ...style}}>
         {isLoading ? <LoadingOverlay /> : null}
         <Map
-          style="mapbox://styles/mapbox/light-v9"
-          center={CENTER_OF_CALIFORNIA}
-          zoom={INITIAL_ZOOM_LEVEL}
-          fitBounds={boundingBoxCoordinates}
-          fitBoundsOptions={{padding: 30}}
-          containerStyle={fullContainerStyle}>
-            <Layer type="symbol" id="marker" layout={{"icon-image": "marker-15" }}>
-              {allPoints.map((point, i) => (
-                <Feature
-                    onMouseEnter={() => this.setState({hoveredPointIndex: i})}
-                    onMouseLeave={() => this.setState({hoveredPointIndex: null})}
-                    key={i}
-                    coordinates={point.geometry.coordinates}/>
-              ))}
-            </Layer>
-            <div className="popup-container">
-              {hoveredPointIndex !== null && <DetailsPopup point={allPoints[hoveredPointIndex]} />}
-            </div>
+            style="mapbox://styles/mapbox/light-v9"
+            center={CENTER_OF_CALIFORNIA}
+            zoom={INITIAL_ZOOM_LEVEL}
+            fitBounds={boundingBoxCoordinates}
+            fitBoundsOptions={{padding: 30}}
+            containerStyle={fullContainerStyle}>
+          <Layer type="symbol" id="marker" layout={{"icon-image": "marker-15" }}>
+            {allPoints.map((point, i) => (
+              <Feature
+                  onMouseEnter={() => this.setState({hoveredPointIndex: i})}
+                  onMouseLeave={() => this.setState({hoveredPointIndex: null})}
+                  key={i}
+                  coordinates={point.geometry.coordinates}/>
+            ))}
+          </Layer>
+          <div className="popup-container">
+            {hoveredPointIndex !== null && <DetailsPopup point={allPoints[hoveredPointIndex]} />}
+          </div>
         </Map>
       </div>
     )
