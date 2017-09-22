@@ -10,8 +10,9 @@ const initialState = {
   app: {
     selectedCounties: ['sanFrancisco'],
     selectedCountyZips: ['sanFrancisco-94103'],
-    viewMode: 'map',
+    viewMode: 'table',
     nPoints: 50,
+    missingAreas: [],
   },
 }
 

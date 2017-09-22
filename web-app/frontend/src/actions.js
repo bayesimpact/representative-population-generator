@@ -4,6 +4,17 @@ export const START_REQUEST = 'START_REQUEST'
 export const FINISH_REQUEST = 'FINISH_REQUEST'
 export const SET_APP_VARIABLE = 'SET_APP_VARIABLE'
 
+function setAppVariableAction(variable, value) {
+  return {type: SET_APP_VARIABLE, value, variable}
+}
+
+function startRequestAction(resource) {
+  return {type: START_REQUEST, resource}
+}
+
+function finishRequestAction(resource, result) {
+  return {type: FINISH_REQUEST, resource, result}
+}
 
 export const fetchCounties = () => dispatch => {
   dispatch(startRequestAction('counties'))
@@ -15,12 +26,16 @@ export const fetchCounties = () => dispatch => {
 export const fetchAreas = selectedCountyZips => dispatch => {
   dispatch(setAppVariableAction('selectedCSVFileName', ''))
   dispatch(startRequestAction('areas'))
-  const countyZips = selectedCountyZips.map(countyZip => {
+  const countyZipObjects = countyZipsToObjects(selectedCountyZips)
+  api.getAreas(countyZipObjects).then(areas => {
+    dispatch(finishRequestAction('areas', areas))
+  })
+}
+
+function countyZipsToObjects(selectedCountyZips) {
+  return selectedCountyZips.map(countyZip => {
     const [county, zip] = countyZip.split('-')
     return {county, zip}
-  })
-  api.getAreas(countyZips).then(areas => {
-    dispatch(finishRequestAction('areas', areas))
   })
 }
 
@@ -29,7 +44,16 @@ export const fetchAreasFromCSVFile = file => dispatch => {
   dispatch(startRequestAction('areas'))
   api.getAreasFromFile(file).then(areas => {
     dispatch(finishRequestAction('areas', areas))
+    const missingAreas = getUnavailableServiceAreas(areas)
+    dispatch(setAppVariableAction('missingAreas', missingAreas))
   })
+}
+
+function getUnavailableServiceAreas(areas) {
+  return areas.reduce((accu, area) => {
+    return area.availability_status.is_service_area_available ?
+      accu : accu.concat([area.area_info])
+  }, [])
 }
 
 export function setSelectedCounties(selectedCounties) {
@@ -53,14 +77,6 @@ export const resetAreaSelector = () => dispatch => {
   dispatch(setSelectedCountyZips([]))
 }
 
-function setAppVariableAction(variable, value) {
-  return {type: SET_APP_VARIABLE, value, variable}
-}
-
-function startRequestAction(resource) {
-  return {type: START_REQUEST, resource}
-}
-
-function finishRequestAction(resource, result) {
-  return {type: FINISH_REQUEST, resource, result}
+export function resetMissingAreas() {
+  return setAppVariableAction('missingAreas', [])
 }

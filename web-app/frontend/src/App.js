@@ -7,7 +7,8 @@ import TableView from './TableView'
 import MapView from './MapView'
 import Header from './Header'
 import ViewModeSwitcher from './ViewModeSwitcher'
-import {setViewMode} from './actions'
+import MissingAreasDialog from './MissingAreasDialog'
+import {setViewMode, resetMissingAreas} from './actions'
 
 
 class App extends Component {
@@ -16,8 +17,12 @@ class App extends Component {
     this.props.dispatch(setViewMode(viewMode))
   }
 
+  handleMissingAreasCloseClick = () => {
+    this.props.dispatch(resetMissingAreas())
+  }
+
   render() {
-    const {viewMode} = this.props
+    const {viewMode, missingAreas} = this.props
     const fullContainerStyle = {
       height: '100%',
       width: '100%',
@@ -31,6 +36,10 @@ class App extends Component {
     }
     return (
       <div style={{height: '100%'}}>
+        <MissingAreasDialog
+            isOpen={!!missingAreas.length}
+            missingAreas={missingAreas}
+            onCloseClick={this.handleMissingAreasCloseClick} />
         <Header />
         <div style={{display: 'flex', height: '100%'}}>
           <Sidebar style={{height: '100%'}} />
@@ -52,6 +61,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   viewMode: state.app.viewMode,
+  missingAreas: state.app.missingAreas,
 })
 
 export default connect(mapStateToProps)(App)

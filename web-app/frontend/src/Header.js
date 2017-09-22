@@ -58,8 +58,11 @@ class AboutDialog extends Component {
       Department of Managed Health Care
     </SecureLink>
     return (
-      <Dialog open={isOpen} onRequestClose={onCloseClick} actions={actions}>
-        <h2>About</h2>
+      <Dialog
+          title="About"
+          open={isOpen}
+          onRequestClose={onCloseClick}
+          actions={actions}>
         <div>
           <p>
             This web app was built by {bayesLink} for the {dmhcLink} (DMHC)
