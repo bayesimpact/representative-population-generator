@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
+import {indigo500} from 'material-ui/styles/colors'
 import GithubIcon from 'mui-icons/fontawesome/github'
 
 class Header extends Component {
@@ -50,20 +51,49 @@ class AboutDialog extends Component {
     const actions = [
       <FlatButton label="Close" primary={true} onClick={onCloseClick} />,
     ];
+    const bayesLink = <SecureLink href="https://bayesimpact.org">
+      Bayes Impact
+    </SecureLink>
+    const dmhcLink = <SecureLink href="http://www.dmhc.ca.gov/">
+      Department of Managed Health Care
+    </SecureLink>
     return (
       <Dialog open={isOpen} onRequestClose={onCloseClick} actions={actions}>
-        <h2>Oh yeah!</h2>
+        <h2>About</h2>
         <div>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          <p>
+            This web app was built by {bayesLink} for the {dmhcLink} (DMHC)
+            to measure and analyze health plan network adequacy in the state
+            of California.
+          </p>
+          <p>
+            This application can be used by DMHC analysts to generate reports
+            of representative population points for zip codes in California.
+            The user can adjust parameters including the number of points,
+            specific zip codes/counties and then download the results in a
+            CSV file. These results can be viewed in either a table or a map format.
+          </p>
+          <p>
+            The user can also upload CSV files for display in the app.
+            These CSV files can be uploaded in one of three formats:
+            zip codes only, counties only, or zip code and county pairs.
+          </p>
         </div>
       </Dialog>
     );
   }
+}
+
+const SecureLink = ({href, children}) => {
+  const style = {
+    color: indigo500,
+    lineHeight: '20px',
+  }
+  return (
+    <a style={style} href={href} target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  )
 }
 
 
