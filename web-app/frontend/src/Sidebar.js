@@ -88,6 +88,7 @@ class Sidebar extends Component {
               onChange={this.handlePointNumberChange} />
         </SidebarContent>
         <FlatButton
+          style={{alignSelf: 'flex-start', flex: 'none'}}
           onClick={this.handleClearInputsClick}
           primary={true}
           label="clear inputs" />

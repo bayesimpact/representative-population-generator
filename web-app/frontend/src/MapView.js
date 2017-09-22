@@ -62,7 +62,7 @@ class MapView extends Component {
                     coordinates={point.geometry.coordinates}/>
               ))}
             </Layer>
-            <div className="thing">
+            <div className="popup-container">
               {hoveredPointIndex !== null && <DetailsPopup point={allPoints[hoveredPointIndex]} />}
             </div>
         </Map>

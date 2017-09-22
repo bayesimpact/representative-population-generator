@@ -18,7 +18,7 @@ class AreaSelector extends Component {
       onCountyChange, onCountyZipChange
     } = this.props
     return (
-      <div style={{position: 'relative'}}>
+      <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
         {isLoading ? <LoadingOverlay /> : null}
         <StateSelector />
         <CountySelector
@@ -26,6 +26,7 @@ class AreaSelector extends Component {
             counties={counties}
             onChange={onCountyChange} />
         <ZipCodeSelector
+            style={{flex: 1, overflow: 'auto'}}
             selectedCounties={selectedCounties}
             selectedCountyZips={selectedCountyZips}
             counties={counties}

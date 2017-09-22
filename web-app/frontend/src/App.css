@@ -1,9 +1,8 @@
 
-body,html,#root{
-  height:100%;
+body {
   font-family: 'Roboto', sans-serif;
 }
 
-.thing .mapboxgl-popup-content{
+.popup-container .mapboxgl-popup-content {
   background-color: rgba(0, 0, 0, 0.85);
 }

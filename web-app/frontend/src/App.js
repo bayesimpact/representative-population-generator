@@ -35,14 +35,14 @@ class App extends Component {
       height: 80,
     }
     return (
-      <div style={{height: '100%'}}>
+      <div style={{height: '100vh', display: 'flex', flexDirection: 'column'}}>
         <MissingAreasDialog
             isOpen={!!missingAreas.length}
             missingAreas={missingAreas}
             onCloseClick={this.handleMissingAreasCloseClick} />
         <Header />
-        <div style={{display: 'flex', height: '100%'}}>
-          <Sidebar style={{height: '100%'}} />
+        <div style={{display: 'flex', flex: 1, position: 'relative'}}>
+          <Sidebar style={{height: '100%', display: 'flex', flexDirection: 'column'}} />
           <div style={{position: 'relative', ...fullContainerStyle}}>
             <ViewModeSwitcher
                 style={switcherStyle}
@@ -50,7 +50,7 @@ class App extends Component {
                 onViewModeClick={this.handleViewModeChange} />
             {viewMode === 'map' ?
               <MapView style={fullContainerStyle} /> :
-              <TableView style={{paddingTop: 80, height: '100%'}} />
+              <TableView style={{paddingTop: 80}} />
             }
           </div>
         </div>
