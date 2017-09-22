@@ -74,6 +74,20 @@ class CountySelector extends Component {
 
 class ZipCodeSelector extends Component {
 
+  state = {
+    isSelectAllChecked: false,
+  }
+
+  componentWillReceiveProps = nextProps => {
+    const {selectedCounties, onChange} = this.props
+    if (nextProps && nextProps.selectedCounties !== selectedCounties) {
+      if (this.state.isSelectAllChecked) {
+        const allZips = this.getAllZipsForCounties(nextProps.selectedCounties)
+        onChange && onChange(allZips)
+      }
+    }
+  }
+
   handleChange = (countyZipKey, isInputChecked) => {
     const {onChange, selectedCountyZips} = this.props
     const newSelectedCountyZips = isInputChecked ?
@@ -82,8 +96,29 @@ class ZipCodeSelector extends Component {
     onChange && onChange(newSelectedCountyZips)
   }
 
+  handleSelectAllChange = isInputChecked => {
+    const {onChange, selectedCounties} = this.props
+    this.setState({isSelectAllChecked: isInputChecked})
+    let newSelectedCountyZips = []
+    if (isInputChecked) {
+      newSelectedCountyZips = this.getAllZipsForCounties(selectedCounties)
+    }
+    onChange && onChange(newSelectedCountyZips)
+  }
+
+  getAllZipsForCounties = selectedCounties => {
+    const {counties} = this.props
+    return selectedCounties.reduce((accu, selectedCounty) => {
+      const countyZips = counties[selectedCounty].zips.map(zip => {
+        return selectedCounty + '-' + zip
+      })
+      return accu.concat(countyZips)
+    }, [])
+  }
+
   render() {
     const {counties, selectedCounties, selectedCountyZips, style} = this.props
+    const {isSelectAllChecked} = this.state
     if (!counties) {
       return null
     }
@@ -91,7 +126,9 @@ class ZipCodeSelector extends Component {
       <div style={style}>
         <ZipCodeSelectorHeadline selectedCountyZips={selectedCountyZips} />
         <Checkbox
-          label="Select All" />
+          checked={isSelectAllChecked}
+          label="Select All"
+          onCheck={(e, isInputChecked) => this.handleSelectAllChange(isInputChecked)} />
         {(selectedCounties || []).sort().map(countyKey => {
           const county = counties[countyKey]
           return <List key={countyKey}>
