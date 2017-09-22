@@ -38,8 +38,8 @@ class MissingAreasDialog extends Component {
           <TableBody displayRowCheckbox={false}>
             {missingAreas.map((areaInfo, i) => (
               <TableRow key={i}>
-                <TableRowColumn>{areaInfo.county}</TableRowColumn>
-                <TableRowColumn>{areaInfo.zip}</TableRowColumn>
+                <TableRowColumn>{areaInfo.countyName}</TableRowColumn>
+                <TableRowColumn>{areaInfo.zipCode}</TableRowColumn>
               </TableRow>
             ))}
           </TableBody>

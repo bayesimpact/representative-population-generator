@@ -51,8 +51,8 @@ export const fetchAreasFromCSVFile = file => dispatch => {
 
 function getUnavailableServiceAreas(areas) {
   return areas.reduce((accu, area) => {
-    return area.availability_status.is_service_area_available ?
-      accu : accu.concat([area.area_info])
+    return area.availabilityStatus.isServiceAreaAvailable ?
+      accu : accu.concat([area.areaInfo])
   }, [])
 }
 

@@ -76,7 +76,7 @@ const mapStateToProps = state => {
         county: point.properties.county,
         longitude: point.geometry.coordinates[0],
         latitude: point.geometry.coordinates[1],
-        nResidents: point.properties.residents,
+        nResidents: Math.round(point.properties.population),
       })
     })
   })
