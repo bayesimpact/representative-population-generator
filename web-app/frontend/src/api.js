@@ -10,9 +10,9 @@ export function getCounties() {
           displayName: 'San Francisco',
           zips: [94102, 94103, 94104],
         },
-        alemeda: {
+        alameda: {
           displayName: 'Alameda',
-          zips: [94605, 94606],
+          zips: [94605, 94606, 94505, 94530],
         },
       })
     }, 2)
