@@ -172,6 +172,7 @@ class CSVUploader extends Component {
           <input
             onChange={this.handleFileSelect}
             type="file"
+            accept=".csv"
             style={{display: 'none'}} />
         </RaisedButton>
         <div>{selectedCSVFileName}</div>
