@@ -133,13 +133,16 @@ class ZipCodeSelector extends Component {
         {(selectedCounties || []).sort().map(countyKey => {
           const county = counties[countyKey]
           return <List key={countyKey}>
-            <Subheader>{county.displayName}</Subheader>
+            <Subheader style={{marginBottom: '-16px'}}>
+              {county.displayName}
+            </Subheader>
             {county.zips.sort().map(zip => {
               const countyZipKey = countyKey + '-' + zip
               const checkbox = <Checkbox
                   checked={selectedCountyZips.includes(countyZipKey)}
                   onCheck={(e, isInputChecked) => this.handleChange(countyZipKey, isInputChecked)} />
               return <ListItem
+                  innerDivStyle={{height: 10, padding: '16px 16px 6px 72px'}}
                   key={countyZipKey}
                   primaryText={zip}
                   leftCheckbox={checkbox} />
