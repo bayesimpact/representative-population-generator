@@ -8,6 +8,7 @@ import Subheader from 'material-ui/Subheader';
 import Checkbox from 'material-ui/Checkbox';
 
 import LoadingOverlay from './LoadingOverlay'
+import styles from './styles'
 
 class AreaSelector extends Component {
 
@@ -88,6 +89,9 @@ class ZipCodeSelector extends Component {
     }
     return (
       <div style={style}>
+        <ZipCodeSelectorHeadline selectedCountyZips={selectedCountyZips} />
+        <Checkbox
+          label="Select All" />
         {(selectedCounties || []).sort().map(countyKey => {
           const county = counties[countyKey]
           return <List key={countyKey}>
@@ -108,5 +112,19 @@ class ZipCodeSelector extends Component {
     )
   }
 }
+
+
+const ZipCodeSelectorHeadline = ({selectedCountyZips}) => (
+  <div style={{display: 'flex'}}>
+    <div style={{marginBottom: 15, color: styles.primaryText}}>
+      Zip Codes
+    </div>
+    <div style={{flex: 1}} />
+    <div style={{color: styles.secondaryText}}>
+      {selectedCountyZips.length} selected
+    </div>
+  </div>
+)
+
 
 export default AreaSelector
