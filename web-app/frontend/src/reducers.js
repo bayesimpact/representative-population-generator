@@ -13,6 +13,7 @@ const initialState = {
     viewMode: 'table',
     nPoints: 50,
     missingAreas: [],
+    selectedCSVFileName: '',
   },
 }
 
