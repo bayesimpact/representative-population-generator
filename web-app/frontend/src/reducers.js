@@ -14,6 +14,7 @@ const initialState = {
     nPoints: 50,
     missingAreas: [],
     selectedCSVFileName: '',
+    snackMessage: '',
   },
 }
 

@@ -33,6 +33,14 @@ export function getAreasFromFile(file) {
       method: 'POST',
       body: data
     })
-  .then(response => response.json())
+  .then(response => {
+    if (response.status === 200) {
+      return response.json()
+    } else {
+      return response.json().then(response => {
+        throw new Error(response.message)
+      })
+    }
+  })
   .then(response => response.result)
 }

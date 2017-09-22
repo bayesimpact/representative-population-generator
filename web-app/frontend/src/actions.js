@@ -47,6 +47,10 @@ export const fetchAreasFromCSVFile = file => dispatch => {
     const missingAreas = getUnavailableServiceAreas(areas)
     dispatch(setAppVariableAction('missingAreas', missingAreas))
   })
+  .catch(error => {
+    dispatch(finishRequestAction('areas', []))
+    dispatch(setAppVariableAction('snackMessage', error.message))
+  })
 }
 
 function getUnavailableServiceAreas(areas) {
@@ -79,4 +83,8 @@ export const resetAreaSelector = () => dispatch => {
 
 export function resetMissingAreas() {
   return setAppVariableAction('missingAreas', [])
+}
+
+export function resetSnackMessage() {
+  return setAppVariableAction('snackMessage', '')
 }

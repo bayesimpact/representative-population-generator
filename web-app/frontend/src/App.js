@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import Snackbar from 'material-ui/Snackbar'
 
 import './App.css';
 import Sidebar from './Sidebar'
@@ -8,7 +9,7 @@ import MapView from './MapView'
 import Header from './Header'
 import ViewModeSwitcher from './ViewModeSwitcher'
 import MissingAreasDialog from './MissingAreasDialog'
-import {setViewMode, resetMissingAreas} from './actions'
+import {setViewMode, resetMissingAreas, resetSnackMessage} from './actions'
 
 
 class App extends Component {
@@ -21,8 +22,12 @@ class App extends Component {
     this.props.dispatch(resetMissingAreas())
   }
 
+  handleSnackbarRequestClose = () => {
+    this.props.dispatch(resetSnackMessage())
+  }
+
   render() {
-    const {viewMode, missingAreas} = this.props
+    const {viewMode, missingAreas, snackMessage} = this.props
     const fullContainerStyle = {
       height: '100%',
       width: '100%',
@@ -40,6 +45,11 @@ class App extends Component {
             isOpen={!!missingAreas.length}
             missingAreas={missingAreas}
             onCloseClick={this.handleMissingAreasCloseClick} />
+        <Snackbar
+            open={!!snackMessage}
+            message={snackMessage}
+            autoHideDuration={4000}
+            onRequestClose={this.handleSnackbarRequestClose} />
         <Header />
         <div style={{display: 'flex', flex: 1, position: 'relative'}}>
           <Sidebar style={{height: '100%', display: 'flex', flexDirection: 'column'}} />
@@ -62,6 +72,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   viewMode: state.app.viewMode,
   missingAreas: state.app.missingAreas,
+  snackMessage: state.app.snackMessage,
 })
 
 export default connect(mapStateToProps)(App)
