@@ -22,6 +22,7 @@ mongo = PyMongo(app)
 with app.app_context():
     repr_points = mongo.db.pointAs
     service_areas = mongo.db.service_areas
+    boundaries = mongo.db.boundaries
 
 
 @app.route('/available-service-areas', methods=['GET'])
@@ -48,7 +49,7 @@ def get_multiple_zip_county_points():
     returns: json object with info about area and a list of points.
     """
     zipcounties = exctract_zip_counties(app)
-    outputs = fetch_point_as(repr_points, zipcounties, logger=app.logger)
+    outputs = fetch_point_as(repr_points, zipcounties, boundaries, logger=app.logger)
     return flask.jsonify({'result': outputs})
 
 

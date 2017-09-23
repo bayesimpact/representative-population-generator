@@ -57,18 +57,32 @@ And the return object is in the following format:
                     "isServiceAreaAvailable": true,
                     "message": "Service area available."
                 },
-                "points": [point_1, ..., point_200]
-            },
-            {
-                "areaInfo": {
-                    "countyName": "San Francisco",
-                    "zipCode": "94107"
+                "boundary": {
+                    "geometry": {
+                        "coordinates": [
+                            [
+                                [
+                                    -117.23250138140729,
+                                    33.19171791814623
+                                ],
+                                [
+                                    -117.23260861869265,
+                                    33.19171791814623
+                                ],
+                                [
+                                    -117.23250138140729,
+                                    33.19180808215501
+                                ],
+                                [
+                                    -117.23250138140729,
+                                    33.19171791814623
+                                ]
+                            ]
+                        ],
+                        "type": "Polygon"
+                    }
                 },
-                "availabilityStatus": {
-                    "isServiceAreaAvailable": true,
-                    "message": "Service area available."
-                },
-                "points": [point_1, ..., point_200]
+	            "points": [point_1, ..., point_200]
             },
             {
                 "areaInfo": {
@@ -79,11 +93,12 @@ And the return object is in the following format:
                     "isServiceAreaAvailable": false,
                     "message": "Service area unavailable."
                 },
-                "points": []
-            },
-            ....
-        ]
-    }
+                "boundary": null,
+	            "points": []
+	        },
+	        ....
+	    ]
+	}
 
 ## Exceptions
 If the input file is not parsable by the backend, it throws a `HTTP 400` error with the following message:

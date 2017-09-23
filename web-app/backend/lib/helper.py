@@ -5,13 +5,14 @@ import io
 import re
 
 
-def fetch_point_as(point_a_db, service_areas, logger=None):
+def fetch_point_as(point_a_db, service_areas, boundary_db, logger=None):
     """Given a list of service areas, fetch and return point As for each one."""
     outputs = []
     logger.info('Finding point As for {} service areas'.format(len(service_areas)))
     for area in service_areas:
         point_as = find_point_as(point_a_db, area, logger)
-        output = prepare_return_object(point_as, area)
+        boundary = find_boundary(boundary_db, area, logger)
+        output = prepare_return_object(point_as, boundary, area)
         outputs.append(output)
     return outputs
 
@@ -67,11 +68,23 @@ def find_point_as(point_a_db, service_area, logger=None):
         return []
 
 
-def prepare_return_object(points, area):
+def find_boundary(boundary_db, service_area, logger=None):
+    """Given a standard service_area, find and return corresponding point As in point_a_db."""
+    key_map = {'countyName': 'properties.NAME', 'zipCode': 'properties.ZIP'}
+    try:
+        area_regex = dict((key_map[k], _regexifgy_input(v)) for k, v in service_area.items())
+        boundary = boundary_db.find_one(area_regex)
+        return {'geometry': boundary['geometry']}
+    except:
+        return None
+
+
+def prepare_return_object(points, boundary, area):
     """Prepare the object that is being returned for each service_area."""
     return_object = {
         'areaInfo': area,
-        'points': points
+        'points': points,
+        'boundary': boundary
     }
     return_object['availabilityStatus'] = _flag_service_area_availability(bool(points))
     return return_object

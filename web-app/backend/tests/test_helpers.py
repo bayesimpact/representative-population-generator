@@ -62,22 +62,20 @@ def test_standardize_request():
 def test_prepare_return_object_valid_points():
     """Test prepare_return_object method when recieving valid list of points."""
     points = [1, 2, 3]
+    boundary = {'coordinates': [[[1, 2]]]}
     area = {'countyName': 'a', 'zipCode': '90000'}
-    res = prepare_return_object(points, area)
+    res = prepare_return_object(points, boundary, area)
     assert (res['points'] == points)
+    assert (res['boundary'] == boundary)
     assert (res['availabilityStatus']['isServiceAreaAvailable'])
 
 
 def test_prepare_return_object_no_points():
     """Test prepare_return_object method when recieving no points."""
     points = []
+    boundary = {'coordinates': [[[1, 2]]]}
     area = {'countyName': 'a', 'zipCode': '90000'}
-    expected = {
-        'areaInfo': area,
-        'points': points,
-        'availabilityStatus': {
-            'isServiceAreaAvailable': False,
-            'message': 'Service area unavailable.'
-        }
-    }
-    assert (prepare_return_object(points, area) == expected)
+    res = prepare_return_object(points, boundary, area)
+    assert (not res['points'])
+    assert (res['boundary'] == boundary)
+    assert (not res['availabilityStatus']['isServiceAreaAvailable'])
