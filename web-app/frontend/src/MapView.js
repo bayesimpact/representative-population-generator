@@ -40,12 +40,12 @@ const areaColors = [
 class MapView extends Component {
 
   state = {
-    hoveredPointIndex: null,
+    hoveredPoint: null,
   }
 
   render() {
     const {isLoading, allPoints, style, areas, boundingBoxCoordinates} = this.props
-    const {hoveredPointIndex} = this.state
+    const {hoveredPoint} = this.state
     const fullContainerStyle = {height: '100%', width: '100%'}
     return (
       <div style={{position: 'relative', ...style}}>
@@ -58,32 +58,70 @@ class MapView extends Component {
             fitBounds={boundingBoxCoordinates}
             fitBoundsOptions={{padding: 30}}
             containerStyle={fullContainerStyle}>
-          <Layer type="symbol" id="marker" layout={{"icon-image": "marker-15" }}>
-            {allPoints.map((point, i) => (
-              <Feature
-                  onMouseEnter={() => this.setState({hoveredPointIndex: i})}
-                  onMouseLeave={() => this.setState({hoveredPointIndex: null})}
-                  key={i}
-                  coordinates={point.geometry.coordinates}/>
-            ))}
-          </Layer>
           {areas.map((area, i) => {
-            if (!area.boundary) {
-              return null
-            }
-            const layerStyle = {
-              'fill-color': areaColors[i % areaColors.length],
-              'fill-opacity': .7,
-            }
-            return <Layer key={i} type="fill" paint={layerStyle} >
-              <Feature coordinates={area.boundary.geometry.coordinates} />
-            </Layer>
+            return (
+              <div key={i}>
+                <BoundaryLayer
+                    area={area}
+                    fillColor={areaColors[i % areaColors.length]} />
+                <PointsLayer
+                    area={area}
+                    color={areaColors[i % areaColors.length]}
+                    onPointHover={point => this.setState({hoveredPoint: point})}
+                    onPointLeave={() => this.setState({hoveredPoint: null})} />
+
+              </div>
+            )
           })}
           <div className="popup-container">
-            {hoveredPointIndex !== null && <DetailsPopup point={allPoints[hoveredPointIndex]} />}
+            {hoveredPoint && <DetailsPopup point={hoveredPoint} />}
           </div>
         </Map>
       </div>
+    )
+  }
+}
+
+
+class PointsLayer extends Component {
+
+  render() {
+    const {area, color, onPointHover, onPointLeave} = this.props
+    const pointStyle = {
+      'circle-radius': 7,
+      'circle-color': color,
+      'circle-opacity': .8,
+    }
+    return (
+      <Layer type="circle" paint={pointStyle}>
+        {area.points.map((point, i) => (
+          <Feature
+              onMouseEnter={() => onPointHover(point)}
+              onMouseLeave={() => onPointLeave()}
+              key={i}
+              coordinates={point.geometry.coordinates}/>
+        ))}
+      </Layer>
+    )
+  }
+}
+
+
+class BoundaryLayer extends Component {
+
+  render() {
+    const {area, fillColor} = this.props
+    const style = {
+      'fill-color': fillColor,
+      'fill-opacity': .7,
+    }
+    if (!area.boundary) {
+      return null
+    }
+    return (
+      <Layer type="fill" paint={style} >
+        <Feature coordinates={area.boundary.geometry.coordinates} />
+      </Layer>
     )
   }
 }
