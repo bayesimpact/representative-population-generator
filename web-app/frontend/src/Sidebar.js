@@ -9,7 +9,7 @@ import Paper from 'material-ui/Paper'
 
 import StateSelector from './StateSelector'
 import CountySelector from './CountySelector'
-import ZipCodeSelector from './ZipCodeSelector'
+import ZipCodeSelector, {ZipCodeSelectorHeadline} from './ZipCodeSelector'
 import PointNumberSelector from './PointNumberSelector'
 import LoadingOverlay from './LoadingOverlay'
 import CSVUploader from './CSVUploader'
@@ -108,6 +108,7 @@ class Sidebar extends Component {
                 counties={counties}
                 onSelectCounty={this.handleSelectCounty}
                 onRemoveCounty={this.handleRemoveCounty} />
+            <ZipCodeSelectorHeadline selectedCountyZips={selectedCountyZips} />
             <ZipCodeSelector
                 style={{flex: 1, overflow: 'auto'}}
                 counties={counties}

@@ -28,7 +28,6 @@ class ZipCodeSelector extends Component {
     }
     return (
       <div style={style}>
-        <ZipCodeSelectorHeadline selectedCountyZips={selectedCountyZips} />
         {selectedCounties.length ? <Checkbox
             checked={isSelectAllChecked}
             label="Select All"
@@ -59,8 +58,8 @@ class ZipCodeSelector extends Component {
 }
 
 
-const ZipCodeSelectorHeadline = ({selectedCountyZips}) => (
-  <div style={{display: 'flex'}}>
+export const ZipCodeSelectorHeadline = ({selectedCountyZips}) => (
+  <div style={{display: 'flex', flex: 'none', marginTop: 5}}>
     <div style={{marginBottom: 15, color: styles.primaryText}}>
       Zip Codes
     </div>
