@@ -82,7 +82,7 @@ class Sidebar extends Component {
               onCountyZipChange={this.handleCountyZipChange} />
         </SidebarContent>
         <SidebarHeadline icon={PointsIcon} text="Enrolees" />
-        <SidebarContent>
+        <SidebarContent style={{flex: 'none'}}>
           <PointNumberSelector
               value={nPoints}
               onChange={this.handlePointNumberChange} />
@@ -130,7 +130,8 @@ class SidebarHeadline extends Component {
 class SidebarContent extends Component {
 
   render() {
-    const style = {
+    const {style} = this.props
+    const contentStyle = {
       marginBottom: 15,
       paddingLeft: 46,
       paddingTop: 20,
@@ -138,7 +139,7 @@ class SidebarContent extends Component {
       flexDirection: 'column',
     }
     return (
-      <div style={style}>
+      <div style={{...contentStyle, ...style}}>
         {this.props.children}
       </div>
     )
