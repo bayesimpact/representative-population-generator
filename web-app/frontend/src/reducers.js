@@ -8,8 +8,8 @@ const initialState = {
   },
   data: {},
   app: {
-    selectedCounties: ['alameda'],
-    selectedCountyZips: ['alameda-94530'],
+    selectedCounties: ['Alameda'],
+    selectedCountyZips: ['Alameda-94530'],
     viewMode: 'table',
     nPoints: 50,
     missingAreas: [],

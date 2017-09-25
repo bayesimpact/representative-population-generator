@@ -65,7 +65,7 @@ class CountySelector extends Component {
               insetChildren={true}
               checked={selectedCounties && selectedCounties.includes(countyKey)}
               value={countyKey}
-              primaryText={counties[countyKey].displayName} />
+              primaryText={countyKey} />
         ))}
       </SelectField>
     )
@@ -135,7 +135,7 @@ class ZipCodeSelector extends Component {
           const county = counties[countyKey]
           return <List key={countyKey}>
             <Subheader style={{marginBottom: '-16px'}}>
-              {county.displayName}
+              {countyKey}
             </Subheader>
             {county.zips.sort().map(zip => {
               const countyZipKey = countyKey + '-' + zip

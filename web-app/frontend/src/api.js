@@ -3,20 +3,9 @@ const apiHostname = process.env.REACT_APP_API_HOSTNAME
 
 // TODO: Request data from backend when endpoint exists.
 export function getCounties() {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        sanFrancisco: {
-          displayName: 'San Francisco',
-          zips: [94102, 94103, 94104],
-        },
-        alameda: {
-          displayName: 'Alameda',
-          zips: [94605, 94606, 94505, 94530],
-        },
-      })
-    }, 2)
-  })
+  return fetch(apiHostname + '/available-service-areas')
+    .then(response => response.json())
+    .then(response => response.result[0])
 }
 
 export function getAreas(countyZips) {
