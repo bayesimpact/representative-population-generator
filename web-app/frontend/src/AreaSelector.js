@@ -17,8 +17,14 @@ class AreaSelector extends Component {
       counties, isLoading, selectedCounties, selectedCountyZips,
       onSelectCounty, onRemoveCounty, onCountyZipChange
     } = this.props
+    const style = {
+      position: 'relative',
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+    }
     return (
-      <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
+      <div style={style}>
         {isLoading ? <LoadingOverlay /> : null}
         <StateSelector />
         <CountySelector
