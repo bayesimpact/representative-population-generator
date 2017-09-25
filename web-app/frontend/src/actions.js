@@ -129,6 +129,7 @@ export const resetAreaSelector = () => dispatch => {
   dispatch(setAppVariableAction('selectedCounties', []))
   dispatch(setAppVariableAction('selectedCountyZips', []))
   dispatch(setAppVariableAction('isSelectAllChecked', false))
+  dispatch(setAppVariableAction('selectedCSVFileName', ''))
   dispatch(finishRequestAction('areas', []))
 }
 
