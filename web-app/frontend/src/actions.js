@@ -5,6 +5,10 @@ export const FINISH_REQUEST = 'FINISH_REQUEST'
 export const SET_APP_VARIABLE = 'SET_APP_VARIABLE'
 export const SET_COUNTY = 'SET_COUNTY'
 export const REMOVE_COUNTY = 'REMOVE_COUNTY'
+export const SET_COUNTY_ZIP = 'SET_COUNTY_ZIP'
+export const REMOVE_COUNTY_ZIP = 'REMOVE_COUNTY_ZIP'
+export const SET_SELECT_ALL_CHECKED = 'SET_SELECT_ALL_CHECKED'
+export const SET_SELECT_ALL_UNCHECKED = 'SET_SELECT_ALL_UNCHECKED'
 
 function setAppVariableAction(variable, value) {
   return {type: SET_APP_VARIABLE, value, variable}
@@ -24,6 +28,49 @@ export function selectCountyAction(county) {
 
 export function removeCountyAction(county) {
   return {type: REMOVE_COUNTY, county}
+}
+
+function selectCountyZipAction(countyZip) {
+  return {type: SET_COUNTY_ZIP, countyZip}
+}
+
+function removeCountyZipAction(countyZip) {
+  return {type: REMOVE_COUNTY_ZIP, countyZip}
+}
+
+export function setSelectAllCheckedAction() {
+  return {type: SET_SELECT_ALL_CHECKED}
+}
+
+export function setSelectAllUncheckedAction() {
+  return {type: SET_SELECT_ALL_UNCHECKED}
+}
+
+export const setSelectAllCheckedAndFetchAreas = () => (dispatch, getState) => {
+  dispatch(setSelectAllCheckedAction())
+  const {selectedCountyZips} = getState().app
+  dispatch(fetchAreas(selectedCountyZips))
+}
+
+export const setSelectAllUnchecked = () => dispatch => {
+  dispatch({type: SET_SELECT_ALL_UNCHECKED})
+  dispatch(finishRequestAction('areas', []))
+}
+
+export const selectCountyZipAndFetchAreas = countyZip => (dispatch, getState) => {
+  dispatch(selectCountyZipAction(countyZip))
+  const {selectedCountyZips} = getState().app
+  dispatch(fetchAreas(selectedCountyZips))
+}
+
+export const removeCountyZipAndFetchAreas = countyZip => (dispatch, getState) => {
+  dispatch(removeCountyZipAction(countyZip))
+  const {selectedCountyZips} = getState().app
+  if (selectedCountyZips.length) {
+    dispatch(fetchAreas(selectedCountyZips))
+  } else {
+    dispatch(finishRequestAction('areas', []))
+  }
 }
 
 export const fetchCounties = () => dispatch => {
@@ -70,14 +117,6 @@ function getUnavailableServiceAreas(areas) {
   }, [])
 }
 
-export function setSelectedCounties(selectedCounties) {
-  return setAppVariableAction('selectedCounties', selectedCounties)
-}
-
-export function setSelectedCountyZips(selectedCountyZips) {
-  return setAppVariableAction('selectedCountyZips', selectedCountyZips)
-}
-
 export function setViewMode(viewMode) {
   return setAppVariableAction('viewMode', viewMode)
 }
@@ -87,8 +126,8 @@ export function setPointNumber(nPoints) {
 }
 
 export const resetAreaSelector = () => dispatch => {
-  dispatch(setSelectedCounties([]))
-  dispatch(setSelectedCountyZips([]))
+  setAppVariableAction('selectedCounties', [])
+  setAppVariableAction('selectedCountyZips', [])
 }
 
 export function resetMissingAreas() {

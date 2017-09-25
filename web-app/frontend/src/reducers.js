@@ -5,6 +5,10 @@ import {
   SET_APP_VARIABLE,
   SET_COUNTY,
   REMOVE_COUNTY,
+  SET_COUNTY_ZIP,
+  REMOVE_COUNTY_ZIP,
+  SET_SELECT_ALL_CHECKED,
+  SET_SELECT_ALL_UNCHECKED,
 } from './actions'
 
 const initialState = {
@@ -21,10 +25,12 @@ const initialState = {
     missingAreas: [],
     selectedCSVFileName: '',
     snackMessage: '',
+    isSelectAllChecked: false,
   },
 }
 
 export function mainReducer(state=initialState, action) {
+  const {selectedCounties, selectedCountyZips} = state.app
   switch (action.type) {
     case START_REQUEST:
       return {
@@ -55,15 +61,20 @@ export function mainReducer(state=initialState, action) {
         }
       }
     case SET_COUNTY:
+      const newSelectedCounties = selectedCounties.concat([action.county])
+      let newSelectedCountyZips = [...selectedCountyZips]
+      if (state.app.isSelectAllChecked) {
+        newSelectedCountyZips = getAllZipsForCounties(newSelectedCounties, state.data.counties)
+      }
       return {
         ...state,
         app: {
           ...state.app,
-          selectedCounties: state.app.selectedCounties.concat([action.county]),
+          selectedCounties: newSelectedCounties,
+          selectedCountyZips: newSelectedCountyZips,
         },
       }
     case REMOVE_COUNTY:
-      const {selectedCounties, selectedCountyZips} = state.app
       return {
         ...state,
         app: {
@@ -76,7 +87,53 @@ export function mainReducer(state=initialState, action) {
           }),
         },
       }
+    case SET_COUNTY_ZIP:
+      return {
+        ...state,
+        app: {
+          ...state.app,
+          selectedCountyZips: selectedCountyZips.concat([action.countyZip]),
+        },
+      }
+    case REMOVE_COUNTY_ZIP:
+      return {
+        ...state,
+        app: {
+          ...state.app,
+          selectedCountyZips: selectedCountyZips.filter(countyZip => {
+            return countyZip !== action.countyZip
+          }),
+        },
+      }
+    case SET_SELECT_ALL_CHECKED:
+      return {
+        ...state,
+        app: {
+          ...state.app,
+          isSelectAllChecked: true,
+          selectedCountyZips: getAllZipsForCounties(selectedCounties, state.data.counties)
+        }
+      }
+    case SET_SELECT_ALL_UNCHECKED:
+      return {
+        ...state,
+        app: {
+          ...state.app,
+          isSelectAllChecked: false,
+          selectedCountyZips: [],
+        }
+      }
     default:
       return state
   }
+}
+
+
+const getAllZipsForCounties = (selectedCounties, counties) => {
+  return selectedCounties.reduce((accu, selectedCounty) => {
+    const countyZips = counties[selectedCounty].zips.map(zip => {
+      return selectedCounty + '-' + zip
+    })
+    return accu.concat(countyZips)
+  }, [])
 }

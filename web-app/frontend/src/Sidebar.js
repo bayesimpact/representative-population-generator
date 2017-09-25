@@ -19,7 +19,10 @@ import {
   fetchAreasFromCSVFile,
   selectCountyAction,
   removeCountyAction,
-  setSelectedCountyZips,
+  selectCountyZipAndFetchAreas,
+  removeCountyZipAndFetchAreas,
+  setSelectAllCheckedAndFetchAreas,
+  setSelectAllUnchecked,
   setPointNumber,
   resetAreaSelector,
 } from './actions'
@@ -37,17 +40,28 @@ class Sidebar extends Component {
 
   handleSelectCounty = county => {
     this.props.dispatch(selectCountyAction(county))
-  }
+  };
 
   handleRemoveCounty = county => {
     this.props.dispatch(removeCountyAction(county))
-  }
-
-  handleCountyZipChange = selectedCountyZips => {
-    const {dispatch} = this.props
-    dispatch(setSelectedCountyZips(selectedCountyZips))
-    dispatch(fetchAreas(selectedCountyZips))
   };
+
+  handleSelectCountyZip = countyZip => {
+    this.props.dispatch(selectCountyZipAndFetchAreas(countyZip))
+  };
+
+  handleRemoveCountyZip = countyZip => {
+    this.props.dispatch(removeCountyZipAndFetchAreas(countyZip))
+  };
+
+  handleSelectAllChange = isInputChecked => {
+    const {dispatch} = this.props
+    if (isInputChecked) {
+      dispatch(setSelectAllCheckedAndFetchAreas())
+    } else {
+      dispatch(setSelectAllUnchecked())
+    }
+  }
 
   handlePointNumberChange = _.throttle(nPoints => {
     this.props.dispatch(setPointNumber(nPoints))
@@ -66,7 +80,7 @@ class Sidebar extends Component {
   render() {
     const {
       counties, isLoading, selectedCounties, selectedCountyZips,
-      nPoints, style, selectedCSVFileName,
+      nPoints, style, selectedCSVFileName, isSelectAllChecked,
     } = this.props
     const sidebarStyle = {
       zIndex: 2,
@@ -96,10 +110,13 @@ class Sidebar extends Component {
                 onRemoveCounty={this.handleRemoveCounty} />
             <ZipCodeSelector
                 style={{flex: 1, overflow: 'auto'}}
-                selectedCounties={selectedCounties}
-                selectedCountyZips={selectedCountyZips}
                 counties={counties}
-                onChange={this.handleCountyZipChange} />
+                selectedCounties={selectedCounties}
+                isSelectAllChecked={isSelectAllChecked}
+                selectedCountyZips={selectedCountyZips}
+                onSelectAllChange={this.handleSelectAllChange}
+                onSelectCountyZip={this.handleSelectCountyZip}
+                onRemoveCountyZip={this.handleRemoveCountyZip} />
           </div>
         </SidebarContent>
         <SidebarHeadline icon={PointsIcon} text="Enrolees" />
@@ -206,6 +223,7 @@ const mapStateToProps = state => ({
   selectedCountyZips: state.app.selectedCountyZips,
   nPoints: state.app.nPoints,
   selectedCSVFileName: state.app.selectedCSVFileName,
+  isSelectAllChecked: state.app.isSelectAllChecked,
 })
 
 export default connect(mapStateToProps)(Sidebar)

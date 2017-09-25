@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import _ from 'underscore'
 
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
@@ -9,51 +8,21 @@ import styles from './styles'
 
 class ZipCodeSelector extends Component {
 
-  state = {
-    isSelectAllChecked: false,
-  }
-
-  componentWillReceiveProps = nextProps => {
-    const {selectedCounties, onChange} = this.props
-    if (nextProps && nextProps.selectedCounties !== selectedCounties) {
-      if (this.state.isSelectAllChecked) {
-        const allZips = this.getAllZipsForCounties(nextProps.selectedCounties)
-        onChange && onChange(allZips)
-      }
-    }
-  }
 
   handleChange = (countyZipKey, isInputChecked) => {
-    const {onChange, selectedCountyZips} = this.props
-    const newSelectedCountyZips = isInputChecked ?
-      selectedCountyZips.concat([countyZipKey]) :
-      _.without(selectedCountyZips, countyZipKey)
-    onChange && onChange(newSelectedCountyZips)
-  }
-
-  handleSelectAllChange = isInputChecked => {
-    const {onChange, selectedCounties} = this.props
-    this.setState({isSelectAllChecked: isInputChecked})
-    let newSelectedCountyZips = []
+    const {onSelectCountyZip, onRemoveCountyZip} = this.props
     if (isInputChecked) {
-      newSelectedCountyZips = this.getAllZipsForCounties(selectedCounties)
+      onSelectCountyZip(countyZipKey)
+    } else {
+      onRemoveCountyZip(countyZipKey)
     }
-    onChange && onChange(newSelectedCountyZips)
-  }
-
-  getAllZipsForCounties = selectedCounties => {
-    const {counties} = this.props
-    return selectedCounties.reduce((accu, selectedCounty) => {
-      const countyZips = counties[selectedCounty].zips.map(zip => {
-        return selectedCounty + '-' + zip
-      })
-      return accu.concat(countyZips)
-    }, [])
   }
 
   render() {
-    const {counties, selectedCounties, selectedCountyZips, style} = this.props
-    const {isSelectAllChecked} = this.state
+    const {
+      onSelectAllChange, counties, selectedCounties, selectedCountyZips,
+      style, isSelectAllChecked,
+    } = this.props
     if (!counties) {
       return null
     }
@@ -63,7 +32,7 @@ class ZipCodeSelector extends Component {
         {selectedCounties.length ? <Checkbox
             checked={isSelectAllChecked}
             label="Select All"
-            onCheck={(e, isInputChecked) => this.handleSelectAllChange(isInputChecked)} /> :
+            onCheck={(e, isInputChecked) => onSelectAllChange(isInputChecked)} /> :
           null}
         {(selectedCounties || []).sort().map(countyKey => {
           const county = counties[countyKey]
