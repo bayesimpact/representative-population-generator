@@ -1,5 +1,10 @@
 import React, {Component} from 'react'
+import ReactTooltip from 'react-tooltip'
 import Slider from 'material-ui/Slider'
+import ActionInfo from 'material-ui/svg-icons/action/info'
+
+import styles from './styles'
+
 
 // Material UI uses a slider value between 0 and 1 which has to be mapped
 // to the scale we want (max number of points).
@@ -27,7 +32,10 @@ class PointNumberSelector extends Component {
     const {value} = this.state
     return (
       <div>
-        <div>Number of points</div>
+        <ReactTooltip id="points">
+          <span>The number of points generated per service area</span>
+        </ReactTooltip>
+        <div>Number of points <TooltipIcon id="points" /></div>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <Slider
               value={value}
@@ -45,5 +53,20 @@ class PointNumberSelector extends Component {
     )
   }
 }
+
+const TooltipIcon = ({id}) => {
+  const style = {
+    color: styles.secondaryText,
+    width: 16,
+    height: 16,
+    verticalAlign: 'text-top',
+  }
+  return (
+    <a data-tip data-for={id}>
+      <ActionInfo style={style} />
+    </a>
+  )
+}
+
 
 export default PointNumberSelector
