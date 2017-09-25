@@ -44,7 +44,7 @@ class MapView extends Component {
   }
 
   render() {
-    const {isLoading, style, areas, boundingBoxCoordinates} = this.props
+    const {isLoading, nPoints, style, areas, boundingBoxCoordinates} = this.props
     const {hoveredPoint} = this.state
     const fullContainerStyle = {height: '100%', width: '100%'}
     return (
@@ -66,6 +66,7 @@ class MapView extends Component {
                     fillColor={areaColors[i % areaColors.length]} />
                 <PointsLayer
                     area={area}
+                    nPoints={nPoints}
                     color={areaColors[i % areaColors.length]}
                     onPointHover={point => this.setState({hoveredPoint: point})}
                     onPointLeave={() => this.setState({hoveredPoint: null})} />
@@ -86,7 +87,7 @@ class MapView extends Component {
 class PointsLayer extends Component {
 
   render() {
-    const {area, color, onPointHover, onPointLeave} = this.props
+    const {area, color, onPointHover, onPointLeave, nPoints} = this.props
     const pointStyle = {
       'circle-radius': 7,
       'circle-color': color,
@@ -94,7 +95,7 @@ class PointsLayer extends Component {
     }
     return (
       <Layer type="circle" paint={pointStyle}>
-        {area.points.map((point, i) => (
+        {area.points.slice(0, nPoints).map((point, i) => (
           <Feature
               onMouseEnter={() => onPointHover(point)}
               onMouseLeave={() => onPointLeave()}
@@ -179,6 +180,7 @@ const mapStateToProps = state => {
   return {
     isLoading: state.isLoading.counties || state.isLoading.areas,
     allPoints,
+    nPoints: state.app.nPoints,
     allPointsCollection,
     boundingBoxCoordinates,
     areas: state.data.areas || [],
