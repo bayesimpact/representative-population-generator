@@ -126,8 +126,10 @@ export function setPointNumber(nPoints) {
 }
 
 export const resetAreaSelector = () => dispatch => {
-  setAppVariableAction('selectedCounties', [])
-  setAppVariableAction('selectedCountyZips', [])
+  dispatch(setAppVariableAction('selectedCounties', []))
+  dispatch(setAppVariableAction('selectedCountyZips', []))
+  dispatch(setAppVariableAction('isSelectAllChecked', false))
+  dispatch(finishRequestAction('areas', []))
 }
 
 export function resetMissingAreas() {

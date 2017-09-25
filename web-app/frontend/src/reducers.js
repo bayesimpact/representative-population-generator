@@ -72,6 +72,7 @@ export function mainReducer(state=initialState, action) {
         ...state,
         app: {
           ...state.app,
+          selectedCSVFileName: '',
           selectedCounties: newSelectedCounties,
           selectedCountyZips: newSelectedCountyZips,
         },
