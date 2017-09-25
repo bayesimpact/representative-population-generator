@@ -68,6 +68,8 @@ export function mainReducer(state=initialState, action) {
       if (state.app.isSelectAllChecked) {
         newSelectedCountyZips = getAllZipsForCounties(newSelectedCounties, state.data.counties)
       }
+      // Reset areas data on first county added to remove possible CSV loaded data.
+      const newAreas = selectedCounties.length ? state.data.areas : []
       return {
         ...state,
         app: {
@@ -76,6 +78,10 @@ export function mainReducer(state=initialState, action) {
           selectedCounties: newSelectedCounties,
           selectedCountyZips: newSelectedCountyZips,
         },
+        data: {
+          ...state.data,
+          areas: newAreas,
+        }
       }
     case REMOVE_COUNTY:
       return {
