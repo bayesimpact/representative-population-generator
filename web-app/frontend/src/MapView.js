@@ -44,21 +44,14 @@ class MapView extends Component {
   }
 
   render() {
-    const {isLoading, allPoints, allPointsCollection, style, areas} = this.props
+    const {isLoading, allPoints, style, areas, boundingBoxCoordinates} = this.props
     const {hoveredPointIndex} = this.state
     const fullContainerStyle = {height: '100%', width: '100%'}
-    let boundingBoxCoordinates = null
-    if (allPointsCollection.features.length) {
-      const boundingBox = bbox(allPointsCollection)
-      boundingBoxCoordinates = [
-        [boundingBox[0], boundingBox[1]],
-        [boundingBox[2], boundingBox[3]],
-      ]
-    }
     return (
       <div style={{position: 'relative', ...style}}>
         {isLoading ? <LoadingOverlay /> : null}
         <Map
+            // eslint-disable-next-line
             style="mapbox://styles/mapbox/light-v9"
             center={CENTER_OF_CALIFORNIA}
             zoom={INITIAL_ZOOM_LEVEL}
@@ -137,10 +130,19 @@ const mapStateToProps = state => {
     type: 'FeatureCollection',
     features: allPoints
   };
+  let boundingBoxCoordinates = null
+  if (allPointsCollection.features.length) {
+    const boundingBox = bbox(allPointsCollection)
+    boundingBoxCoordinates = [
+      [boundingBox[0], boundingBox[1]],
+      [boundingBox[2], boundingBox[3]],
+    ]
+  }
   return {
     isLoading: state.isLoading.counties || state.isLoading.areas,
     allPoints,
     allPointsCollection,
+    boundingBoxCoordinates,
     areas: state.data.areas || [],
   }
 }
