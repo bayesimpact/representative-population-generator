@@ -44,7 +44,7 @@ class MapView extends Component {
   }
 
   render() {
-    const {isLoading, allPoints, style, areas, boundingBoxCoordinates} = this.props
+    const {isLoading, style, areas, boundingBoxCoordinates} = this.props
     const {hoveredPoint} = this.state
     const fullContainerStyle = {height: '100%', width: '100%'}
     return (

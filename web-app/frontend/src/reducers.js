@@ -63,11 +63,17 @@ export function mainReducer(state=initialState, action) {
         },
       }
     case REMOVE_COUNTY:
+      const {selectedCounties, selectedCountyZips} = state.app
       return {
         ...state,
         app: {
           ...state.app,
-          selectedCounties: state.app.selectedCounties.filter(county => county !== action.county)
+          selectedCounties: selectedCounties.filter(county => {
+            return county !== action.county
+          }),
+          selectedCountyZips: selectedCountyZips.filter(countyZip => {
+            return !countyZip.startsWith(action.county)
+          }),
         },
       }
     default:

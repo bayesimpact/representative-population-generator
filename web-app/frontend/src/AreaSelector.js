@@ -61,7 +61,7 @@ class CountySelector extends Component {
   }
 
   render() {
-    const {counties, selectedCounties, onChange} = this.props
+    const {counties, selectedCounties} = this.props
     return (
       <SelectField
           multiple={true}
