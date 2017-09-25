@@ -24,6 +24,18 @@ const INITIAL_ZOOM_LEVEL = [3]
 const accessToken = 'pk.eyJ1IjoiZGVkYW4iLCJhIjoiY2o3c29wcThlM3ZlZjMzdXdzczQ3bzIwMSJ9.pvxNu-R28kuQ6CXsHJST_w'
 const Map = ReactMapboxGl({ accessToken });
 
+const areaColors = [
+  '#fbb4ae',
+  '#b3cde3',
+  '#ccebc5',
+  '#decbe4',
+  '#fed9a6',
+  '#ffffcc',
+  '#e5d8bd',
+  '#fddaec',
+  '#f2f2f2',
+]
+
 
 class MapView extends Component {
 
@@ -32,7 +44,7 @@ class MapView extends Component {
   }
 
   render() {
-    const {isLoading, allPoints, allPointsCollection, style} = this.props
+    const {isLoading, allPoints, allPointsCollection, style, areas} = this.props
     const {hoveredPointIndex} = this.state
     const fullContainerStyle = {height: '100%', width: '100%'}
     let boundingBoxCoordinates = null
@@ -62,6 +74,18 @@ class MapView extends Component {
                   coordinates={point.geometry.coordinates}/>
             ))}
           </Layer>
+          {areas.map((area, i) => {
+            if (!area.boundary) {
+              return null
+            }
+            const layerStyle = {
+              'fill-color': areaColors[i % areaColors.length],
+              'fill-opacity': .7,
+            }
+            return <Layer key={i} type="fill" paint={layerStyle} >
+              <Feature coordinates={area.boundary.geometry.coordinates} />
+            </Layer>
+          })}
           <div className="popup-container">
             {hoveredPointIndex !== null && <DetailsPopup point={allPoints[hoveredPointIndex]} />}
           </div>
@@ -117,6 +141,7 @@ const mapStateToProps = state => {
     isLoading: state.isLoading.counties || state.isLoading.areas,
     allPoints,
     allPointsCollection,
+    areas: state.data.areas || [],
   }
 }
 

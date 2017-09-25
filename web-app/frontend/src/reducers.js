@@ -9,8 +9,8 @@ const initialState = {
   data: {},
   app: {
     selectedCounties: ['Alameda'],
-    selectedCountyZips: ['Alameda-94530'],
-    viewMode: 'table',
+    selectedCountyZips: ['Alameda-94530', 'Alameda-94501'],
+    viewMode: 'map',
     nPoints: 50,
     missingAreas: [],
     selectedCSVFileName: '',
