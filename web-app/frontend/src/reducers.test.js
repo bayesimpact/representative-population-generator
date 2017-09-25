@@ -22,6 +22,18 @@ it('removes all zips of a county when county gets removed', () => {
 });
 
 
+it('should not add a county twice', () => {
+  const state = {
+    app: {
+      selectedCounties: ['Alameda'],
+      selectedCountyZips: [],
+    }
+  }
+  const nextState = mainReducer(state, selectCountyAction('Alameda'))
+  expect(nextState.app.selectedCounties.length).toBe(1)
+});
+
+
 it('adds all county-zips when select all gets checked', () => {
   const state = {
     data: {

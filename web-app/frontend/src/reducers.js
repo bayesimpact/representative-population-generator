@@ -61,7 +61,9 @@ export function mainReducer(state=initialState, action) {
         }
       }
     case SET_COUNTY:
-      const newSelectedCounties = selectedCounties.concat([action.county])
+      const newSelectedCounties = selectedCounties.includes(action.county) ?
+        [...selectedCounties] :
+        selectedCounties.concat([action.county])
       let newSelectedCountyZips = [...selectedCountyZips]
       if (state.app.isSelectAllChecked) {
         newSelectedCountyZips = getAllZipsForCounties(newSelectedCounties, state.data.counties)
