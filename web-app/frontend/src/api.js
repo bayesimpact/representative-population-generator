@@ -1,7 +1,6 @@
 
 const apiHostname = process.env.REACT_APP_API_HOSTNAME
 
-// TODO: Request data from backend when endpoint exists.
 export function getCounties() {
   return fetch(apiHostname + '/available-service-areas')
     .then(response => response.json())

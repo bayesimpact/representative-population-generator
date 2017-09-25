@@ -15,7 +15,6 @@ import LoadingOverlay from './LoadingOverlay'
 import CSVUploader from './CSVUploader'
 import {
   fetchCounties,
-  fetchAreas,
   fetchAreasFromCSVFile,
   selectCountyAction,
   removeCountyAction,
@@ -34,8 +33,6 @@ class Sidebar extends Component {
   constructor(props) {
     super(props)
     props.dispatch(fetchCounties())
-    // TODO: Remove, this is only for debugging.
-    props.dispatch(fetchAreas(props.selectedCountyZips))
   }
 
   handleSelectCounty = county => {

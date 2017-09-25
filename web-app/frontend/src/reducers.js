@@ -18,8 +18,8 @@ const initialState = {
   },
   data: {},
   app: {
-    selectedCounties: ['Alameda'],
-    selectedCountyZips: ['Alameda-94530', 'Alameda-94501'],
+    selectedCounties: [],
+    selectedCountyZips: [],
     viewMode: 'map',
     nPoints: 50,
     missingAreas: [],
