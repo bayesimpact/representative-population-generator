@@ -14,7 +14,8 @@ import {
   fetchCounties,
   fetchAreas,
   fetchAreasFromCSVFile,
-  setSelectedCounties,
+  selectCountyAction,
+  removeCountyAction,
   setSelectedCountyZips,
   setPointNumber,
   resetAreaSelector,
@@ -31,9 +32,13 @@ class Sidebar extends Component {
     props.dispatch(fetchAreas(props.selectedCountyZips))
   }
 
-  handleCountyChange = selectedCounties => {
-    this.props.dispatch(setSelectedCounties(selectedCounties))
-  };
+  handleSelectCounty = county => {
+    this.props.dispatch(selectCountyAction(county))
+  }
+
+  handleRemoveCounty = county => {
+    this.props.dispatch(removeCountyAction(county))
+  }
 
   handleCountyZipChange = selectedCountyZips => {
     const {dispatch} = this.props
@@ -78,7 +83,8 @@ class Sidebar extends Component {
               isLoading={isLoading}
               selectedCounties={selectedCounties}
               selectedCountyZips={selectedCountyZips}
-              onCountyChange={this.handleCountyChange}
+              onSelectCounty={this.handleSelectCounty}
+              onRemoveCounty={this.handleRemoveCounty}
               onCountyZipChange={this.handleCountyZipChange} />
         </SidebarContent>
         <SidebarHeadline icon={PointsIcon} text="Enrolees" />

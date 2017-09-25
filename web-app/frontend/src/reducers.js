@@ -1,5 +1,11 @@
 
-import {START_REQUEST, FINISH_REQUEST, SET_APP_VARIABLE} from './actions'
+import {
+  START_REQUEST,
+  FINISH_REQUEST,
+  SET_APP_VARIABLE,
+  SET_COUNTY,
+  REMOVE_COUNTY,
+} from './actions'
 
 const initialState = {
   isLoading: {
@@ -47,6 +53,22 @@ export function mainReducer(state=initialState, action) {
           ...state.app,
           [action.variable]: action.value,
         }
+      }
+    case SET_COUNTY:
+      return {
+        ...state,
+        app: {
+          ...state.app,
+          selectedCounties: state.app.selectedCounties.concat([action.county]),
+        },
+      }
+    case REMOVE_COUNTY:
+      return {
+        ...state,
+        app: {
+          ...state.app,
+          selectedCounties: state.app.selectedCounties.filter(county => county !== action.county)
+        },
       }
     default:
       return state

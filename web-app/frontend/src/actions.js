@@ -3,6 +3,8 @@ import * as api from './api'
 export const START_REQUEST = 'START_REQUEST'
 export const FINISH_REQUEST = 'FINISH_REQUEST'
 export const SET_APP_VARIABLE = 'SET_APP_VARIABLE'
+export const SET_COUNTY = 'SET_COUNTY'
+export const REMOVE_COUNTY = 'REMOVE_COUNTY'
 
 function setAppVariableAction(variable, value) {
   return {type: SET_APP_VARIABLE, value, variable}
@@ -14,6 +16,14 @@ function startRequestAction(resource) {
 
 function finishRequestAction(resource, result) {
   return {type: FINISH_REQUEST, resource, result}
+}
+
+export function selectCountyAction(county) {
+  return {type: SET_COUNTY, county}
+}
+
+export function removeCountyAction(county) {
+  return {type: REMOVE_COUNTY, county}
 }
 
 export const fetchCounties = () => dispatch => {

@@ -15,7 +15,7 @@ class AreaSelector extends Component {
   render() {
     const {
       counties, isLoading, selectedCounties, selectedCountyZips,
-      onCountyChange, onCountyZipChange
+      onSelectCounty, onRemoveCounty, onCountyZipChange
     } = this.props
     return (
       <div style={{flex: 1, display: 'flex', flexDirection: 'column'}}>
@@ -24,7 +24,8 @@ class AreaSelector extends Component {
         <CountySelector
             selectedCounties={selectedCounties}
             counties={counties}
-            onChange={onCountyChange} />
+            onSelectCounty={onSelectCounty}
+            onRemoveCounty={onRemoveCounty} />
         <ZipCodeSelector
             style={{flex: 1, overflow: 'auto'}}
             selectedCounties={selectedCounties}
@@ -51,6 +52,14 @@ class StateSelector extends Component {
 
 class CountySelector extends Component {
 
+  handleChange = (event, index, values) => {
+    const {selectedCounties, onSelectCounty, onRemoveCounty} = this.props
+    const removedValues = _.difference(selectedCounties, values)
+    removedValues.forEach(value => onRemoveCounty(value))
+    const selectedValues = _.difference(values, selectedCounties)
+    selectedValues.forEach(value => onSelectCounty(value))
+  }
+
   render() {
     const {counties, selectedCounties, onChange} = this.props
     return (
@@ -58,7 +67,7 @@ class CountySelector extends Component {
           multiple={true}
           hintText="Select counties"
           value={selectedCounties}
-          onChange={(event, index, values) => onChange(values)}>
+          onChange={this.handleChange}>
         {Object.keys(counties || {}).sort().map(countyKey => (
           <MenuItem
               key={countyKey}
