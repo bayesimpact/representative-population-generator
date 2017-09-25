@@ -117,7 +117,7 @@ class Sidebar extends Component {
                 onRemoveCountyZip={this.handleRemoveCountyZip} />
           </div>
         </SidebarContent>
-        <SidebarHeadline icon={PointsIcon} text="Enrolees" />
+        <SidebarHeadline icon={PointsIcon} text="Enrollees" />
         <SidebarContent style={{flex: 'none'}}>
           <PointNumberSelector
               value={nPoints}
