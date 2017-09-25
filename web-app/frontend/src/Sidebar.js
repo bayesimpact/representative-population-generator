@@ -8,8 +8,11 @@ import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import Paper from 'material-ui/Paper'
 
-import AreaSelector from './AreaSelector'
+import StateSelector from './StateSelector'
+import CountySelector from './CountySelector'
+import ZipCodeSelector from './ZipCodeSelector'
 import PointNumberSelector from './PointNumberSelector'
+import LoadingOverlay from './LoadingOverlay'
 import {
   fetchCounties,
   fetchAreas,
@@ -69,7 +72,12 @@ class Sidebar extends Component {
       zIndex: 2,
       padding: '30px 25px',
     }
-
+    const areaSelectorStyle = {
+      position: 'relative',
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+    }
     return (
       <Paper style={{...sidebarStyle, ...style}}>
         <SidebarHeadline icon={PlaceIcon} text="Service Area" />
@@ -78,14 +86,21 @@ class Sidebar extends Component {
               selectedCSVFileName={selectedCSVFileName}
               onFileSelected={this.handleCSVFileSelected} />
           <InputSeparator />
-          <AreaSelector
-              counties={counties}
-              isLoading={isLoading}
-              selectedCounties={selectedCounties}
-              selectedCountyZips={selectedCountyZips}
-              onSelectCounty={this.handleSelectCounty}
-              onRemoveCounty={this.handleRemoveCounty}
-              onCountyZipChange={this.handleCountyZipChange} />
+          <div style={areaSelectorStyle}>
+            {isLoading ? <LoadingOverlay /> : null}
+            <StateSelector />
+            <CountySelector
+                selectedCounties={selectedCounties}
+                counties={counties}
+                onSelectCounty={this.handleSelectCounty}
+                onRemoveCounty={this.handleRemoveCounty} />
+            <ZipCodeSelector
+                style={{flex: 1, overflow: 'auto'}}
+                selectedCounties={selectedCounties}
+                selectedCountyZips={selectedCountyZips}
+                counties={counties}
+                onChange={this.handleCountyZipChange} />
+          </div>
         </SidebarContent>
         <SidebarHeadline icon={PointsIcon} text="Enrolees" />
         <SidebarContent style={{flex: 'none'}}>

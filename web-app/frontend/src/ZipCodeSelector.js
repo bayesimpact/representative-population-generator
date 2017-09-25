@@ -1,92 +1,11 @@
 import React, {Component} from 'react'
 import _ from 'underscore'
 
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Checkbox from 'material-ui/Checkbox';
 
-import LoadingOverlay from './LoadingOverlay'
 import styles from './styles'
-
-class AreaSelector extends Component {
-
-  render() {
-    const {
-      counties, isLoading, selectedCounties, selectedCountyZips,
-      onSelectCounty, onRemoveCounty, onCountyZipChange
-    } = this.props
-    const style = {
-      position: 'relative',
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-    }
-    return (
-      <div style={style}>
-        {isLoading ? <LoadingOverlay /> : null}
-        <StateSelector />
-        <CountySelector
-            selectedCounties={selectedCounties}
-            counties={counties}
-            onSelectCounty={onSelectCounty}
-            onRemoveCounty={onRemoveCounty} />
-        <ZipCodeSelector
-            style={{flex: 1, overflow: 'auto'}}
-            selectedCounties={selectedCounties}
-            selectedCountyZips={selectedCountyZips}
-            counties={counties}
-            onChange={onCountyZipChange} />
-      </div>
-    )
-  }
-}
-
-
-class StateSelector extends Component {
-
-  render() {
-    return (
-      <SelectField value='california'>
-        <MenuItem value={'california'} primaryText="California" />
-      </SelectField>
-    )
-  }
-}
-
-
-class CountySelector extends Component {
-
-  handleChange = (event, index, values) => {
-    const {selectedCounties, onSelectCounty, onRemoveCounty} = this.props
-    const removedValues = _.difference(selectedCounties, values)
-    removedValues.forEach(value => onRemoveCounty(value))
-    const selectedValues = _.difference(values, selectedCounties)
-    selectedValues.forEach(value => onSelectCounty(value))
-  }
-
-  render() {
-    const {counties, selectedCounties} = this.props
-    return (
-      <SelectField
-          multiple={true}
-          hintText="Select counties"
-          value={selectedCounties}
-          onChange={this.handleChange}>
-        {Object.keys(counties || {}).sort().map(countyKey => (
-          <MenuItem
-              key={countyKey}
-              insetChildren={true}
-              checked={selectedCounties && selectedCounties.includes(countyKey)}
-              value={countyKey}
-              primaryText={countyKey} />
-        ))}
-      </SelectField>
-    )
-  }
-}
-
 
 class ZipCodeSelector extends Component {
 
@@ -183,5 +102,4 @@ const ZipCodeSelectorHeadline = ({selectedCountyZips}) => (
   </div>
 )
 
-
-export default AreaSelector
+export default ZipCodeSelector
