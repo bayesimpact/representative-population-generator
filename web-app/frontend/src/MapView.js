@@ -43,8 +43,16 @@ class MapView extends Component {
     hoveredPoint: null,
   }
 
+  handlePointHover = point => {
+    this.setState({hoveredPoint: point})
+  }
+
+  handlePointLeave = () => {
+    this.setState({hoveredPoint: null})
+  }
+
   render() {
-    const {isLoading, nPoints, style, areas, boundingBoxCoordinates} = this.props
+    const {groupedPoints, isLoading, style, boundingBoxCoordinates} = this.props
     const {hoveredPoint} = this.state
     const fullContainerStyle = {height: '100%', width: '100%'}
     return (
@@ -58,15 +66,17 @@ class MapView extends Component {
             fitBounds={boundingBoxCoordinates}
             fitBoundsOptions={{padding: 30}}
             containerStyle={fullContainerStyle}>
-          {areas.map((area, i) => {
+          {Object.keys(groupedPoints).map(i => {
+            // Points are grouped because the mapbox component has issues with many layers.
+            // Performance becomes horrible when adding a layer for every area and we only
+            // have a small number of colors anyways.
             return (
               <PointsLayer
                   key={i}
-                  area={area}
-                  nPoints={nPoints}
-                  color={areaColors[i % areaColors.length]}
-                  onPointHover={point => this.setState({hoveredPoint: point})}
-                  onPointLeave={() => this.setState({hoveredPoint: null})} />
+                  points={groupedPoints[i]}
+                  color={areaColors[i]}
+                  onPointHover={this.handlePointHover}
+                  onPointLeave={this.handlePointLeave} />
             )
           })}
           <div className="popup-container">
@@ -82,7 +92,7 @@ class MapView extends Component {
 class PointsLayer extends Component {
 
   render() {
-    const {area, color, onPointHover, onPointLeave, nPoints} = this.props
+    const {points, color, onPointHover, onPointLeave} = this.props
     const pointStyle = {
       'circle-radius': 7,
       'circle-color': color,
@@ -90,7 +100,7 @@ class PointsLayer extends Component {
     }
     return (
       <Layer type="circle" paint={pointStyle}>
-        {area.points.slice(0, nPoints).map((point, i) => (
+        {points.map((point, i) => (
           <Feature
               onMouseEnter={() => onPointHover(point)}
               onMouseLeave={() => onPointLeave()}
@@ -152,6 +162,12 @@ const mapStateToProps = state => {
       [boundingBox[2], boundingBox[3]],
     ]
   }
+  const groupedPoints = (state.data.areas || []).reduce((accu, area, i) => {
+    const groupIndex = i % areaColors.length
+    const group = accu[groupIndex] || []
+    accu[groupIndex] = group.concat(area.points.slice(0, state.app.nPoints))
+    return accu
+  }, {})
   return {
     isLoading: state.isLoading.counties || state.isLoading.areas,
     allPoints,
@@ -159,6 +175,7 @@ const mapStateToProps = state => {
     allPointsCollection,
     boundingBoxCoordinates,
     areas: state.data.areas || [],
+    groupedPoints,
   }
 }
 
