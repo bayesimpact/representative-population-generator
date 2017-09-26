@@ -3,7 +3,7 @@ import json
 import os
 
 from backend.lib.exceptions import InvalidPayload
-from backend.lib.helper import fetch_point_as
+from backend.lib.helper import fetch_representative_points
 from backend.lib.helper import parse_csv_to_json
 from backend.lib.helper import standardize_request
 
@@ -15,12 +15,12 @@ from flask_pymongo import PyMongo
 
 
 app = flask.Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb://mongo:27017/representativepoints'
+app.config['MONGO_URI'] = 'mongodb://mongo:27017/na-db'
 CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
 
 mongo = PyMongo(app)
 with app.app_context():
-    repr_points = mongo.db.pointAs
+    repr_points = mongo.db.representative_points
     service_areas = mongo.db.service_areas
     boundaries = mongo.db.boundaries
 
@@ -49,7 +49,7 @@ def get_multiple_zip_county_points():
     returns: json object with info about area and a list of points.
     """
     zipcounties = exctract_zip_counties(app)
-    outputs = fetch_point_as(repr_points, zipcounties, boundaries, logger=app.logger)
+    outputs = fetch_representative_points(repr_points, zipcounties, boundaries, logger=app.logger)
     return flask.jsonify({'result': outputs})
 
 

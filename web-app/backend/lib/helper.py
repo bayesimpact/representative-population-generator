@@ -5,14 +5,14 @@ import io
 import re
 
 
-def fetch_point_as(point_a_db, service_areas, boundary_db, logger=None):
+def fetch_representative_points(representative_point_db, service_areas, boundary_db, logger=None):
     """Given a list of service areas, fetch and return point As for each one."""
     outputs = []
     logger.info('Finding point As for {} service areas'.format(len(service_areas)))
     for area in service_areas:
-        point_as = find_point_as(point_a_db, area, logger)
+        representative_points = find_representative_points(representative_point_db, area, logger)
         boundary = find_boundary(boundary_db, area, logger)
-        output = prepare_return_object(point_as, boundary, area)
+        output = prepare_return_object(representative_points, boundary, area)
         outputs.append(output)
     return outputs
 
@@ -57,19 +57,19 @@ def _regexifgy_input(input_value):
     return re.compile(input_value, re.IGNORECASE)
 
 
-def find_point_as(point_a_db, service_area, logger=None):
-    """Given a standard service_area, find and return corresponding point As in point_a_db."""
+def find_representative_points(representative_point_db, service_area, logger=None):
+    """Given a standard service_area, return corresponding representative points from db."""
     key_map = {'countyName': 'ServiceArea.CountyName', 'zipCode': 'ServiceArea.ZipCode'}
     try:
         area_regex = dict((key_map[k], _regexifgy_input(v)) for k, v in service_area.items())
-        point_a = point_a_db.find_one(area_regex)
-        return point_a['ReprPopPoints']['PointA']
+        representative_point = representative_point_db.find_one(area_regex)
+        return representative_point['ReprPopPoints']['PointA']
     except:
         return []
 
 
 def find_boundary(boundary_db, service_area, logger=None):
-    """Given a standard service_area, find and return corresponding point As in point_a_db."""
+    """Given a standard service_area, find and return boundaries."""
     key_map = {'countyName': 'properties.NAME', 'zipCode': 'properties.ZIP'}
     try:
         area_regex = dict((key_map[k], _regexifgy_input(v)) for k, v in service_area.items())
