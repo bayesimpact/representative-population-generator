@@ -1,0 +1,11 @@
+FROM python:3.6
+COPY requirements.txt /var/local/
+RUN pip install -qr /var/local/requirements.txt
+
+COPY ./app.py /var/local/app.py
+COPY ./lib /usr/local/lib/python3.6/site-packages/backend/lib
+
+WORKDIR /var/local
+EXPOSE 5000
+
+CMD python app.py

@@ -1,0 +1,16 @@
+FROM mongo:latest
+
+RUN mkdir /data/localdb && chown mongodb /data/localdb
+RUN apt-get -qq update
+RUN apt-get -qqy install curl && apt-get install -qqy psmisc
+
+# Download data.
+# TODO: Use Makefile instead of curl.
+RUN curl https://s3-us-west-1.amazonaws.com/network-adequacy/service_areas.json -o ./service_areas.json
+RUN curl https://s3-us-west-1.amazonaws.com/network-adequacy/service_area_boundaries.json -o ./service_area_boundaries.json
+RUN curl https://s3-us-west-1.amazonaws.com/network-adequacy/eddm_data.json -o ./eddm_data.json
+
+COPY populate.sh ./
+RUN gosu mongodb /bin/bash ./populate.sh --dbpath=/data/localdb
+
+CMD ["mongod",  "--dbpath=/data/localdb"]
