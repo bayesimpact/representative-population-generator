@@ -14,6 +14,9 @@ import FileDownloadIcon from 'material-ui/svg-icons/file/file-download'
 import {CSVLink} from 'react-csv'
 
 import LoadingOverlay from './LoadingOverlay'
+import styles from './styles'
+
+const MAX_DISPLAY_POINTS = 500
 
 class TableView extends Component {
 
@@ -26,18 +29,24 @@ class TableView extends Component {
       paddingRight: 20,
       position: 'relative',
     }
+    const noticeStyle = {
+      color: styles.secondaryText,
+    }
     return (
       <div style={{...tableViewStyle, ...style}}>
         {isLoading ? <LoadingOverlay /> : null}
         <div style={{display: 'flex', alignItems: 'center', paddingTop: 30}}>
           <div style={{fontSize: 20}}>
-            Representative Points of Enrollees
+            Representative Points of Enrollees&nbsp;
           </div>
           <div style={{flex: '1'}} />
           <CSVLink filename="service_area_points.csv" data={points}>
             <FlatButton style={{color: '#3F51B5'}} label="csv" icon={<FileDownloadIcon />} />
           </CSVLink>
         </div>
+        {points.length > MAX_DISPLAY_POINTS ?
+          <div style={noticeStyle}>(Displaying first {MAX_DISPLAY_POINTS} records)</div> :
+          null}
         <Table selectable={false} wrapperStyle={{flex: 1, display: 'flex', flexDirection: 'column'}}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
@@ -50,7 +59,7 @@ class TableView extends Component {
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false} style={{overflowY: 'scroll', flex: 1}}>
-            {points.map((point, i) => (
+            {points.slice(0, MAX_DISPLAY_POINTS).map((point, i) => (
               <TableRow key={i}>
                 <TableRowColumn>{i}</TableRowColumn>
                 <TableRowColumn>{point.zipCode}</TableRowColumn>
