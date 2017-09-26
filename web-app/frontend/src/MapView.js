@@ -60,18 +60,13 @@ class MapView extends Component {
             containerStyle={fullContainerStyle}>
           {areas.map((area, i) => {
             return (
-              <div key={i}>
-                <BoundaryLayer
-                    area={area}
-                    fillColor={areaColors[i % areaColors.length]} />
-                <PointsLayer
-                    area={area}
-                    nPoints={nPoints}
-                    color={areaColors[i % areaColors.length]}
-                    onPointHover={point => this.setState({hoveredPoint: point})}
-                    onPointLeave={() => this.setState({hoveredPoint: null})} />
-
-              </div>
+              <PointsLayer
+                  key={i}
+                  area={area}
+                  nPoints={nPoints}
+                  color={areaColors[i % areaColors.length]}
+                  onPointHover={point => this.setState({hoveredPoint: point})}
+                  onPointLeave={() => this.setState({hoveredPoint: null})} />
             )
           })}
           <div className="popup-container">
@@ -102,26 +97,6 @@ class PointsLayer extends Component {
               key={i}
               coordinates={point.geometry.coordinates}/>
         ))}
-      </Layer>
-    )
-  }
-}
-
-
-class BoundaryLayer extends Component {
-
-  render() {
-    const {area, fillColor} = this.props
-    const style = {
-      'fill-color': fillColor,
-      'fill-opacity': .7,
-    }
-    if (!area.boundary) {
-      return null
-    }
-    return (
-      <Layer type="fill" paint={style} >
-        <Feature coordinates={area.boundary.geometry.coordinates} />
       </Layer>
     )
   }
