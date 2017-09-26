@@ -136,3 +136,13 @@ To run webapp tests locally simply run
 To run the linter
 
     make webapp-lint
+
+
+## Datasets
+The backend Docker automatically downloads all necessary datasets and populate the database. If you need to download seed files, you can prepare sample datasets for development by running in `data` directory:
+
+     make all-sample-datasets
+
+Similarly, full datasets for production can be built by running in `data` directory:
+
+    make all-full-datasets

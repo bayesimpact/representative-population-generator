@@ -2,13 +2,14 @@ FROM mongo:latest
 
 RUN mkdir /data/localdb && chown mongodb /data/localdb
 RUN apt-get -qq update
-RUN apt-get -qqy install curl && apt-get install -qqy psmisc
-COPY sample_eddm_data.json ./eddm_data.json
-COPY sample_service_areas.json ./service_areas.json
-COPY service_area_boundaries.json ./service_area_boundaries.json
+RUN apt-get -qqy install curl && apt-get install -qqy psmisc && apt-get install -qqy build-essential
 
+COPY Makefile ./
+RUN make all-sample-datasets
 
 COPY populate.sh ./
 RUN gosu mongodb /bin/bash ./populate.sh --dbpath=/data/localdb
+
+RUN rm -r *.json
 
 CMD ["mongod",  "--dbpath=/data/localdb"]

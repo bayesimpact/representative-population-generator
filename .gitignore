@@ -34,3 +34,6 @@ package-lock.json
 # Private folders
 secret-data/
 .coverage
+
+# Datasets
+data/*.json
