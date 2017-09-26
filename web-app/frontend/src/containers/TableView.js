@@ -13,8 +13,8 @@ import FlatButton from 'material-ui/FlatButton'
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download'
 import {CSVLink} from 'react-csv'
 
-import LoadingOverlay from './LoadingOverlay'
-import styles from './styles'
+import LoadingOverlay from '../components/LoadingOverlay'
+import styles from '../styles'
 
 const MAX_DISPLAY_POINTS = 500
 

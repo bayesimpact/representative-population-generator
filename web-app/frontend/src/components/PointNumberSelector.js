@@ -3,7 +3,7 @@ import ReactTooltip from 'react-tooltip'
 import Slider from 'material-ui/Slider'
 import ActionInfo from 'material-ui/svg-icons/action/info'
 
-import styles from './styles'
+import styles from '../styles'
 
 
 // Material UI uses a slider value between 0 and 1 which has to be mapped

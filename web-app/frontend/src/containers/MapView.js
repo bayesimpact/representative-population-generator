@@ -15,7 +15,7 @@ import {connect} from 'react-redux'
 import ReactMapboxGl, {Layer, Feature, Popup} from 'react-mapbox-gl';
 import bbox from 'geojson-bbox'
 
-import LoadingOverlay from './LoadingOverlay'
+import LoadingOverlay from '../components/LoadingOverlay'
 
 const CENTER_OF_CALIFORNIA = [-119.182111, 36.250471]
 const INITIAL_ZOOM_LEVEL = [3]

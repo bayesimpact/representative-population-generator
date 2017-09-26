@@ -7,7 +7,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import {indigo500, indigo700} from 'material-ui/styles/colors';
 
-import {mainReducer} from './reducers'
+import {mainReducer} from '../reducers'
 import App from './App'
 
 

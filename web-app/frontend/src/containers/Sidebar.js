@@ -7,12 +7,12 @@ import PointsIcon from 'material-ui/svg-icons/image/grain'
 import FlatButton from 'material-ui/FlatButton'
 import Paper from 'material-ui/Paper'
 
-import StateSelector from './StateSelector'
-import CountySelector from './CountySelector'
-import ZipCodeSelector, {ZipCodeSelectorHeadline} from './ZipCodeSelector'
-import PointNumberSelector from './PointNumberSelector'
-import LoadingOverlay from './LoadingOverlay'
-import CSVUploader from './CSVUploader'
+import StateSelector from '../components/StateSelector'
+import CountySelector from '../components/CountySelector'
+import ZipCodeSelector, {ZipCodeSelectorHeadline} from '../components/ZipCodeSelector'
+import PointNumberSelector from '../components/PointNumberSelector'
+import LoadingOverlay from '../components/LoadingOverlay'
+import CSVUploader from '../components/CSVUploader'
 import {
   fetchCounties,
   fetchAreasFromCSVFile,
@@ -24,8 +24,8 @@ import {
   setSelectAllUnchecked,
   setPointNumber,
   resetAreaSelector,
-} from './actions'
-import styles from './styles'
+} from '../actions'
+import styles from '../styles'
 
 
 class Sidebar extends Component {

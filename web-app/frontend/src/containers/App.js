@@ -6,10 +6,10 @@ import './App.css';
 import Sidebar from './Sidebar'
 import TableView from './TableView'
 import MapView from './MapView'
-import Header from './Header'
-import ViewModeSwitcher from './ViewModeSwitcher'
-import MissingAreasDialog from './MissingAreasDialog'
-import {setViewMode, resetMissingAreas, resetSnackMessage} from './actions'
+import Header from '../components/Header'
+import ViewModeSwitcher from '../components/ViewModeSwitcher'
+import MissingAreasDialog from '../components/MissingAreasDialog'
+import {setViewMode, resetMissingAreas, resetSnackMessage} from '../actions'
 
 
 class App extends Component {

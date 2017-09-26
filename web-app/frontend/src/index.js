@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import AppContainer from './AppContainer';
+import AppContainer from './containers/AppContainer';
 import registerServiceWorker from './registerServiceWorker';
 
 const rootEl = document.getElementById('root')
@@ -12,8 +11,8 @@ ReactDOM.render(
 )
 
 if (module.hot) {
-  module.hot.accept('./AppContainer', () => {
-    const NextApp = require('./AppContainer').default
+  module.hot.accept('./containers/AppContainer', () => {
+    const NextApp = require('./containers/AppContainer').default
     ReactDOM.render(
       <NextApp />,
       rootEl

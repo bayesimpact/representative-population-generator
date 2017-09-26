@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 import RaisedButton from 'material-ui/RaisedButton'
 
-import styles from './styles'
+import styles from '../styles'
 
 
 class CSVUploader extends Component {
