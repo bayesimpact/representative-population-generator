@@ -16,13 +16,13 @@ class ViewModeSwitcher extends Component {
     return (
       <div style={{...switcherStyle, ...style}}>
         <ViewModeButton
-            label="Map"
-            isSelected={viewMode === 'map'}
-            onClick={() => onViewModeClick('map')} />
-        <ViewModeButton
             label="Table"
             isSelected={viewMode === 'table'}
             onClick={() => onViewModeClick('table')} />
+        <ViewModeButton
+            label="Map"
+            isSelected={viewMode === 'map'}
+            onClick={() => onViewModeClick('map')} />
       </div>
     )
   }

@@ -20,7 +20,7 @@ const initialState = {
   app: {
     selectedCounties: [],
     selectedCountyZips: [],
-    viewMode: 'map',
+    viewMode: 'table',
     nPoints: 50,
     missingAreas: [],
     selectedCSVFileName: '',
