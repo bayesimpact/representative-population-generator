@@ -37,3 +37,7 @@ secret-data/
 
 # Datasets
 data/*.json
+
+# Editor config.
+network-adequacy.sublime-project
+network-adequacy.sublime-workspace

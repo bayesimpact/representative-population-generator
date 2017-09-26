@@ -23,7 +23,7 @@ services:
         command: python app.py
 
     mongo:
-        build: 
+        build:
           context: ./data
           dockerfile: Dockerfile
         ports:
@@ -42,3 +42,5 @@ services:
         depends_on:
           - mongo
           - backend
+        environment:
+          - REACT_APP_API_HOSTNAME=http://localhost:8080

@@ -5,12 +5,11 @@ RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 COPY package.json /usr/src/app/
+COPY yarn.lock /usr/src/app/
 
-RUN npm install
+RUN yarn
 
 ADD src /usr/src/app/src
 ADD public /usr/src/app/public
 
-RUN npm build
-
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]
