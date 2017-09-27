@@ -12,16 +12,15 @@ import {
   TableRowColumn,
 } from 'material-ui/Table'
 
+import types from '../types'
+
 
 class MissingAreasDialog extends Component {
 
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onCloseClick: PropTypes.func.isRequired,
-    missingAreas: PropTypes.arrayOf(PropTypes.shape({
-      countyName: PropTypes.string,
-      zipCode: PropTypes.string,
-    })).isRequired,
+    missingAreas: PropTypes.arrayOf(types.missingAreasShape).isRequired,
   };
 
   render() {
