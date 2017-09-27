@@ -6,6 +6,9 @@ import Dialog from 'material-ui/Dialog'
 import {indigo500} from 'material-ui/styles/colors'
 import GithubIcon from 'mui-icons/fontawesome/github'
 
+import BayesLogo from '../images/bayes-logo.png'
+import DMHCLogo from '../images/dmhc-logo.png'
+
 
 class Header extends Component {
 
@@ -68,10 +71,15 @@ class AboutDialog extends Component {
     return (
       <Dialog
           title="About"
+          autoScrollBodyContent={true}
           open={isOpen}
           onRequestClose={onCloseClick}
           actions={actions}>
         <div>
+          <div style={{height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <img style={{height: 140}} src={BayesLogo} />
+            <img style={{height: 80, marginLeft: 30}} src={DMHCLogo} />
+          </div>
           <p>
             This web app was built by {bayesLink} for the {dmhcLink} (DMHC)
             to measure and analyze health plan network adequacy in the state
