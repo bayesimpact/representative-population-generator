@@ -12,6 +12,9 @@ services:
     #       - PYTHONPATH=/home/jovyan/work
 
     backend:
+        build:
+          context: ./web-app/backend
+          dockerfile: Dockerfile
         volumes:
           - ./web-app/backend/app.py:/var/local/app.py
           - ./web-app/backend/tests:/var/local/tests:ro
@@ -44,3 +47,4 @@ services:
           - backend
         environment:
           - REACT_APP_API_HOSTNAME=http://localhost:8080
+          - REACT_APP_VERSION=DEV

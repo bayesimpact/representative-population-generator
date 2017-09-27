@@ -2,7 +2,7 @@
 
 import io
 
-from backend.app import exctract_zip_counties
+from backend.app import extract_zip_counties
 from backend.lib.exceptions import InvalidPayload
 from backend.lib.helper import jsonify_input
 
@@ -42,7 +42,7 @@ def test_jsonify_input():
 
 
 class TestGetZipCounties(LiveServerTestCase):
-    """Test class for exctract_zip_counties method."""
+    """Test class for extract_zip_counties method."""
 
     def create_app(self):
         """Start a new flask app for testing."""
@@ -55,7 +55,7 @@ class TestGetZipCounties(LiveServerTestCase):
         mock_file = _load_convert_file(file_path)
         with mock.patch('flask.request') as mock_request:
             mock_request.files.__getitem__.return_value = mock_file
-            output = exctract_zip_counties(self.app)
+            output = extract_zip_counties(self.app)
         return output
 
     def test_parsing_csv_1(self):

@@ -16,6 +16,9 @@ services:
         depends_on:
             - mongo
             - backend
+        environment:
+            - REACT_APP_API_HOSTNAME=http://network-adequacy-lb-1359998520.us-west-1.elb.amazonaws.com:8080
+            - REACT_APP_VERSION=0.0.1
 
     mongo:
         image: bayesimpact/na-mongodb 

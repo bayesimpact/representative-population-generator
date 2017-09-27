@@ -44,9 +44,10 @@ then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # Handle exits from shell or function but don't exit interactive shell.
 fi
 
-ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service down --region us-west-1
+ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy --region us-west-1 service down
 
 # Pause to prevent "InvalidParameterException: Unable to Start a service that is still Draining."
+echo "Waiting for 2 minutes."
 sleep 120s
 
-ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service up --region us-west-1
+ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy --region us-west-1 service up

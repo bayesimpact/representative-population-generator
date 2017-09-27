@@ -48,12 +48,12 @@ def get_multiple_zip_county_points():
     ]
     returns: json object with info about area and a list of points.
     """
-    zipcounties = exctract_zip_counties(app)
+    zipcounties = extract_zip_counties(app)
     outputs = fetch_representative_points(repr_points, zipcounties, boundaries, logger=app.logger)
     return flask.jsonify({'result': outputs})
 
 
-def exctract_zip_counties(app):
+def extract_zip_counties(app):
     """
     Extract zipcounties from different flask input methods.
 
