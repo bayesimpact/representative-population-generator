@@ -14,10 +14,10 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
 import ReactMapboxGl, {Layer, Feature, Popup} from 'react-mapbox-gl'
-import bbox from 'geojson-bbox'
 
 import LoadingOverlay from '../components/LoadingOverlay'
 import types from '../types'
+import {getBoundingBoxCoordinates, getAllPointsCollection, getGroupedPoints} from './mapViewSelectorHelpers'
 
 
 const CENTER_OF_CALIFORNIA = [-119.182111, 36.250471]
@@ -167,34 +167,15 @@ const TableRow = ({name, value}) => (
 TableRow.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-}
+};
 
 
-const mapStateToProps = state => {
-  const allPoints = (state.data.areas || []).reduce((accu, area) => {
-    return accu.concat(area.points.slice(0, state.app.nPoints))
-  }, [])
-  const allPointsCollection = {
-    type: 'FeatureCollection',
-    features: allPoints
-  };
-  let boundingBoxCoordinates = null
-  if (allPointsCollection.features.length) {
-    const boundingBox = bbox(allPointsCollection)
-    boundingBoxCoordinates = [
-      [boundingBox[0], boundingBox[1]],
-      [boundingBox[2], boundingBox[3]],
-    ]
-  }
-  const groupedPoints = (state.data.areas || []).reduce((accu, area, i) => {
-    const groupIndex = i % AREA_COLORS.length
-    const group = accu[groupIndex] || []
-    accu[groupIndex] = group.concat(area.points.slice(0, state.app.nPoints))
-    return accu
-  }, {})
+const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
+  const allPointsCollection = getAllPointsCollection(areas, nPoints)
+  const groupedPoints = getGroupedPoints(areas, AREA_COLORS.length, nPoints)
   return {
-    isLoading: state.isLoading.counties || state.isLoading.areas,
-    boundingBoxCoordinates,
+    isLoading: isLoading.counties || isLoading.areas,
+    boundingBoxCoordinates: getBoundingBoxCoordinates(allPointsCollection),
     groupedPoints,
   }
 }

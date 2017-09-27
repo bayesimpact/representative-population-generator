@@ -16,11 +16,13 @@ const initialState = {
     areas: false,
     counties: true,
   },
-  data: {},
+  data: {
+    areas: [],
+  },
   app: {
     selectedCounties: [],
     selectedCountyZips: [],
-    viewMode: 'table',
+    viewMode: 'map',
     nPoints: 50,
     missingAreas: [],
     selectedCSVFileName: '',
