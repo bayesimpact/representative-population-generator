@@ -1,11 +1,21 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import _ from 'underscore'
 
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
 
 
 class CountySelector extends Component {
+
+  static propTypes = {
+    counties: PropTypes.objectOf(PropTypes.shape({
+      zips: PropTypes.arrayOf(PropTypes.string),
+    })),
+    selectedCounties: PropTypes.arrayOf(PropTypes.string).isRequired,
+    onSelectCounty: PropTypes.func.isRequired,
+    onRemoveCounty: PropTypes.func.isRequired,
+  };
 
   handleChange = (event, index, values) => {
     const {selectedCounties, onSelectCounty, onRemoveCounty} = this.props
@@ -13,7 +23,7 @@ class CountySelector extends Component {
     removedValues.forEach(value => onRemoveCounty(value))
     const selectedValues = _.difference(values, selectedCounties)
     selectedValues.forEach(value => onSelectCounty(value))
-  }
+  };
 
   render() {
     const {counties, selectedCounties} = this.props
