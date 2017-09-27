@@ -31,7 +31,6 @@ const AREA_COLORS = [
   '#ffffcc',
   '#e5d8bd',
   '#fddaec',
-  '#f2f2f2',
 ]
 
 // Mapbox Access Token.
