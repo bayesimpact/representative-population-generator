@@ -10,21 +10,19 @@ popular component to interface from React to Mapbox. It seems well documented
 and I have used it in the past.
 */
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
-import ReactMapboxGl, {Layer, Feature, Popup} from 'react-mapbox-gl';
-import bbox from 'geojson-bbox'
+import ReactMapboxGl, {Layer, Feature, Popup} from 'react-mapbox-gl'
 
-import LoadingOverlay from './LoadingOverlay'
+import LoadingOverlay from '../components/LoadingOverlay'
+import types from '../types'
+import {getBoundingBoxCoordinates, getAllPointsCollection, getGroupedPoints} from './mapViewSelectorHelpers'
+
 
 const CENTER_OF_CALIFORNIA = [-119.182111, 36.250471]
 const INITIAL_ZOOM_LEVEL = [3]
-
-// Mapbox Access Token.
-const accessToken = 'pk.eyJ1IjoiZGVkYW4iLCJhIjoiY2o3c29wcThlM3ZlZjMzdXdzczQ3bzIwMSJ9.pvxNu-R28kuQ6CXsHJST_w'
-const Map = ReactMapboxGl({ accessToken });
-
-const areaColors = [
+const AREA_COLORS = [
   '#fbb4ae',
   '#b3cde3',
   '#ccebc5',
@@ -36,20 +34,31 @@ const areaColors = [
   '#f2f2f2',
 ]
 
+// Mapbox Access Token.
+const accessToken = 'pk.eyJ1IjoiZGVkYW4iLCJhIjoiY2o3c29wcThlM3ZlZjMzdXdzczQ3bzIwMSJ9.pvxNu-R28kuQ6CXsHJST_w'
+const Map = ReactMapboxGl({ accessToken });
+
 
 class MapView extends Component {
 
+  static propTypes = {
+    groupedPoints: PropTypes.objectOf(PropTypes.arrayOf(types.pointShape)),
+    isLoading: PropTypes.bool.isRequired,
+    style: PropTypes.object,
+    boundingBoxCoordinates: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+  };
+
   state = {
     hoveredPoint: null,
-  }
+  };
 
   handlePointHover = point => {
     this.setState({hoveredPoint: point})
-  }
+  };
 
   handlePointLeave = () => {
     this.setState({hoveredPoint: null})
-  }
+  };
 
   render() {
     const {groupedPoints, isLoading, style, boundingBoxCoordinates} = this.props
@@ -74,7 +83,7 @@ class MapView extends Component {
               <PointsLayer
                   key={i}
                   points={groupedPoints[i]}
-                  color={areaColors[i]}
+                  color={AREA_COLORS[i]}
                   onPointHover={this.handlePointHover}
                   onPointLeave={this.handlePointLeave} />
             )
@@ -90,6 +99,13 @@ class MapView extends Component {
 
 
 class PointsLayer extends Component {
+
+  static propTypes = {
+    points: PropTypes.arrayOf(types.pointShape).isRequired,
+    color: PropTypes.string.isRequired,
+    onPointHover: PropTypes.func.isRequired,
+    onPointLeave: PropTypes.func.isRequired,
+  };
 
   render() {
     const {points, color, onPointHover, onPointLeave} = this.props
@@ -114,6 +130,10 @@ class PointsLayer extends Component {
 
 
 class DetailsPopup extends Component {
+
+  static propTypes = {
+    point: types.pointShape,
+  };
 
   render() {
     const {point} = this.props
@@ -144,37 +164,18 @@ const TableRow = ({name, value}) => (
     <td style={{paddingLeft: 15}}>{value}</td>
   </tr>
 )
+TableRow.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 
-const mapStateToProps = state => {
-  const allPoints = (state.data.areas || []).reduce((accu, area) => {
-    return accu.concat(area.points.slice(0, state.app.nPoints))
-  }, [])
-  const allPointsCollection = {
-    type: 'FeatureCollection',
-    features: allPoints
-  };
-  let boundingBoxCoordinates = null
-  if (allPointsCollection.features.length) {
-    const boundingBox = bbox(allPointsCollection)
-    boundingBoxCoordinates = [
-      [boundingBox[0], boundingBox[1]],
-      [boundingBox[2], boundingBox[3]],
-    ]
-  }
-  const groupedPoints = (state.data.areas || []).reduce((accu, area, i) => {
-    const groupIndex = i % areaColors.length
-    const group = accu[groupIndex] || []
-    accu[groupIndex] = group.concat(area.points.slice(0, state.app.nPoints))
-    return accu
-  }, {})
+const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
+  const allPointsCollection = getAllPointsCollection(areas, nPoints)
+  const groupedPoints = getGroupedPoints(areas, AREA_COLORS.length, nPoints)
   return {
-    isLoading: state.isLoading.counties || state.isLoading.areas,
-    allPoints,
-    nPoints: state.app.nPoints,
-    allPointsCollection,
-    boundingBoxCoordinates,
-    areas: state.data.areas || [],
+    isLoading: isLoading.counties || isLoading.areas,
+    boundingBoxCoordinates: getBoundingBoxCoordinates(allPointsCollection),
     groupedPoints,
   }
 }

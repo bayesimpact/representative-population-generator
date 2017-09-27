@@ -1,16 +1,22 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 
 import RaisedButton from 'material-ui/RaisedButton'
 
-import styles from './styles'
+import styles from '../styles'
 
 
 class CSVUploader extends Component {
 
+  static propTypes = {
+    onFileSelected: PropTypes.func.isRequired,
+    selectedCSVFileName: PropTypes.string.isRequired,
+  };
+
   handleFileSelect = e => {
     const {onFileSelected} = this.props
     onFileSelected && onFileSelected(e.target.files[0])
-  }
+  };
 
   render() {
     const {selectedCSVFileName} = this.props

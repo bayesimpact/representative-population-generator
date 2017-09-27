@@ -16,7 +16,9 @@ const initialState = {
     areas: false,
     counties: true,
   },
-  data: {},
+  data: {
+    areas: [],
+  },
   app: {
     selectedCounties: [],
     selectedCountyZips: [],

@@ -89,13 +89,6 @@ export const fetchAreas = selectedCountyZips => dispatch => {
   })
 }
 
-function countyZipsToObjects(selectedCountyZips) {
-  return selectedCountyZips.map(countyZip => {
-    const [county, zip] = countyZip.split('-')
-    return {county, zip}
-  })
-}
-
 export const fetchAreasFromCSVFile = file => dispatch => {
   dispatch(setAppVariableAction('selectedCSVFileName', file.name))
   dispatch(startRequestAction('areas'))
@@ -108,13 +101,6 @@ export const fetchAreasFromCSVFile = file => dispatch => {
     dispatch(finishRequestAction('areas', []))
     dispatch(setAppVariableAction('snackMessage', error.message))
   })
-}
-
-function getUnavailableServiceAreas(areas) {
-  return areas.reduce((accu, area) => {
-    return area.availabilityStatus.isServiceAreaAvailable ?
-      accu : accu.concat([area.areaInfo])
-  }, [])
 }
 
 export function setViewMode(viewMode) {
@@ -139,4 +125,19 @@ export function resetMissingAreas() {
 
 export function resetSnackMessage() {
   return setAppVariableAction('snackMessage', '')
+}
+
+
+export function countyZipsToObjects(selectedCountyZips) {
+  return selectedCountyZips.map(countyZip => {
+    const [county, zip] = countyZip.split('-')
+    return {county, zip}
+  })
+}
+
+export function getUnavailableServiceAreas(areas) {
+  return areas.reduce((accu, area) => {
+    return area.availabilityStatus.isServiceAreaAvailable ?
+      accu : accu.concat([area.areaInfo])
+  }, [])
 }

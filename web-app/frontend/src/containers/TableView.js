@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
 import {
@@ -8,17 +9,32 @@ import {
   TableHeaderColumn,
   TableRow,
   TableRowColumn,
-} from 'material-ui/Table';
+} from 'material-ui/Table'
 import FlatButton from 'material-ui/FlatButton'
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download'
 import {CSVLink} from 'react-csv'
 
-import LoadingOverlay from './LoadingOverlay'
-import styles from './styles'
+import LoadingOverlay from '../components/LoadingOverlay'
+import styles from '../styles'
+import {getAllPoints} from './tableViewSelectorHelpers'
+
 
 const MAX_DISPLAY_POINTS = 500
 
+
 class TableView extends Component {
+
+  static propTypes = {
+    isLoading: PropTypes.bool.isRequired,
+    points: PropTypes.arrayOf(PropTypes.shape({
+      zipCode: PropTypes.string.isRequired,
+      county: PropTypes.string.isRequired,
+      longitude: PropTypes.number.isRequired,
+      latitude: PropTypes.number.isRequired,
+      nResidents: PropTypes.number.isRequired,
+    })).isRequired,
+    style: PropTypes.object,
+  };
 
   render() {
     const {isLoading, points, style} = this.props
@@ -76,23 +92,13 @@ class TableView extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const points = [];
-  (state.data.areas || []).forEach(area => {
-    area.points.slice(0, state.app.nPoints).forEach(point => {
-      points.push({
-        zipCode: point.properties.zip,
-        county: point.properties.county,
-        longitude: point.geometry.coordinates[0],
-        latitude: point.geometry.coordinates[1],
-        nResidents: Math.round(point.properties.population),
-      })
-    })
-  })
+
+const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
   return {
-    isLoading: state.isLoading.counties || state.isLoading.areas,
-    points,
+    isLoading: isLoading.counties || isLoading.areas,
+    points: getAllPoints(areas, nPoints),
   }
 }
+
 
 export default connect(mapStateToProps)(TableView)

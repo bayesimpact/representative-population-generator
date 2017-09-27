@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import _ from 'underscore'
 
@@ -7,12 +8,12 @@ import PointsIcon from 'material-ui/svg-icons/image/grain'
 import FlatButton from 'material-ui/FlatButton'
 import Paper from 'material-ui/Paper'
 
-import StateSelector from './StateSelector'
-import CountySelector from './CountySelector'
-import ZipCodeSelector, {ZipCodeSelectorHeadline} from './ZipCodeSelector'
-import PointNumberSelector from './PointNumberSelector'
-import LoadingOverlay from './LoadingOverlay'
-import CSVUploader from './CSVUploader'
+import StateSelector from '../components/StateSelector'
+import CountySelector from '../components/CountySelector'
+import ZipCodeSelector, {ZipCodeSelectorHeadline} from '../components/ZipCodeSelector'
+import PointNumberSelector from '../components/PointNumberSelector'
+import LoadingOverlay from '../components/LoadingOverlay'
+import CSVUploader from '../components/CSVUploader'
 import {
   fetchCounties,
   fetchAreasFromCSVFile,
@@ -24,11 +25,24 @@ import {
   setSelectAllUnchecked,
   setPointNumber,
   resetAreaSelector,
-} from './actions'
-import styles from './styles'
+} from '../actions'
+import styles from '../styles'
+import types from '../types'
 
 
 class Sidebar extends Component {
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    counties: PropTypes.objectOf(types.countyShape),
+    isLoading: PropTypes.bool.isRequired,
+    selectedCounties: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedCountyZips: PropTypes.arrayOf(PropTypes.string).isRequired,
+    nPoints: PropTypes.number.isRequired,
+    style: PropTypes.object.isRequired,
+    selectedCSVFileName: PropTypes.string.isRequired,
+    isSelectAllChecked: PropTypes.bool.isRequired,
+  };
 
   constructor(props) {
     super(props)
@@ -58,7 +72,7 @@ class Sidebar extends Component {
     } else {
       dispatch(setSelectAllUnchecked())
     }
-  }
+  };
 
   handlePointNumberChange = _.throttle(nPoints => {
     this.props.dispatch(setPointNumber(nPoints))
@@ -105,7 +119,8 @@ class Sidebar extends Component {
                 counties={counties}
                 onSelectCounty={this.handleSelectCounty}
                 onRemoveCounty={this.handleRemoveCounty} />
-            <ZipCodeSelectorHeadline selectedCountyZips={selectedCountyZips} />
+            <ZipCodeSelectorHeadline
+                nSelectedCountyZips={selectedCountyZips.length} />
             <ZipCodeSelector
                 style={{flex: 1, overflow: 'auto'}}
                 counties={counties}
@@ -136,6 +151,11 @@ class Sidebar extends Component {
 
 class SidebarHeadline extends Component {
 
+  static propTypes = {
+    icon: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired,
+  };
+
   render() {
     const {icon, text} = this.props
     const IconTag = icon
@@ -164,6 +184,11 @@ class SidebarHeadline extends Component {
 
 
 class SidebarContent extends Component {
+
+  static propTypes = {
+    style: PropTypes.object,
+    children: PropTypes.node,
+  };
 
   render() {
     const {style} = this.props

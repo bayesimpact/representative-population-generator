@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import CircularProgress from 'material-ui/CircularProgress';
+
+import CircularProgress from 'material-ui/CircularProgress'
+
 
 class LoadingOverlay extends Component {
 

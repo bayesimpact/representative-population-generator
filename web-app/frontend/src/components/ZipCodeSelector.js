@@ -1,13 +1,26 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 
-import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
-import Checkbox from 'material-ui/Checkbox';
+import {List, ListItem} from 'material-ui/List'
+import Subheader from 'material-ui/Subheader'
+import Checkbox from 'material-ui/Checkbox'
 
-import styles from './styles'
+import styles from '../styles'
+import types from '../types'
+
 
 class ZipCodeSelector extends Component {
 
+  static propTypes = {
+    onSelectCountyZip: PropTypes.func.isRequired,
+    onRemoveCountyZip: PropTypes.func.isRequired,
+    onSelectAllChange: PropTypes.func.isRequired,
+    counties: PropTypes.objectOf(types.countyShape),
+    selectedCounties: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedCountyZips: PropTypes.arrayOf(PropTypes.string).isRequired,
+    style: PropTypes.object,
+    isSelectAllChecked: PropTypes.bool.isRequired,
+  };
 
   handleChange = (countyZipKey, isInputChecked) => {
     const {onSelectCountyZip, onRemoveCountyZip} = this.props
@@ -16,7 +29,7 @@ class ZipCodeSelector extends Component {
     } else {
       onRemoveCountyZip(countyZipKey)
     }
-  }
+  };
 
   render() {
     const {
@@ -58,16 +71,21 @@ class ZipCodeSelector extends Component {
 }
 
 
-export const ZipCodeSelectorHeadline = ({selectedCountyZips}) => (
+const ZipCodeSelectorHeadline = ({nSelectedCountyZips}) => (
   <div style={{display: 'flex', flex: 'none', marginTop: 5}}>
     <div style={{marginBottom: 15, color: styles.primaryText}}>
       Zip Codes
     </div>
     <div style={{flex: 1}} />
     <div style={{color: styles.secondaryText}}>
-      {selectedCountyZips.length} selected
+      {nSelectedCountyZips} selected
     </div>
   </div>
 )
+ZipCodeSelectorHeadline.propTypes = {
+  nSelectedCountyZips: PropTypes.number.isRequired
+}
+export {ZipCodeSelectorHeadline}
+
 
 export default ZipCodeSelector

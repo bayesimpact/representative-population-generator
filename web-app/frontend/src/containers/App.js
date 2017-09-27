@@ -1,30 +1,40 @@
-import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+
 import Snackbar from 'material-ui/Snackbar'
 
 import './App.css';
 import Sidebar from './Sidebar'
 import TableView from './TableView'
 import MapView from './MapView'
-import Header from './Header'
-import ViewModeSwitcher from './ViewModeSwitcher'
-import MissingAreasDialog from './MissingAreasDialog'
-import {setViewMode, resetMissingAreas, resetSnackMessage} from './actions'
+import Header from '../components/Header'
+import ViewModeSwitcher from '../components/ViewModeSwitcher'
+import MissingAreasDialog from '../components/MissingAreasDialog'
+import {setViewMode, resetMissingAreas, resetSnackMessage} from '../actions'
+import types from '../types'
 
 
 class App extends Component {
 
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    viewMode: PropTypes.string.isRequired,
+    missingAreas: PropTypes.arrayOf(types.missingAreasShape).isRequired,
+    snackMessage: PropTypes.string.isRequired,
+  };
+
   handleViewModeChange = viewMode => {
     this.props.dispatch(setViewMode(viewMode))
-  }
+  };
 
   handleMissingAreasCloseClick = () => {
     this.props.dispatch(resetMissingAreas())
-  }
+  };
 
   handleSnackbarRequestClose = () => {
     this.props.dispatch(resetSnackMessage())
-  }
+  };
 
   render() {
     const {viewMode, missingAreas, snackMessage} = this.props
@@ -69,10 +79,12 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  viewMode: state.app.viewMode,
-  missingAreas: state.app.missingAreas,
-  snackMessage: state.app.snackMessage,
+
+const mapStateToProps = ({app: {viewMode, missingAreas, snackMessage}}) => ({
+  viewMode,
+  missingAreas,
+  snackMessage,
 })
+
 
 export default connect(mapStateToProps)(App)

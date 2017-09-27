@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {
@@ -8,10 +10,18 @@ import {
   TableHeaderColumn,
   TableRow,
   TableRowColumn,
-} from 'material-ui/Table';
+} from 'material-ui/Table'
+
+import types from '../types'
 
 
 class MissingAreasDialog extends Component {
+
+  static propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onCloseClick: PropTypes.func.isRequired,
+    missingAreas: PropTypes.arrayOf(types.missingAreasShape).isRequired,
+  };
 
   render() {
     const {isOpen, onCloseClick, missingAreas} = this.props
