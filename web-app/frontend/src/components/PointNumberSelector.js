@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+
 import ReactTooltip from 'react-tooltip'
 import Slider from 'material-ui/Slider'
 import ActionInfo from 'material-ui/svg-icons/action/info'
@@ -10,23 +12,29 @@ import styles from '../styles'
 // to the scale we want (max number of points).
 const SLIDER_FACTOR = 200
 
+
 class PointNumberSelector extends Component {
+
+  static propTypes = {
+    value: PropTypes.number.isRequired,
+    onChange: PropTypes.func.isRequired,
+  };
 
   constructor(props) {
     super(props)
     this.state = {
       value: props.value / SLIDER_FACTOR,
     }
-  }
+  };
 
   handleSliderChange = (e, value) => {
     this.setState({value})
-  }
+  };
 
   handleDragStop = () => {
     const {onChange} = this.props
     onChange && onChange(this.state.value * SLIDER_FACTOR)
-  }
+  };
 
   render() {
     const {value} = this.state
@@ -54,6 +62,7 @@ class PointNumberSelector extends Component {
   }
 }
 
+
 const TooltipIcon = ({id}) => {
   const style = {
     color: styles.secondaryText,
@@ -66,6 +75,9 @@ const TooltipIcon = ({id}) => {
       <ActionInfo style={style} />
     </a>
   )
+}
+TooltipIcon.propTypes = {
+  id: PropTypes.string.isRequired,
 }
 
 

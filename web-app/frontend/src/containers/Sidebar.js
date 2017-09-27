@@ -105,7 +105,8 @@ class Sidebar extends Component {
                 counties={counties}
                 onSelectCounty={this.handleSelectCounty}
                 onRemoveCounty={this.handleRemoveCounty} />
-            <ZipCodeSelectorHeadline selectedCountyZips={selectedCountyZips} />
+            <ZipCodeSelectorHeadline
+                nSelectedCountyZips={selectedCountyZips.length} />
             <ZipCodeSelector
                 style={{flex: 1, overflow: 'auto'}}
                 counties={counties}

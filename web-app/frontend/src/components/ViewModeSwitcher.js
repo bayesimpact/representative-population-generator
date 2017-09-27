@@ -1,7 +1,16 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+
 import FlatButton from 'material-ui/FlatButton'
 
+
 class ViewModeSwitcher extends Component {
+
+  static propTypes = {
+    style: PropTypes.object,
+    onViewModeClick: PropTypes.func.isRequired,
+    viewMode: PropTypes.string.isRequired,
+  };
 
   render() {
     const {style, onViewModeClick, viewMode} = this.props
@@ -28,7 +37,14 @@ class ViewModeSwitcher extends Component {
   }
 }
 
+
 class ViewModeButton extends Component {
+
+  static propTypes = {
+    label: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+  };
 
   render() {
     const {label, onClick, isSelected} = this.props

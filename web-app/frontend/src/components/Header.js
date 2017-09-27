@@ -1,8 +1,11 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
+
 import FlatButton from 'material-ui/FlatButton'
 import Dialog from 'material-ui/Dialog'
 import {indigo500} from 'material-ui/styles/colors'
 import GithubIcon from 'mui-icons/fontawesome/github'
+
 
 class Header extends Component {
 
@@ -45,6 +48,11 @@ class Header extends Component {
 
 
 class AboutDialog extends Component {
+
+  static propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onCloseClick: PropTypes.func.isRequired,
+  };
 
   render() {
     const {isOpen, onCloseClick} = this.props

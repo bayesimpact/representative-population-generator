@@ -5,13 +5,12 @@ import _ from 'underscore'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 
+import types from '../types'
 
 class CountySelector extends Component {
 
   static propTypes = {
-    counties: PropTypes.objectOf(PropTypes.shape({
-      zips: PropTypes.arrayOf(PropTypes.string),
-    })),
+    counties: PropTypes.objectOf(types.countyShape),
     selectedCounties: PropTypes.arrayOf(PropTypes.string).isRequired,
     onSelectCounty: PropTypes.func.isRequired,
     onRemoveCounty: PropTypes.func.isRequired,
