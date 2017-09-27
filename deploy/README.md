@@ -7,7 +7,7 @@ We use `.prod` Dockerfiles to build prod version of the app and push to Docker H
 - Make sure that your AWS credentials are up to date in ~/.aws/credentials under [bayes]
 - Install and configure `aws-cli` command line tool with your AWS access keys
 - Install `ecs-cli` command line tool
-- Run `ecs-cli configure --profile bayes --cluster network-adequacy`
+- Run `ecs-cli configure --profile bayes --cluster network-adequacy --region us-west-1`
 - Get the `na-server.pem` key (look it up on 1password)
 
 ## Initialize the network-adequacy cluster (Once only)
