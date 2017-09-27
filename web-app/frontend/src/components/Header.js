@@ -34,6 +34,7 @@ class Header extends Component {
             isOpen={isAboutDialogOpen}
             onCloseClick={() => this.setState({isAboutDialogOpen: false})} />
         <div style={headingStyle}>Network Adequacy</div>
+        <CurrentVersionNotice />
         <div style={{flex: 1}} />
         <FlatButton
             label="About"
@@ -48,6 +49,11 @@ class Header extends Component {
     )
   }
 }
+
+
+const CurrentVersionNotice = () => (
+  process.env.REACT_APP_VERSION && <div style={{marginLeft: 10}}>({process.env.REACT_APP_VERSION})</div>
+)
 
 
 class AboutDialog extends Component {
