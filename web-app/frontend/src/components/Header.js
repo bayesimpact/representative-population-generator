@@ -33,7 +33,7 @@ class Header extends Component {
         <AboutDialog
             isOpen={isAboutDialogOpen}
             onCloseClick={() => this.setState({isAboutDialogOpen: false})} />
-        <div style={headingStyle}>Network Adequacy</div>
+        <div style={headingStyle}>Representative Population Generator</div>
         <CurrentVersionNotice />
         <div style={{flex: 1}} />
         <FlatButton
