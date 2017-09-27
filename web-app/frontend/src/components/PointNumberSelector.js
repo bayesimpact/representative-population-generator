@@ -41,7 +41,9 @@ class PointNumberSelector extends Component {
     return (
       <div>
         <ReactTooltip id="points">
-          <span>The number of points generated per service area</span>
+          <span>The maximum number of points generated per service area.<br />
+          Some service areas will display fewer points than the input due<br />
+          to the number of available addresses in the service area.</span>
         </ReactTooltip>
         <div>Number of points <TooltipIcon id="points" /></div>
         <div style={{display: 'flex', alignItems: 'center'}}>
