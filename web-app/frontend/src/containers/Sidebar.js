@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import _ from 'underscore'
 
@@ -26,9 +27,22 @@ import {
   resetAreaSelector,
 } from '../actions'
 import styles from '../styles'
+import types from '../types'
 
 
 class Sidebar extends Component {
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    counties: PropTypes.objectOf(types.countyShape),
+    isLoading: PropTypes.bool.isRequired,
+    selectedCounties: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedCountyZips: PropTypes.arrayOf(PropTypes.string).isRequired,
+    nPoints: PropTypes.number.isRequired,
+    style: PropTypes.object.isRequired,
+    selectedCSVFileName: PropTypes.string.isRequired,
+    isSelectAllChecked: PropTypes.bool.isRequired,
+  };
 
   constructor(props) {
     super(props)
@@ -58,7 +72,7 @@ class Sidebar extends Component {
     } else {
       dispatch(setSelectAllUnchecked())
     }
-  }
+  };
 
   handlePointNumberChange = _.throttle(nPoints => {
     this.props.dispatch(setPointNumber(nPoints))
@@ -137,6 +151,11 @@ class Sidebar extends Component {
 
 class SidebarHeadline extends Component {
 
+  static propTypes = {
+    icon: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired,
+  };
+
   render() {
     const {icon, text} = this.props
     const IconTag = icon
@@ -165,6 +184,11 @@ class SidebarHeadline extends Component {
 
 
 class SidebarContent extends Component {
+
+  static propTypes = {
+    style: PropTypes.object,
+    children: PropTypes.node,
+  };
 
   render() {
     const {style} = this.props
