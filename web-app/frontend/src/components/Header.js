@@ -77,8 +77,8 @@ class AboutDialog extends Component {
           actions={actions}>
         <div>
           <div style={{height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <img style={{height: 140}} src={BayesLogo} />
-            <img style={{height: 80, marginLeft: 30}} src={DMHCLogo} />
+            <img alt="bayes-logo" style={{height: 140}} src={BayesLogo} />
+            <img alt="dmhc-logo" style={{height: 80, marginLeft: 30}} src={DMHCLogo} />
           </div>
           <p>
             This web app was built by {bayesLink} for the {dmhcLink} (DMHC)
