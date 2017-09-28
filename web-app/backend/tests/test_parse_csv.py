@@ -67,7 +67,7 @@ class TestGetZipCounties(LiveServerTestCase):
                 'zipCode': '92084'
             },
             {
-                'countyName': 'san francisco',
+                'countyName': 'San Francisco',
                 'zipCode': '94117'
             }
         ]
@@ -81,7 +81,7 @@ class TestGetZipCounties(LiveServerTestCase):
                 'countyName': 'San Diego',
             },
             {
-                'countyName': 'san francisco',
+                'countyName': 'San Francisco',
             }
         ]
         output = self._testing_csv_parsing('tests/assets/test_input_county_only.csv')

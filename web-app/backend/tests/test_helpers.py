@@ -42,7 +42,7 @@ def test_standardize_request():
             'PopulationPointsPerZipCode': '100'
         },
         {
-            'CountyName': 'sanfrancisco',
+            'CountyName': 'san francisco',
             'City': 'san Francisco',
             'ZipCode': '',
             'abc': '1001'
@@ -54,7 +54,7 @@ def test_standardize_request():
             'zipCode': '92084'
         },
         {
-            'countyName': 'sanfrancisco'
+            'countyName': 'San Francisco'
         }
     ]
     assert(compare_lists_of_dict(standardize_request(input_json), expected_output))
