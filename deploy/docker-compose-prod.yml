@@ -1,14 +1,14 @@
 version: "2"
 services:
     backend:
-        image: bayesimpact/na-backend-api
+        image: bayesimpact/na-backend-api:$TAG
         ports:
             - 8080:5000
         links:
             - mongo
 
     webapp:
-        image: bayesimpact/na-frontend
+        image: bayesimpact/na-frontend:$TAG
         links:
           - backend
         ports:
@@ -18,9 +18,10 @@ services:
             - backend
         environment:
             - REACT_APP_API_HOSTNAME=http://network-adequacy-lb-950847297.us-west-1.elb.amazonaws.com:8080
-            - REACT_APP_VERSION=0.0.2
+            - REACT_APP_VERSION=$TAG
 
     mongo:
-        image: bayesimpact/na-mongodb 
+        image: bayesimpact/na-mongodb:$TAG
         ports:
           - "27017:27017"
+        mem_limit: 2097152000
