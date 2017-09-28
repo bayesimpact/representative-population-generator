@@ -8,7 +8,7 @@ import re
 def fetch_representative_points(representative_point_db, service_areas, boundary_db, logger=None):
     """Given a list of service areas, fetch and return point As for each one."""
     outputs = []
-    logger.info('Finding point As for {} service areas'.format(len(service_areas)))
+    logger.info('Finding representative points for {} service areas'.format(len(service_areas)))
     for area in service_areas:
         representative_points = find_representative_points(representative_point_db, area, logger)
         boundary = find_boundary(boundary_db, area, logger)
