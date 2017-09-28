@@ -4,6 +4,7 @@ from backend.lib.helper import prepare_return_object
 from backend.lib.helper import remove_empty_items
 from backend.lib.helper import standardize_keys
 from backend.lib.helper import standardize_request
+from backend.tests.helper import compare_lists_of_dict
 
 
 def test_standardize_keys():
@@ -56,7 +57,7 @@ def test_standardize_request():
             'countyName': 'sanfrancisco'
         }
     ]
-    assert(standardize_request(input_json) == expected_output)
+    assert(compare_lists_of_dict(standardize_request(input_json), expected_output))
 
 
 def test_prepare_return_object_valid_points():

@@ -2,9 +2,10 @@
 
 import io
 
-from backend.app import extract_zip_counties
+from backend.app import _extract_zip_counties
 from backend.lib.exceptions import InvalidPayload
 from backend.lib.helper import jsonify_input
+from backend.tests.helper import compare_lists_of_dict
 
 import flask
 from flask.ext.testing import LiveServerTestCase
@@ -22,7 +23,7 @@ def _load_convert_file(file_path):
 
 def test_jsonify_input():
     """Test jasonify_input method."""
-    object_to_send = _load_convert_file('tests/assets/test_1.csv')
+    object_to_send = _load_convert_file('tests/assets/test_input_zip_and_county.csv')
     output_json = jsonify_input(object_to_send.read().decode('utf-8'))
     expected_output = [
         {
@@ -42,7 +43,7 @@ def test_jsonify_input():
 
 
 class TestGetZipCounties(LiveServerTestCase):
-    """Test class for extract_zip_counties method."""
+    """Test class for _extract_zip_counties method."""
 
     def create_app(self):
         """Start a new flask app for testing."""
@@ -55,11 +56,11 @@ class TestGetZipCounties(LiveServerTestCase):
         mock_file = _load_convert_file(file_path)
         with mock.patch('flask.request') as mock_request:
             mock_request.files.__getitem__.return_value = mock_file
-            output = extract_zip_counties(self.app)
+            output = _extract_zip_counties(self.app)
         return output
 
-    def test_parsing_csv_1(self):
-        """Test parsing of test_1.csv with both zip and county columns."""
+    def test_parsing_csv_zip_and_county(self):
+        """Test parsing of test_input_zip_and_county.csv with both zip and county columns."""
         expected = [
             {
                 'countyName': 'San Diego',
@@ -70,11 +71,11 @@ class TestGetZipCounties(LiveServerTestCase):
                 'zipCode': '94117'
             }
         ]
-        output = self._testing_csv_parsing('tests/assets/test_1.csv')
-        assert (expected == output)
+        output = self._testing_csv_parsing('tests/assets/test_input_zip_and_county.csv')
+        assert (compare_lists_of_dict(expected, output))
 
-    def test_parsing_csv_2(self):
-        """Test parsing of test_2.csv with only county column."""
+    def test_parsing_csv_county_only(self):
+        """Test parsing of test_input_county_only.csv with only county column."""
         expected = [
             {
                 'countyName': 'San Diego',
@@ -83,11 +84,11 @@ class TestGetZipCounties(LiveServerTestCase):
                 'countyName': 'san francisco',
             }
         ]
-        output = self._testing_csv_parsing('tests/assets/test_2.csv')
-        assert (output == expected)
+        output = self._testing_csv_parsing('tests/assets/test_input_county_only.csv')
+        assert (compare_lists_of_dict(expected, output))
 
-    def test_parsing_csv_3(self):
-        """Test parsing of test_3.csv with only zip column."""
+    def test_parsing_csv_zip_only_self(self):
+        """Test parsing of test_input_zip_only.csv with only zip column."""
         expected = [
             {
                 'zipCode': '92084',
@@ -96,17 +97,17 @@ class TestGetZipCounties(LiveServerTestCase):
                 'zipCode': '94117',
             }
         ]
-        output = self._testing_csv_parsing('tests/assets/test_3.csv')
-        assert (output == expected)
+        output = self._testing_csv_parsing('tests/assets/test_input_zip_only.csv')
+        assert (compare_lists_of_dict(expected, output))
 
-    def test_parsing_csv_4(self):
-        """Test parsing of test_4.csv with no zip nor county columns."""
+    def test_parsing_csv_no_zip_no_county(self):
+        """Test parsing of test_input_no_zip_no_county.csv with no zip nor county columns."""
         message = 'Invalid CSV file. No Zip or County columns found.'
         with pytest.raises(InvalidPayload, message=message):
-            self._testing_csv_parsing('tests/assets/test_4.csv')
+            self._testing_csv_parsing('tests/assets/test_input_no_zip_no_county.csv')
 
-    def test_parsing_csv_5(self):
-        """Test parsing of test_5.csv with invalid input file."""
+    def test_parsing_csv_invalid_file(self):
+        """Test parsing of test_invalid_input_file.csv with invalid input file."""
         message = 'Invalid CSV file. Was not able to parse.'
         with pytest.raises(InvalidPayload, message=message):
-            self._testing_csv_parsing('tests/assets/test_5.csv')
+            self._testing_csv_parsing('tests/assets/test_invalid_input_file.csv')

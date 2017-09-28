@@ -14,6 +14,7 @@ def fetch_representative_points(representative_point_db, service_areas, boundary
         boundary = find_boundary(boundary_db, area, logger)
         output = prepare_return_object(representative_points, boundary, area)
         outputs.append(output)
+    logger.info(outputs)
     return outputs
 
 
@@ -32,8 +33,16 @@ def jsonify_input(input_string, logger=None):
 def standardize_request(input_json_list):
     """Given a list of json object, standardize it by removing empty items and change the keys."""
     stage_1 = list(map(standardize_keys, input_json_list))
-    output_json = list(map(remove_empty_items, filter(None, stage_1)))
-    return output_json
+    zipcounties = list(map(remove_empty_items, filter(None, stage_1)))
+    zipcounties = _remove_duplicates(zipcounties)
+    return zipcounties
+
+
+def _remove_duplicates(zipcounties):
+    return [
+        dict(zipcounty_tuple) for zipcounty_tuple in
+        set([tuple(zipcounty.items()) for zipcounty in zipcounties])
+    ]
 
 
 def remove_empty_items(input_json):
