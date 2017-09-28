@@ -7,12 +7,9 @@ import re
 
 
 def fetch_representative_points(representative_point_db, service_areas, boundary_db, logger=None):
-    """
-    Given a list of service areas, fetch and return point As for each one.
-
-    Ignoring boundaries for now since they are unused in the client.
-    """
+    """Given a list of service areas, fetch and return point As for each one."""
     logger.debug('Finding representative points for service areas: {}'.format(service_areas))
+    # Ignoring boundaries for now since they are unused in the client.
     # boundaries = find_boundaries_batch(boundary_db, service_areas, logger)
     representative_points = find_representative_points_batch(representative_point_db,
                                                              service_areas, logger)
@@ -104,7 +101,7 @@ def find_representative_points(representative_point_db, service_area, logger=Non
         return []
 
 
-def find_representative_points_batch(representative_point_db, zip_county_pairs, logger=None):
+def find_representative_points_batch(representative_point_collection, zip_county_pairs, logger=None):
     """Fetch all the matching points documents in a single query."""
     try:
         # First build a map of county -> list<zip> from the input zip-county pairs.
@@ -130,14 +127,14 @@ def find_representative_points_batch(representative_point_db, zip_county_pairs, 
             query["$or"].append(filter_element)
 
         logger.debug(json.dumps(query, sort_keys=True, indent=4))
-        representative_points = representative_point_db.find(query)
+        representative_points = representative_point_collection.find(query)
         return list(representative_points)
     except Exception as e:
         logger.error("Error retrieving representative points: {}".format(e))
         return []
 
 
-def find_boundaries_batch(boundary_db, zip_county_pairs, logger=None):
+def find_boundaries_batch(boundary_collection, zip_county_pairs, logger=None):
     """Fetch all the matching boundary documents in a single query."""
     try:
         # First build a map of county -> list<zip> from the input zip-county pairs.
@@ -163,7 +160,7 @@ def find_boundaries_batch(boundary_db, zip_county_pairs, logger=None):
             query["$or"].append(filter_element)
 
         logger.debug(json.dumps(query, sort_keys=True, indent=4))
-        boundaries = boundary_db.find(query)
+        boundaries = boundary_collection.find(query)
         return list(boundaries)
     except Exception as e:
         logger.error("Error retrieving boundaries: {}".format(e))
