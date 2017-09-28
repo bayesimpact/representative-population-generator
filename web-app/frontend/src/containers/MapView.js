@@ -109,7 +109,9 @@ class PointsLayer extends Component {
   render() {
     const {points, color, onPointHover, onPointLeave} = this.props
     const pointStyle = {
-      'circle-radius': 7,
+      'circle-radius': {
+        stops: [[8, 1], [11, 6], [16, 20]]
+      },
       'circle-color': color,
       'circle-opacity': .8,
     }
