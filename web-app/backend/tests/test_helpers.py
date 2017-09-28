@@ -1,14 +1,15 @@
 """Test methods for all helper functions."""
 
+
+from backend.lib.helper import _remove_empty_items
+from backend.lib.helper import _standardize_keys
 from backend.lib.helper import prepare_return_object
-from backend.lib.helper import remove_empty_items
-from backend.lib.helper import standardize_keys
 from backend.lib.helper import standardize_request
 from backend.tests.helper import compare_lists_of_dict
 
 
 def test_standardize_keys():
-    """Test standardize_keys function."""
+    """Test _standardize_keys function."""
     input_dict_1 = {'county': 'abc', 'Zip': '21421'}
     input_dict_2 = {'countyname': 'abc', 'zip code': '21421', }
     input_dict_3 = {'CountyName': 'abc', 'zipCode': '21421', 'populationpointsperzipcode': 50}
@@ -16,20 +17,20 @@ def test_standardize_keys():
         'countyName': 'abc',
         'zipCode': '21421'
     }
-    assert (standardize_keys(input_dict_1) == expected_output)
-    assert (standardize_keys(input_dict_2) == expected_output)
-    assert (standardize_keys(input_dict_3) == expected_output)
+    assert (_standardize_keys(input_dict_1) == expected_output)
+    assert (_standardize_keys(input_dict_2) == expected_output)
+    assert (_standardize_keys(input_dict_3) == expected_output)
 
 
 def test_remove_empty_items():
-    """Test remove_empty_items helper method."""
+    """Test _remove_empty_items helper method."""
     input_json_1 = {'a': '', 'b': '1'}
     expected_output_1 = {'b': '1'}
 
     input_json_2 = {'c': None}
     expected_output_2 = None
-    assert (remove_empty_items(input_json_1) == expected_output_1)
-    assert (remove_empty_items(input_json_2) == expected_output_2)
+    assert (_remove_empty_items(input_json_1) == expected_output_1)
+    assert (_remove_empty_items(input_json_2) == expected_output_2)
 
 
 def test_standardize_request():
@@ -46,6 +47,11 @@ def test_standardize_request():
             'City': 'san Francisco',
             'ZipCode': '',
             'abc': '1001'
+        },
+        {
+            'CountyName': 'alaMeda',
+            'ZipCode': '',
+            'abc': '1001'
         }
     ]
     expected_output = [
@@ -55,6 +61,9 @@ def test_standardize_request():
         },
         {
             'countyName': 'San Francisco'
+        },
+        {
+            'countyName': 'Alameda'
         }
     ]
     assert(compare_lists_of_dict(standardize_request(input_json), expected_output))

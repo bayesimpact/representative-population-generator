@@ -36,12 +36,36 @@ def standardize_request(input_json_list):
 
     Return a list of dicts with keys being any combination of ('countyName', 'zipCode').
     """
-    stage_1 = list(map(standardize_keys, input_json_list))
-    zipcounties = list(map(remove_empty_items, filter(None, stage_1)))
+    stage_1 = list(map(_standardize_keys, input_json_list))
+    zipcounties = list(map(_remove_empty_items, filter(None, stage_1)))
     zipcounties = _remove_duplicates(zipcounties)
     # Standardize county names.
     zipcounties = [_standardize_county_name(zipcounty) for zipcounty in zipcounties]
     return zipcounties
+
+
+def _standardize_keys(zipcounty):
+    """Standardize and keep relevent fields (zip and county)."""
+    standard_area = {}
+    for k, v in zipcounty.items():
+        if k.replace(' ', '').lower() in ['zip', 'zipcode', 'zip code']:
+            standard_area['zipCode'] = v
+        if k.replace(' ', '').lower() in ['county', 'countyname', 'county name']:
+            standard_area['countyName'] = v
+    return standard_area
+
+
+def _remove_empty_items(input_json):
+    """Removing nulls and empty strings from input_json."""
+    row_output = dict((k, v) for k, v in input_json.items() if v)
+    return row_output if row_output else None
+
+
+def _remove_duplicates(zipcounties):
+    return [
+        dict(zipcounty_tuple) for zipcounty_tuple in
+        set([tuple(zipcounty.items()) for zipcounty in zipcounties])
+    ]
 
 
 def _standardize_county_name(zipcounty):
@@ -56,30 +80,6 @@ def _standardize_county_name(zipcounty):
         zipcounty['countyName'] = ' '.join(county_list)
 
     return zipcounty
-
-
-def _remove_duplicates(zipcounties):
-    return [
-        dict(zipcounty_tuple) for zipcounty_tuple in
-        set([tuple(zipcounty.items()) for zipcounty in zipcounties])
-    ]
-
-
-def remove_empty_items(input_json):
-    """Removing nulls and empty strings from input_json."""
-    row_output = dict((k, v) for k, v in input_json.items() if v)
-    return row_output if row_output else None
-
-
-def standardize_keys(zipcounty):
-    """Standardize and keep relevent fields (zip and county)."""
-    standard_area = {}
-    for k, v in zipcounty.items():
-        if k.replace(' ', '').lower() in ['zip', 'zipcode', 'zip code']:
-            standard_area['zipCode'] = v
-        if k.replace(' ', '').lower() in ['county', 'countyname', 'county name']:
-            standard_area['countyName'] = v
-    return standard_area
 
 
 def find_representative_points(representative_point_db, service_area, logger=None):
