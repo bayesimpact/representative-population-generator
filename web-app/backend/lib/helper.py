@@ -82,16 +82,12 @@ def standardize_keys(zipcounty):
     return standard_area
 
 
-def _regexifgy_input(input_value):
-    return re.compile(input_value, re.IGNORECASE)
-
-
 def find_representative_points(representative_point_db, service_area, logger=None):
     """Given a standard service_area, return corresponding representative points from db."""
     key_map = {'countyName': 'ServiceArea.CountyName', 'zipCode': 'ServiceArea.ZipCode'}
     try:
-        area_regex = dict((key_map[k], _regexifgy_input(v)) for k, v in service_area.items())
-        representative_point = representative_point_db.find_one(area_regex)
+        area = dict((key_map[k], v) for k, v in service_area.items())
+        representative_point = representative_point_db.find_one(area)
         return representative_point['ReprPopPoints']['PointA']
     except:
         return []
@@ -101,8 +97,8 @@ def find_boundary(boundary_db, service_area, logger=None):
     """Given a standard service_area, find and return boundaries."""
     key_map = {'countyName': 'properties.NAME', 'zipCode': 'properties.ZIP'}
     try:
-        area_regex = dict((key_map[k], _regexifgy_input(v)) for k, v in service_area.items())
-        boundary = boundary_db.find_one(area_regex)
+        area = dict((key_map[k], v) for k, v in service_area.items())
+        boundary = boundary_db.find_one(area)
         return {'geometry': boundary['geometry']}
     except:
         return None
