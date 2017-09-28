@@ -31,7 +31,9 @@ class TableView extends Component {
       county: PropTypes.string.isRequired,
       longitude: PropTypes.number.isRequired,
       latitude: PropTypes.number.isRequired,
-      nResidents: PropTypes.number.isRequired,
+      population: PropTypes.number.isRequired,
+      censusTract: PropTypes.number.isRequired,
+      censusBlockGroup: PropTypes.number.isRequired,
     })).isRequired,
     style: PropTypes.object,
   };
@@ -69,9 +71,11 @@ class TableView extends Component {
               <TableHeaderColumn></TableHeaderColumn>
               <TableHeaderColumn>ZipCode</TableHeaderColumn>
               <TableHeaderColumn>County</TableHeaderColumn>
+              <TableHeaderColumn>No. Residents</TableHeaderColumn>
               <TableHeaderColumn>Latitude</TableHeaderColumn>
               <TableHeaderColumn>Longitude</TableHeaderColumn>
-              <TableHeaderColumn>No. Residents</TableHeaderColumn>
+              <TableHeaderColumn>Tract</TableHeaderColumn>
+              <TableHeaderColumn>Block Group</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody displayRowCheckbox={false} style={{overflowY: 'scroll', flex: 1}}>
@@ -80,9 +84,11 @@ class TableView extends Component {
                 <TableRowColumn>{i}</TableRowColumn>
                 <TableRowColumn>{point.zipCode}</TableRowColumn>
                 <TableRowColumn>{point.county}</TableRowColumn>
+                <TableRowColumn>{point.population}</TableRowColumn>
                 <TableRowColumn>{point.latitude}</TableRowColumn>
                 <TableRowColumn>{point.longitude}</TableRowColumn>
-                <TableRowColumn>{point.nResidents}</TableRowColumn>
+                <TableRowColumn>{point.censusTract}</TableRowColumn>
+                <TableRowColumn>{point.censusBlockGroup}</TableRowColumn>
               </TableRow>
             ))}
           </TableBody>

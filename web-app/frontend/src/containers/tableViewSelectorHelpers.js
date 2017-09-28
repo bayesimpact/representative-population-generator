@@ -6,9 +6,11 @@ export function getAllPoints(areas=[], nPointsPerArea) {
       points.push({
         zipCode: point.properties.zip,
         county: point.properties.county,
+        population: Math.round(point.properties.population),
         longitude: point.geometry.coordinates[0],
         latitude: point.geometry.coordinates[1],
-        nResidents: Math.round(point.properties.population),
+        censusTract: Math.round(point.properties.census_tract),
+        censusBlockGroup: Math.round(point.properties.census_block_group),
       })
     })
   })
