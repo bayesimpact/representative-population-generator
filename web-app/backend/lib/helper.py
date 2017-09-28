@@ -2,17 +2,28 @@
 
 import csv
 import io
+import json
 import re
 
 
 def fetch_representative_points(representative_point_db, service_areas, boundary_db, logger=None):
-    """Given a list of service areas, fetch and return point As for each one."""
+    """
+    Given a list of service areas, fetch and return point As for each one.
+
+    Ignoring boundaries for now since they are unused in the client.
+    """
+    logger.debug('Finding representative points for service areas: {}'.format(service_areas))
+    # boundaries = find_boundaries_batch(boundary_db, service_areas, logger)
+    representative_points = find_representative_points_batch(representative_point_db,
+                                                             service_areas, logger)
     outputs = []
-    logger.info('Finding representative points for {} service areas'.format(len(service_areas)))
-    for area in service_areas:
-        representative_points = find_representative_points(representative_point_db, area, logger)
-        boundary = find_boundary(boundary_db, area, logger)
-        output = prepare_return_object(representative_points, boundary, area)
+    for points_document in representative_points:
+        # For each zip-county pair, prepare a map with points and area info.
+        county = points_document["ServiceArea"]["CountyName"]
+        zip = points_document["ServiceArea"]["ZipCode"]
+        point_as = points_document['ReprPopPoints']['PointA']
+
+        output = prepare_return_object(point_as, None, {"countyName": county, "zipCode": zip})
         outputs.append(output)
     logger.info(outputs)
     return outputs
@@ -90,6 +101,72 @@ def find_representative_points(representative_point_db, service_area, logger=Non
         representative_point = representative_point_db.find_one(area)
         return representative_point['ReprPopPoints']['PointA']
     except:
+        return []
+
+
+def find_representative_points_batch(representative_point_db, zip_county_pairs, logger=None):
+    """Fetch all the matching points documents in a single query."""
+    try:
+        # First build a map of county -> list<zip> from the input zip-county pairs.
+        area_map = {}
+        for zip_county_pair in zip_county_pairs:
+            county = zip_county_pair["countyName"]
+            zip = zip_county_pair["zipCode"]
+            if county not in area_map:
+                area_map[county] = []
+            area_map[county].append(zip)
+
+        # Next build the query components
+        query = {
+            "$or": []
+        }
+        for county, list_of_zips in area_map.items():
+            filter_element = {
+                "ServiceArea.CountyName": county,
+                "ServiceArea.ZipCode": {
+                    "$in": list_of_zips
+                }
+            }
+            query["$or"].append(filter_element)
+
+        logger.debug(json.dumps(query, sort_keys=True, indent=4))
+        representative_points = representative_point_db.find(query)
+        return list(representative_points)
+    except Exception as e:
+        logger.error("Error retrieving representative points: {}".format(e))
+        return []
+
+
+def find_boundaries_batch(boundary_db, zip_county_pairs, logger=None):
+    """Fetch all the matching boundary documents in a single query."""
+    try:
+        # First build a map of county -> list<zip> from the input zip-county pairs.
+        area_map = {}
+        for zip_county_pair in zip_county_pairs:
+            county = zip_county_pair["countyName"]
+            zip = zip_county_pair["zipCode"]
+            if county not in area_map:
+                area_map[county] = []
+            area_map[county].append(zip)
+
+        # Next build the query components
+        query = {
+            "$or": []
+        }
+        for county, list_of_zips in area_map.items():
+            filter_element = {
+                "properties.NAME": county,
+                "properties.ZIP": {
+                    "$in": list_of_zips
+                }
+            }
+            query["$or"].append(filter_element)
+
+        logger.debug(json.dumps(query, sort_keys=True, indent=4))
+        boundaries = boundary_db.find(query)
+        return list(boundaries)
+    except Exception as e:
+        logger.error("Error retrieving boundaries: {}".format(e))
         return []
 
 
