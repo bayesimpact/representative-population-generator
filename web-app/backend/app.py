@@ -19,6 +19,8 @@ app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/na-db'
 CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
 
+_FETCHED_AREAS = None
+
 mongo = PyMongo(app)
 with app.app_context():
     repr_points = mongo.db.representative_points
@@ -30,9 +32,17 @@ with app.app_context():
 @app.route('/available-service-areas', methods=['GET'])
 def fetch_available_service_areas():
     """Fetch and return all available service areas from db."""
-    app.logger.debug('Fetching available service areas.')
-    fetched_areas = list(service_areas.find({}, {'_id': 0}))
-    app.logger.debug('Fetched {} available service areas.'.format(len(fetched_areas)))
+    global _FETCHED_AREAS
+
+    if not _FETCHED_AREAS:
+        app.logger.debug('Fetching available service areas.')
+        _FETCHED_AREAS = list(service_areas.find({}, {'_id': 0}))
+    else:
+        app.logger.debug('Using pre-loaded available service areas.')
+    fetched_areas = _FETCHED_AREAS
+
+    app.logger.debug('Returning {} available service areas.'.format(len(fetched_areas)))
+
     return flask.jsonify({'result': fetched_areas})
 
 
