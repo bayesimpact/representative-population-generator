@@ -1,29 +1,29 @@
 """Helper functions for the backend."""
-
 import csv
 import io
 import json
-import re
 
 
-def fetch_representative_points(representative_point_db, service_areas, boundary_db, logger=None):
+def fetch_representative_points(
+        representative_points_coll, service_areas, boundary_coll, logger=None):
     """
     Given a list of service areas, fetch and return point As for each one.
+
     TODO make sure areas which were not found are marked as unavailable in response.
     """
     logger.debug('Finding representative points for service areas: {}'.format(service_areas))
     # Ignoring boundaries for now since they are unused in the client.
-    # boundaries = find_boundaries_batch(boundary_db, service_areas, logger)
-    representative_points = find_representative_points_batch(representative_point_db,
-                                                             service_areas, logger)
+    # boundaries = find_boundaries_batch(boundary_coll, service_areas, logger)
+    representative_points = find_representative_points_batch(
+        representative_points_coll, service_areas, logger)
     outputs = []
     for points_document in representative_points:
         # For each zip-county pair, prepare a map with points and area info.
-        county = points_document["ServiceArea"]["CountyName"]
-        zip = points_document["ServiceArea"]["ZipCode"]
+        county = points_document['ServiceArea']['CountyName']
+        zip = points_document['ServiceArea']['ZipCode']
         point_as = points_document['ReprPopPoints']['PointA']
 
-        output = prepare_return_object(point_as, None, {"countyName": county, "zipCode": zip})
+        output = prepare_return_object(point_as, None, {'countyName': county, 'zipCode': zip})
         outputs.append(output)
     logger.info(outputs)
     return outputs
@@ -93,89 +93,90 @@ def _standardize_county_name(zipcounty):
     return zipcounty
 
 
-def find_representative_points(representative_point_db, service_area, logger=None):
+def find_representative_points(representative_points_coll, service_area, logger=None):
     """Given a standard service_area, return corresponding representative points from db."""
     key_map = {'countyName': 'ServiceArea.CountyName', 'zipCode': 'ServiceArea.ZipCode'}
     try:
         area = dict((key_map[k], v) for k, v in service_area.items())
-        representative_point = representative_point_db.find_one(area)
+        representative_point = representative_points_coll.find_one(area)
         return representative_point['ReprPopPoints']['PointA']
     except:
         return []
 
 
-def find_representative_points_batch(representative_point_collection, zip_county_pairs, logger=None):
+def find_representative_points_batch(
+        representative_points_coll, zip_county_pairs, logger=None):
     """Fetch all the matching points documents in a single query."""
     try:
         # First build a map of county -> list<zip> from the input zip-county pairs.
         area_map = {}
         for zip_county_pair in zip_county_pairs:
-            county = zip_county_pair["countyName"]
-            zip = zip_county_pair["zipCode"]
+            county = zip_county_pair['countyName']
+            zip_ = zip_county_pair['zipCode']
             if county not in area_map:
                 area_map[county] = []
-            area_map[county].append(zip)
+            area_map[county].append(zip_)
 
         # Next build the query components
         query = {
-            "$or": []
+            '$or': []
         }
         for county, list_of_zips in area_map.items():
             filter_element = {
-                "ServiceArea.CountyName": county,
-                "ServiceArea.ZipCode": {
-                    "$in": list_of_zips
+                'ServiceArea.CountyName': county,
+                'ServiceArea.ZipCode': {
+                    '$in': list_of_zips
                 }
             }
-            query["$or"].append(filter_element)
+            query['$or'].append(filter_element)
 
         logger.debug(json.dumps(query, sort_keys=True, indent=4))
-        representative_points = representative_point_collection.find(query)
+        representative_points = representative_points_coll.find(query)
         return list(representative_points)
     except Exception as e:
-        logger.error("Error retrieving representative points: {}".format(e))
+        logger.error('Error retrieving representative points: {}'.format(e))
         return []
 
 
-def find_boundaries_batch(boundary_collection, zip_county_pairs, logger=None):
+def find_boundaries_batch(boundary_coll, zip_county_pairs, logger=None):
     """Fetch all the matching boundary documents in a single query."""
     try:
         # First build a map of county -> list<zip> from the input zip-county pairs.
         area_map = {}
         for zip_county_pair in zip_county_pairs:
-            county = zip_county_pair["countyName"]
-            zip = zip_county_pair["zipCode"]
+            county = zip_county_pair['countyName']
+            zip_ = zip_county_pair['zipCode']
             if county not in area_map:
                 area_map[county] = []
-            area_map[county].append(zip)
+            area_map[county].append(zip_)
 
         # Next build the query components
         query = {
-            "$or": []
+            '$or': []
         }
         for county, list_of_zips in area_map.items():
             filter_element = {
-                "properties.NAME": county,
-                "properties.ZIP": {
-                    "$in": list_of_zips
+                'properties.NAME': county,
+                'properties.ZIP': {
+                    '$in': list_of_zips
                 }
             }
-            query["$or"].append(filter_element)
+            query['$or'].append(filter_element)
 
         logger.debug(json.dumps(query, sort_keys=True, indent=4))
-        boundaries = boundary_collection.find(query)
+        boundaries = boundary_coll.find(query)
         return list(boundaries)
     except Exception as e:
-        logger.error("Error retrieving boundaries: {}".format(e))
+        logger.error('Error retrieving boundaries: {}'.format(e))
         return []
 
 
-def find_boundary(boundary_db, service_area, logger=None):
+def find_boundary(boundary_coll, service_area, logger=None):
     """Given a standard service_area, find and return boundaries."""
     key_map = {'countyName': 'properties.NAME', 'zipCode': 'properties.ZIP'}
     try:
         area = dict((key_map[k], v) for k, v in service_area.items())
-        boundary = boundary_db.find_one(area)
+        boundary = boundary_coll.find_one(area)
         return {'geometry': boundary['geometry']}
     except:
         return None
