@@ -29,7 +29,12 @@ def fetch_representative_points(
         output = prepare_return_object(point_as, None, {'countyName': county, 'zipCode': zip_})
         outputs.append(output)
 
-    logger.debug('Found {} sets of representative points'.format(len(outputs)))
+    logger.debug('Found {} sets of representative points'.format(
+        sum(
+            1 for output in outputs
+            if output['availabilityStatus']['isServiceAreaAvailable']
+        ))
+    )
     return outputs
 
 

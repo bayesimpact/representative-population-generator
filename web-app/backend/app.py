@@ -36,7 +36,7 @@ def fetch_available_service_areas():
 
     if not _FETCHED_AREAS:
         app.logger.debug('Fetching available service areas.')
-        _FETCHED_AREAS = list(service_areas.find({}, {'_id': 0}))
+        _FETCHED_AREAS = list(service_areas.find_one({}, {'_id': 0}))
     else:
         app.logger.debug('Using pre-loaded available service areas.')
     fetched_areas = _FETCHED_AREAS
