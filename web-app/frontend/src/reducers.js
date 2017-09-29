@@ -67,9 +67,7 @@ export function mainReducer(state=initialState, action) {
         [...selectedCounties] :
         selectedCounties.concat([action.county])
       let newSelectedCountyZips = [...selectedCountyZips]
-      if (state.app.isSelectAllChecked) {
-        newSelectedCountyZips = getAllZipsForCounties(newSelectedCounties, state.data.counties)
-      }
+      state.app.isSelectAllChecked = false
       // Reset areas data on first county added to remove possible CSV loaded data.
       const newAreas = selectedCounties.length ? state.data.areas : []
       return {

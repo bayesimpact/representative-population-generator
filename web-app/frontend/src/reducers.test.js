@@ -72,7 +72,7 @@ it('removes all county-zips when select all gets unchecked', () => {
 })
 
 
-it('adds all count-zips of a new county when select all is checked', () => {
+it('Do not add all count-zips of a new county when select all is checked but uncheck select-all', () => {
   const state = {
     data: {
       counties: {
@@ -92,7 +92,8 @@ it('adds all count-zips of a new county when select all is checked', () => {
   }
   const nextState = mainReducer(state, selectCountyAction('Marin'))
   expect(nextState.app.selectedCounties.length).toBe(2)
-  expect(nextState.app.selectedCountyZips.length).toBe(3)
+  expect(nextState.app.selectedCountyZips.length).toBe(1)
+  expect(nextState.app.isSelectAllChecked).toBe(false)
 })
 
 
