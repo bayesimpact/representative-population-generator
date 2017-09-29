@@ -16,14 +16,18 @@ services:
           context: ./web-app/backend
           dockerfile: Dockerfile
         volumes:
-          - ./web-app/backend/app.py:/var/local/app.py
-          - ./web-app/backend/tests:/var/local/tests:ro
-          - .flake8:/var/local/.flake8:ro
+          - ./web-app/backend/app/main.py:/app/main.py:ro
+          - ./web-app/backend/config/uwsgi.ini:/app/uwsgi.ini:ro
+          - ./web-app/backend/config/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+          - ./web-app/backend/app/:/var/local/app/:ro
+          - ./web-app/backend/tests:/app/tests:ro
+          - .flake8:/app/.flake8:ro
           - ./web-app/backend:/usr/local/lib/python3.6/site-packages/backend
         build: ./web-app/backend
+        links:
+          - mongo
         ports:
-            - 8080:5000
-        command: python app.py
+          - 8080:80
 
     mongo:
         build:

@@ -34,30 +34,33 @@ then
     fi
 
     echo "Building and pushing database Docker."
-    docker build \
+    docker rmi bayesimpact/$DB_DOCKER_IMAGE
+    eval docker build \
         -f data/Dockerfile.prod \
         -t bayesimpact/$DB_DOCKER_IMAGE:$TAG \
         -t bayesimpact/$DB_DOCKER_IMAGE:latest \
-        ./data \
-        "${CACHE}"
+        "${CACHE}" \
+        ./data
     docker push bayesimpact/$DB_DOCKER_IMAGE
 
     echo "Building and pushing backend Docker."
-    docker build \
+    docker rmi bayesimpact/$BACKEND_DOCKER_IMAGE
+    eval docker build \
         -f web-app/backend/Dockerfile.prod \
         -t bayesimpact/$BACKEND_DOCKER_IMAGE:$TAG \
         -t bayesimpact/$BACKEND_DOCKER_IMAGE:latest \
-        ./web-app/backend \
-        "${CACHE}"
+        "${CACHE}" \
+        ./web-app/backend
     docker push bayesimpact/$BACKEND_DOCKER_IMAGE
 
     echo "Building and pushing frontend Docker."
-    docker build \
+    docker rmi bayesimpact/$FRONTEND_DOCKER_IMAGE
+    eval docker build \
         -f web-app/frontend/Dockerfile.prod \
         -t bayesimpact/$FRONTEND_DOCKER_IMAGE:$TAG \
         -t bayesimpact/$FRONTEND_DOCKER_IMAGE:latest \
-        ./web-app/frontend \
-        "${CACHE}"
+        "${CACHE}" \
+        ./web-app/frontend
     docker push bayesimpact/$FRONTEND_DOCKER_IMAGE
 fi
 

@@ -2,7 +2,7 @@
 const apiHostname = process.env.REACT_APP_API_HOSTNAME
 
 export function getCounties() {
-  return fetch(apiHostname + '/available-service-areas')
+  return fetch(apiHostname + '/available-service-areas/')
     .then(response => response.json())
     .then(response => response.result[0])
 }

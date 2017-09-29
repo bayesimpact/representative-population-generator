@@ -1,23 +1,17 @@
 """Routing for backend API."""
-import json
-import os
-
 from backend.lib.exceptions import InvalidPayload
 from backend.lib.helper import fetch_representative_points
-from backend.lib.helper import parse_csv_to_json
-from backend.lib.helper import standardize_request
+from backend.lib.requests import extract_zip_counties
 from backend.lib.timer import timed
 
 import flask
-
-from flask_cors import CORS
 
 from flask_pymongo import PyMongo
 
 
 app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/na-db'
-CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
+app.config['MONGO_CONNECT'] = False
 
 _FETCHED_AREAS = None
 
@@ -29,7 +23,7 @@ with app.app_context():
 
 
 @timed
-@app.route('/available-service-areas', methods=['GET'])
+@app.route('/available-service-areas/', methods=['GET'])
 def fetch_available_service_areas():
     """Fetch and return all available service areas from db."""
     global _FETCHED_AREAS
@@ -64,46 +58,10 @@ def get_multiple_zip_county_points():
     returns: json object with info about area and a list of points.
     """
     app.logger.debug('Extracting zip counties.')
-    zipcounties = _extract_zip_counties(app)
+    zipcounties = extract_zip_counties(app)
     app.logger.debug('Received {} zipcounties.'.format(len(zipcounties)))
     outputs = fetch_representative_points(repr_points, zipcounties, boundaries, logger=app.logger)
     return flask.jsonify({'result': outputs})
-
-
-@timed
-def _extract_zip_counties(app):
-    """
-    Extract zipcounties from different flask input methods.
-
-    There are three different methods to send zip/county payload.
-    There is a try-catch section for each one.
-    """
-    with app.app_context():
-        try:
-            raw_zipcounties = json.loads(flask.request.values['zipcounties'])
-        except:
-            try:
-                raw_zipcounties = json.loads(flask.request.args['zipcounties'])
-            except:
-                try:
-                    raw_zipcounties = json.loads(flask.request.data)
-                except:
-                    try:
-                        zipcounties_file = flask.request.files['zipcounty_file']
-                        raw_zipcounties = parse_csv_to_json(zipcounties_file, logger=app.logger)
-                    except KeyError:
-                        msg = (
-                            'The CSV file has to be given as a form parameter named zipcounty_file.'
-                        )
-                        raise InvalidPayload(msg)
-        try:
-            zipcounties = standardize_request(raw_zipcounties)
-            if not zipcounties:
-                raise InvalidPayload(message='Invalid CSV file. No Zip or County columns found.')
-        except:
-            raise InvalidPayload(message='Invalid CSV file. Was not able to parse.')
-    app.logger.debug('Extracted zip counties.')
-    return zipcounties
 
 
 @app.errorhandler(InvalidPayload)
@@ -116,6 +74,4 @@ def handle_invalid_payload(error):
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.config['DEBUG'] = True
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', debug=True, port=80)
