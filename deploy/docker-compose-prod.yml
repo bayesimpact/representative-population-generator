@@ -17,11 +17,11 @@ services:
             - mongo
             - backend
         environment:
-            - REACT_APP_API_HOSTNAME=http://network-adequacy-lb-950847297.us-west-1.elb.amazonaws.com:8080
+            - REACT_APP_API_HOSTNAME=http://localhost:8080
             - REACT_APP_VERSION=$TAG
 
     mongo:
         image: bayesimpact/na-mongodb:$TAG
         ports:
-          - "27017:27017"
+          - 27017:27017
         mem_limit: 2097152000

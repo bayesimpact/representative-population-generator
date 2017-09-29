@@ -12,4 +12,4 @@ RUN yarn
 ADD src /usr/src/app/src
 ADD public /usr/src/app/public
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "build" ]

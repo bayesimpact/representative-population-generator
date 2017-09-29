@@ -14,7 +14,7 @@ then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # Handle exits from shell or function but don't exit interactive shell.
 fi
 
-if [ "$1" == "latest" ]; then
+if [ ! -z "$1" ]; then
   readonly TAG="$1"
 else
   readonly TAG=$(git describe --always)
@@ -63,5 +63,4 @@ ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy
 echo "Waiting for 2 minutes."
 sleep 120s
 
-ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service up
 ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy scale 2

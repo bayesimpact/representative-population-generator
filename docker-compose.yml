@@ -22,7 +22,7 @@ services:
           - ./web-app/backend:/usr/local/lib/python3.6/site-packages/backend
         build: ./web-app/backend
         ports:
-            - "8080:5000"
+            - 8080:5000
         command: python app.py
 
     mongo:
@@ -30,7 +30,7 @@ services:
           context: ./data
           dockerfile: Dockerfile
         ports:
-          - "27017:27017"
+          - 27017:27017
 
     webapp:
         volumes:
