@@ -91,11 +91,30 @@ class TestGetZipCounties(LiveServerTestCase):
         """Test parsing of test_input_zip_only.csv with only zip column."""
         expected = [
             {
-                'zipCode': '92084',
+                'zipCode': '94117',
             },
             {
-                'zipCode': '94117',
-            }
+                'zipCode': '94103',
+            },
+            {
+                'zipCode': '94102',
+            },
+            {
+                'zipCode': '94110',
+            },
+            {
+                'zipCode': '94114',
+            },
+            {
+                'zipCode': '92154',
+            },
+            {
+                'zipCode': '91935',
+            },
+            {
+                'zipCode': '92055',
+            },
+
         ]
         output = self._testing_csv_parsing('tests/assets/test_input_zip_only.csv')
         assert (compare_lists_of_dict(expected, output))
