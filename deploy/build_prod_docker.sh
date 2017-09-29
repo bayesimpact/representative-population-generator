@@ -22,12 +22,24 @@ echo    # Move to a new line.
 
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
+    read -p "Would you like to rebuild without cache? " -n 1 -r
+    # TODO - Add branch name to this prompt.
+    echo    # Move to a new line.
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      export CACHE="--no-cache"
+      echo "Building with --no-cache."
+    else
+      export CACHE=""
+      echo "Building using cache."
+    fi
+
     echo "Building and pushing database Docker."
     docker build \
         -f data/Dockerfile.prod \
         -t bayesimpact/$DB_DOCKER_IMAGE:$TAG \
         -t bayesimpact/$DB_DOCKER_IMAGE:latest \
-        ./data
+        ./data \
+        "${CACHE}"
     docker push bayesimpact/$DB_DOCKER_IMAGE
 
     echo "Building and pushing backend Docker."
@@ -35,7 +47,8 @@ then
         -f web-app/backend/Dockerfile.prod \
         -t bayesimpact/$BACKEND_DOCKER_IMAGE:$TAG \
         -t bayesimpact/$BACKEND_DOCKER_IMAGE:latest \
-        ./web-app/backend
+        ./web-app/backend \
+        "${CACHE}"
     docker push bayesimpact/$BACKEND_DOCKER_IMAGE
 
     echo "Building and pushing frontend Docker."
@@ -43,7 +56,8 @@ then
         -f web-app/frontend/Dockerfile.prod \
         -t bayesimpact/$FRONTEND_DOCKER_IMAGE:$TAG \
         -t bayesimpact/$FRONTEND_DOCKER_IMAGE:latest \
-        ./web-app/frontend
+        ./web-app/frontend \
+        "${CACHE}"
     docker push bayesimpact/$FRONTEND_DOCKER_IMAGE
 fi
 
@@ -57,4 +71,4 @@ then
 fi
 
 ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service up
-ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service scale 2
+# ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service scale 2
