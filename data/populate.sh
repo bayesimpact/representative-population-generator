@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # This scripts is used to populate a MongoDB with fixtures. It should be used
-# inside a docker container.
+# inside a Docker container.
 
 while read LOGLINE
 do
@@ -9,6 +9,8 @@ do
     mongoimport --db "na-db" -c "representative_points" --jsonArray --file="eddm_data.json"
     mongoimport --db "na-db" -c "service_areas" --jsonArray --file="service_areas.json"
     mongoimport --db "na-db" -c "boundaries" --jsonArray --file="service_area_boundaries.json"
+    mongo 127.0.0.1:27017/na-db --eval "db.getCollectionNames()"
+    mongo 127.0.0.1:27017/na-db --eval 'db.representative_points.createIndex({"ServiceArea.CountyName": 1, "ServiceArea.ZipCode": 1}, options = {"unique": true, "name": "idx_county_zip"})'
     killall mongod
   fi
   if [[ "${LOGLINE}" == *"dbexit"* ]]; then
