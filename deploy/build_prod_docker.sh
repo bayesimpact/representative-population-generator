@@ -56,4 +56,5 @@ then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # Handle exits from shell or function but don't exit interactive shell.
 fi
 
-ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy scale 2
+ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service up
+ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service scale 2

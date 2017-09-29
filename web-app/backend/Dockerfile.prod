@@ -8,4 +8,4 @@ COPY ./lib /usr/local/lib/python3.6/site-packages/backend/lib
 WORKDIR /var/local
 EXPOSE 5000
 
-CMD python app.py
+CMD ["uwsgi", "--protocol=http", "--socket", "0.0.0.0:5000", "--enable-threads", "-w", "app:app"]

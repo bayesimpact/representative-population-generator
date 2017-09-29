@@ -24,3 +24,7 @@ To build and push prod Docker files, simply run
     deploy/build_prod_docker.sh
 
 Once images are created, you will be prompted confirmation before deploying on the network-adequacy cluster.
+
+## Debugging
+If you need to investigate what is happening on the instance, you can ssh into one of the ECS instance.
+You can then access logs here: `cat /var/log/ecs/ecs-agent.log.YEAR-MONTH-DAY-HOUR`
