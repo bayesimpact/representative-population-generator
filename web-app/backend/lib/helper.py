@@ -3,7 +3,10 @@
 import csv
 import io
 
+from backend.lib.timer import timed
 
+
+@timed
 def fetch_representative_points(representative_point_db, service_areas, boundary_db, logger=None):
     """Given a list of service areas, fetch and return point As for each one."""
     outputs = []
@@ -17,18 +20,21 @@ def fetch_representative_points(representative_point_db, service_areas, boundary
     return outputs
 
 
+@timed
 def parse_csv_to_json(zipcounty_file, logger=None):
     """Transform a csv into json."""
     json_zipcounty_output = jsonify_input(zipcounty_file.read().decode('utf-8'), logger)
     return json_zipcounty_output
 
 
+@timed
 def jsonify_input(input_string, logger=None):
     """Convert input CSV file into a JSON object."""
     file_content = io.StringIO(input_string)
     return list(csv.DictReader(file_content))
 
 
+@timed
 def standardize_request(input_json_list):
     """
     Given a list of json object, standardize it by removing empty items and change the keys.
@@ -81,6 +87,7 @@ def _standardize_county_name(zipcounty):
     return zipcounty
 
 
+@timed
 def find_representative_points(representative_point_db, service_area, logger=None):
     """Given a standard service_area, return corresponding representative points from db."""
     key_map = {'countyName': 'ServiceArea.CountyName', 'zipCode': 'ServiceArea.ZipCode'}
@@ -92,6 +99,7 @@ def find_representative_points(representative_point_db, service_area, logger=Non
         return []
 
 
+@timed
 def find_boundary(boundary_db, service_area, logger=None):
     """Given a standard service_area, find and return boundaries."""
     key_map = {'countyName': 'properties.NAME', 'zipCode': 'properties.ZIP'}
@@ -103,6 +111,7 @@ def find_boundary(boundary_db, service_area, logger=None):
         return None
 
 
+@timed
 def prepare_return_object(points, boundary, area):
     """Prepare the object that is being returned for each service_area."""
     return_object = {

@@ -6,6 +6,7 @@ from backend.lib.exceptions import InvalidPayload
 from backend.lib.helper import fetch_representative_points
 from backend.lib.helper import parse_csv_to_json
 from backend.lib.helper import standardize_request
+from backend.lib.timer import timed
 
 import flask
 
@@ -25,6 +26,7 @@ with app.app_context():
     boundaries = mongo.db.boundaries
 
 
+@timed
 @app.route('/available-service-areas', methods=['GET'])
 def fetch_available_service_areas():
     """Fetch and return all available service areas from db."""
@@ -34,6 +36,7 @@ def fetch_available_service_areas():
     return flask.jsonify({'result': fetched_areas})
 
 
+@timed
 @app.route('/areas', methods=['GET', 'POST'])
 def get_multiple_zip_county_points():
     """
@@ -57,6 +60,7 @@ def get_multiple_zip_county_points():
     return flask.jsonify({'result': outputs})
 
 
+@timed
 def _extract_zip_counties(app):
     """
     Extract zipcounties from different flask input methods.
