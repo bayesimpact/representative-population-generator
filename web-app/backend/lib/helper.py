@@ -20,10 +20,10 @@ def fetch_representative_points(
     for points_document in representative_points:
         # For each zip-county pair, prepare a map with points and area info.
         county = points_document['ServiceArea']['CountyName']
-        zip = points_document['ServiceArea']['ZipCode']
+        zip_ = points_document['ServiceArea']['ZipCode']
         point_as = points_document['ReprPopPoints']['PointA']
 
-        output = prepare_return_object(point_as, None, {'countyName': county, 'zipCode': zip})
+        output = prepare_return_object(point_as, None, {'countyName': county, 'zipCode': zip_})
         outputs.append(output)
     logger.info(outputs)
     return outputs
@@ -108,27 +108,25 @@ def find_representative_points_batch(
         representative_points_coll, zip_county_pairs, logger=None):
     """Fetch all the matching points documents in a single query."""
     try:
-        # First build a map of county -> list<zip> from the input zip-county pairs.
-        area_map = {}
-        for zip_county_pair in zip_county_pairs:
-            county = zip_county_pair['countyName']
-            zip_ = zip_county_pair['zipCode']
-            if county not in area_map:
-                area_map[county] = []
-            area_map[county].append(zip_)
-
-        # Next build the query components
+        # Build a base query.
         query = {
             '$or': []
         }
-        for county, list_of_zips in area_map.items():
-            filter_element = {
-                'ServiceArea.CountyName': county,
-                'ServiceArea.ZipCode': {
-                    '$in': list_of_zips
-                }
-            }
-            query['$or'].append(filter_element)
+
+        # Add each specified service area to the query condition.
+        for zip_county_pair in zip_county_pairs:
+            county = zip_county_pair.get('countyName', None)
+            zip_ = zip_county_pair.get('zipCode', None)
+
+            filter_element = {}
+
+            # Filter using whatever combination of ZIP and county are provided.
+            if county:
+                filter_element['ServiceArea.CountyName'] = county
+            if zip_:
+                filter_element['ServiceArea.ZipCode'] = zip_
+            if county or zip_:
+                query['$or'].append(filter_element)
 
         logger.debug(json.dumps(query, sort_keys=True, indent=4))
         representative_points = representative_points_coll.find(query)
@@ -141,27 +139,24 @@ def find_representative_points_batch(
 def find_boundaries_batch(boundary_coll, zip_county_pairs, logger=None):
     """Fetch all the matching boundary documents in a single query."""
     try:
-        # First build a map of county -> list<zip> from the input zip-county pairs.
-        area_map = {}
-        for zip_county_pair in zip_county_pairs:
-            county = zip_county_pair['countyName']
-            zip_ = zip_county_pair['zipCode']
-            if county not in area_map:
-                area_map[county] = []
-            area_map[county].append(zip_)
-
-        # Next build the query components
+        # Build a base query.
         query = {
             '$or': []
         }
-        for county, list_of_zips in area_map.items():
-            filter_element = {
-                'properties.NAME': county,
-                'properties.ZIP': {
-                    '$in': list_of_zips
-                }
-            }
-            query['$or'].append(filter_element)
+
+        # Add each specified service area to the query condition.
+        for zip_county_pair in zip_county_pairs:
+            county = zip_county_pair.get('countyName', None)
+            zip_ = zip_county_pair.get('zipCode', None)
+
+            filter_element = {}
+            # Filter using whatever combination of ZIP and county are provided.
+            if county:
+                filter_element['properties.NAME'] = county
+            if zip_:
+                filter_element['properties.ZIP'] = zip_
+            if county or zip_:
+                query['$or'].append(filter_element)
 
         logger.debug(json.dumps(query, sort_keys=True, indent=4))
         boundaries = boundary_coll.find(query)
