@@ -7,7 +7,10 @@ import re
 
 
 def fetch_representative_points(representative_point_db, service_areas, boundary_db, logger=None):
-    """Given a list of service areas, fetch and return point As for each one."""
+    """
+    Given a list of service areas, fetch and return point As for each one.
+    TODO make sure areas which were not found are marked as unavailable in response.
+    """
     logger.debug('Finding representative points for service areas: {}'.format(service_areas))
     # Ignoring boundaries for now since they are unused in the client.
     # boundaries = find_boundaries_batch(boundary_db, service_areas, logger)
