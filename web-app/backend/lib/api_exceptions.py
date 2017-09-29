@@ -1,4 +1,5 @@
 """Exception classes for backend."""
+# TODO Remove this since it is not in use.
 
 
 class UnavailableZipCounty(Exception):
