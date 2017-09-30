@@ -8,7 +8,7 @@
     "material-ui": "^0.19.2",
     "mui-icons": "^1.2.1",
     "react": "^15.6.1",
-    "react-csv": "^1.0.8",
+    "react-csv": "https://github.com/philipdickinson/react-csv/tarball/master",
     "react-dom": "^15.6.1",
     "react-mapbox-gl": "^2.5.0",
     "react-redux": "^5.0.6",
