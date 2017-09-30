@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "geojson-bbox": "^0.0.0",
     "mapbox-gl": "^0.40.1",
     "material-ui": "^0.19.2",
@@ -25,6 +26,6 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "babel-polyfill": "^6.26.0"
+
   }
 }
