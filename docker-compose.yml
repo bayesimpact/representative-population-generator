@@ -32,7 +32,7 @@ services:
         ports:
           - 27017:27017
 
-    webapp:
+    frontend:
         volumes:
           - ./web-app/frontend/src:/usr/src/app/src
           - ./web-app/frontend/public:/usr/src/app/public

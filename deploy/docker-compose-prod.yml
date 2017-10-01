@@ -8,7 +8,7 @@ services:
             - mongo
         mem_limit: 2100000000
 
-    webapp:
+    frontend:
         image: bayesimpact/na-frontend:$TAG
         links:
           - backend

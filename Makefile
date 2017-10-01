@@ -26,7 +26,7 @@ frontend-lint:
 	echo "Missing frontend-lint"
 
 frontend-test:
-	docker-compose run -e CI=true --no-deps webapp yarn test
+	docker-compose run -e CI=true --no-deps frontend yarn test
 
 # Webapp tests
 webapp-lint:
