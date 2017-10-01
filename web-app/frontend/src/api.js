@@ -8,9 +8,21 @@ export function getCounties() {
 }
 
 export function getAreas(countyZips) {
-  return fetch(apiHostname + '/areas?zipcounties=' + JSON.stringify(countyZips))
-  .then(response => response.json())
-  .then(response => response.result)
+  const body = JSON.stringify(countyZips)
+  const length = body.length
+
+  if (length < 7000) {
+    return fetch(apiHostname + '/areas?zipcounties=' + body)
+    .then(response => response.json())
+    .then(response => response.result)
+  } else {
+    return fetch(apiHostname + '/areas', {
+        method: 'POST',
+        body: body
+      })
+    .then(response => response.json())
+    .then(response => response.result)
+  }
 }
 
 export function getAreasFromFile(file) {

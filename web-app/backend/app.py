@@ -86,11 +86,16 @@ def _extract_zip_counties(app):
                 raw_zipcounties = json.loads(flask.request.args['zipcounties'])
             except:
                 try:
-                    zipcounties_file = flask.request.files['zipcounty_file']
-                    raw_zipcounties = parse_csv_to_json(zipcounties_file, logger=app.logger)
-                except KeyError:
-                    msg = 'The CSV file has to be given as a form parameter named zipcounty_file.'
-                    raise InvalidPayload(msg)
+                    raw_zipcounties = json.loads(flask.request.data)
+                except:
+                    try:
+                        zipcounties_file = flask.request.files['zipcounty_file']
+                        raw_zipcounties = parse_csv_to_json(zipcounties_file, logger=app.logger)
+                    except KeyError:
+                        msg = (
+                            'The CSV file has to be given as a form parameter named zipcounty_file.'
+                        )
+                        raise InvalidPayload(msg)
         try:
             zipcounties = standardize_request(raw_zipcounties)
             if not zipcounties:
