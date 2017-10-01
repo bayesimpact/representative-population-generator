@@ -10,8 +10,9 @@ export function getCounties() {
 export function getAreas(countyZips) {
   const body = JSON.stringify(countyZips)
   const length = body.length
-
-  if (length < 7000) {
+  // IE11 supports GET requests of up to 2048 chars.
+  // For longer requests, use POST.
+  if (length < 2000) {
     return fetch(apiHostname + '/areas?zipcounties=' + body)
     .then(response => response.json())
     .then(response => response.result)
