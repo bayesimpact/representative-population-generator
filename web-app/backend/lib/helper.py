@@ -17,24 +17,59 @@ def fetch_representative_points(
     logger.debug('Finding representative points for {} service areas'.format(len(service_areas)))
     # Ignoring boundaries for now since they are unused in the client.
     # boundaries = find_boundaries_batch(boundary_coll, service_areas, logger)
+
+    # Keep track of which service areas could be found.
+    missing_service_areas = set(
+        (area.get('countyName', None), area.get('zipCode', None))
+        for area in service_areas
+        if area.get('countyName', None) or area.get('zipCode', None)
+    )
+
     representative_points = find_representative_points_batch(
-        representative_points_coll, service_areas, logger)
+        representative_points_coll,
+        service_areas,
+        logger
+    )
+
     outputs = []
+
+    # Prepare results for found service areas.
     for points_document in representative_points:
-        # For each zip-county pair, prepare a map with points and area info.
         county = points_document['ServiceArea']['CountyName']
         zip_ = points_document['ServiceArea']['ZipCode']
         point_as = points_document['ReprPopPoints']['PointA']
+        area = {
+            'countyName': county,
+            'zipCode': zip_
+        }
 
-        output = prepare_return_object(point_as, None, {'countyName': county, 'zipCode': zip_})
-        outputs.append(output)
+        outputs.append(
+            prepare_return_object(
+                points=point_as,
+                boundary=None,
+                area=area
+            )
+        )
 
-    logger.debug('Found {} sets of representative points'.format(
-        sum(
-            1 for output in outputs
-            if output['availabilityStatus']['isServiceAreaAvailable']
-        ))
-    )
+        # Remove the current area from the set of unfound service areas.
+        for element in [(county, zip_), (county, None), (None, zip_)]:
+            missing_service_areas.discard(element)
+
+    logger.debug('Found {} sets of representative points'.format(len(outputs)))
+
+    # Prepare results for missing service areas.
+    if missing_service_areas:
+        logger.debug('No points found for {} service areas.'.format(len(missing_service_areas)))
+
+        for area_tuple in missing_service_areas:
+            area = {
+                'countyName': area_tuple[0],
+                'zipCode': area_tuple[1]
+            }
+            area = {k: v for k, v in area.items() if v}
+
+            outputs.append(prepare_return_object(points=[], boundary=None, area=area))
+
     return outputs
 
 
@@ -194,20 +229,16 @@ def find_boundary(boundary_coll, service_area, logger=None):
 @timed
 def prepare_return_object(points, boundary, area):
     """Prepare the object that is being returned for each service_area."""
-    return_object = {
+    return {
         'areaInfo': area,
         'points': points,
-        'boundary': boundary
+        'boundary': boundary,
+        'availabilityStatus': _flag_service_area_availability(bool(points))
     }
-    return_object['availabilityStatus'] = _flag_service_area_availability(bool(points))
-    return return_object
 
 
 def _flag_service_area_availability(is_available=True):
-    available_msg = 'Service area available.'
-    unavailable_msg = 'Service area unavailable.'
-    status = {}
-
-    status['isServiceAreaAvailable'] = is_available
-    status['message'] = available_msg if is_available else unavailable_msg
-    return status
+    return {
+        'isServiceAreaAvailable': is_available,
+        'message': 'Service area available.' if is_available else 'Service area unavailable.'
+    }

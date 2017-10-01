@@ -41,7 +41,7 @@ def fetch_available_service_areas():
         app.logger.debug('Using pre-loaded available service areas.')
     fetched_areas = _FETCHED_AREAS
 
-    app.logger.debug('Returning {} available service areas.'.format(len(fetched_areas)))
+    app.logger.debug('Fetched available service areas.')
 
     return flask.jsonify({'result': fetched_areas})
 
