@@ -35,7 +35,7 @@ Our reasons for open-sourcing the network adequacy algorithm and web app are two
 
 ## More Information
 
-1. [Farthest First-Traversal Algorithm](models/FARTHEST_FIRST_TRAVERSAL.md)
+1. [Model Selection and Validation](models/MODEL_SELECTION.md)
 
 2. [Data Sources](data/DATA_SOURCES.md)
 
