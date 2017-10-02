@@ -13,7 +13,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
-import ReactMapboxGl, {Layer, Feature, Popup} from 'react-mapbox-gl'
+import ReactMapboxGl, {Layer, Feature, Popup, ZoomControl} from 'react-mapbox-gl'
 
 import LoadingOverlay from '../components/LoadingOverlay'
 import types from '../types'
@@ -37,7 +37,6 @@ const AREA_COLORS = [
 // Mapbox Access Token.
 const accessToken = 'pk.eyJ1IjoiZGVkYW4iLCJhIjoiY2o3c29wcThlM3ZlZjMzdXdzczQ3bzIwMSJ9.pvxNu-R28kuQ6CXsHJST_w'
 const Map = ReactMapboxGl({ accessToken });
-
 
 class MapView extends Component {
 
@@ -91,7 +90,10 @@ class MapView extends Component {
           <div className="popup-container">
             {hoveredPoint && <DetailsPopup point={hoveredPoint} />}
           </div>
+          <ZoomControl
+            position="bottomLeft"/>
         </Map>
+
       </div>
     )
   }
