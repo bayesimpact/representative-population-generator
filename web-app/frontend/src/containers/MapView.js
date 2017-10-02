@@ -23,14 +23,15 @@ import {getBoundingBoxCoordinates, getAllPointsCollection, getGroupedPoints} fro
 const CENTER_OF_CALIFORNIA = [-119.182111, 36.250471]
 const INITIAL_ZOOM_LEVEL = [3]
 const AREA_COLORS = [
-  '#fbb4ae',
-  '#b3cde3',
-  '#ccebc5',
-  '#decbe4',
-  '#fed9a6',
-  '#ffffcc',
-  '#e5d8bd',
-  '#fddaec',
+  '#1F77B4',
+  '#2EA02C',
+  '#BCBD21',
+  '#E377C2',
+  '#8C564B',
+  '#9467BD',
+  '#FF7F0D',
+  '#1ABECF',
+  '#D62728',
 ]
 
 // Mapbox Access Token.
@@ -113,7 +114,7 @@ class PointsLayer extends Component {
         stops: [[8, 1], [11, 6], [16, 20]]
       },
       'circle-color': color,
-      'circle-opacity': .8,
+      'circle-opacity': .7,
     }
     return (
       <Layer type="circle" paint={pointStyle}>
