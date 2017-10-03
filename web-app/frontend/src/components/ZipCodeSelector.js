@@ -74,7 +74,7 @@ class ZipCodeSelector extends Component {
 const ZipCodeSelectorHeadline = ({nSelectedCountyZips}) => (
   <div style={{display: 'flex', flex: 'none', marginTop: 5}}>
     <div style={{marginBottom: 15, color: styles.primaryText}}>
-      Zip Codes
+      ZIP Codes
     </div>
     <div style={{flex: 1}} />
     <div style={{color: styles.secondaryText}}>

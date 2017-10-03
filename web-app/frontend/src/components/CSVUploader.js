@@ -36,7 +36,7 @@ class CSVUploader extends Component {
     return (
       <div>
         <div style={commentStyle}>
-          Choose a CSV file containing a list of valid Zip Codes and/or Counties.
+          Choose a CSV file containing a list of valid ZIP Codes and/or Counties.
         </div>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <RaisedButton

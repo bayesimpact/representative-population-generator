@@ -150,7 +150,7 @@ class DetailsPopup extends Component {
         <table style={{fontSize: 14, color: '#ddd'}}>
           <tbody>
             <TableRow name="County" value={pointProps.county} />
-            <TableRow name="Zip" value={pointProps.zip} />
+            <TableRow name="ZIP" value={pointProps.zip} />
             <TableRow name="No. Residents" value={Math.round(pointProps.population).toString()} />
             <TableRow name="Lat" value={point.geometry.coordinates[1].toFixed(6)} />
             <TableRow name="Long" value={point.geometry.coordinates[0].toFixed(6)} />

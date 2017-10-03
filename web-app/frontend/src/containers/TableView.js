@@ -69,7 +69,7 @@ class TableView extends Component {
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
               <TableHeaderColumn></TableHeaderColumn>
-              <TableHeaderColumn>ZipCode</TableHeaderColumn>
+              <TableHeaderColumn>ZIP Code</TableHeaderColumn>
               <TableHeaderColumn>County</TableHeaderColumn>
               <TableHeaderColumn>No. Residents</TableHeaderColumn>
               <TableHeaderColumn>Latitude</TableHeaderColumn>
