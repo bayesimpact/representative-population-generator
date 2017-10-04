@@ -106,7 +106,7 @@ class Sidebar extends Component {
     return (
       <Paper style={{...sidebarStyle, ...style}}>
         <SidebarHeadline icon={PlaceIcon} text="Service Area" />
-        <SidebarContent>
+        <SidebarContent style={{flex: '1 1 0%', minHeight: 0}}>
           <CSVUploader
               selectedCSVFileName={selectedCSVFileName}
               onFileSelected={this.handleCSVFileSelected} />
