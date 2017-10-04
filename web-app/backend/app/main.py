@@ -1,8 +1,9 @@
 """Routing for backend API."""
 from backend.lib.exceptions import InvalidPayload
-from backend.lib.helper import fetch_representative_points
-from backend.lib.requests import extract_zip_counties
+from backend.lib.db_requests import fetch_representative_points
+from backend.lib.standardize_input import standardize_request
 from backend.lib.timer import timed
+from backend.app.requests.zip_county_requests import handle_zip_counties_request
 
 import flask
 
@@ -58,7 +59,8 @@ def get_multiple_zip_county_points():
     returns: json object with info about area and a list of points.
     """
     app.logger.debug('Extracting zip counties.')
-    zipcounties = extract_zip_counties(app)
+    raw_zipcounties = handle_zip_counties_request(app)
+    zipcounties = standardize_request(raw_zipcounties)
     app.logger.debug('Received {} zipcounties.'.format(len(zipcounties)))
     outputs = fetch_representative_points(repr_points, zipcounties, boundaries, logger=app.logger)
     return flask.jsonify({'result': outputs})

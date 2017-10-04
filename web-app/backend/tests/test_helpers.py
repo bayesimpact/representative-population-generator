@@ -1,10 +1,10 @@
 """Test methods for all helper functions."""
 
 
-from backend.lib.helper import _remove_empty_items
-from backend.lib.helper import _standardize_keys
-from backend.lib.helper import prepare_return_object
-from backend.lib.helper import standardize_request
+from backend.lib.db_requests import prepare_return_object
+from backend.lib.standardize_input import _remove_empty_items
+from backend.lib.standardize_input import _standardize_keys
+from backend.lib.standardize_input import standardize_request
 from backend.tests.helper import compare_lists_of_dict
 
 
@@ -17,9 +17,9 @@ def test_standardize_keys():
         'countyName': 'abc',
         'zipCode': '21421'
     }
-    assert (_standardize_keys(input_dict_1) == expected_output)
-    assert (_standardize_keys(input_dict_2) == expected_output)
-    assert (_standardize_keys(input_dict_3) == expected_output)
+    assert _standardize_keys(input_dict_1) == expected_output
+    assert _standardize_keys(input_dict_2) == expected_output
+    assert _standardize_keys(input_dict_3) == expected_output
 
 
 def test_remove_empty_items():
