@@ -41,7 +41,7 @@ class Header extends Component {
             onClick={() => this.setState({isAboutDialogOpen: true})}
             style={{color: '#fff'}} />
         <FlatButton
-            href="https://github.com/bayesimpact/network-adequacy"
+            href="https://github.com/bayesimpact/representative-population-generator"
             target="_blank"
             style={{color: '#fff'}}
             icon={<GithubIcon />} />
@@ -74,7 +74,7 @@ class AboutDialog extends Component {
     const dmhcLink = <SecureLink href="http://www.dmhc.ca.gov/">
       California Department of Managed Health Care
     </SecureLink>
-    const githubLink = <SecureLink href="https://github.com/bayesimpact/network-adequacy">
+    const githubLink = <SecureLink href="https://github.com/bayesimpact/representative-population-generator">
       Github page
 
     </SecureLink>

@@ -25,7 +25,7 @@ To prepare the local enviroment for development follow these steps:
 - clone this repository
 
 ```
-git clone git@github.com:bayesimpact/network-adequacy.git
+git clone git@github.com:bayesimpact/representative-population-generator.git
 ```
 
 - start docker services in detached mode
@@ -63,7 +63,7 @@ make webapp-lint
 ## Contributing
 
 ### Reporting issues
-Please report any bugs or improvements by opening a github issue [here](https://github.com/bayesimpact/network-adequacy/issues).
+Please report any bugs or improvements by opening a github issue [here](https://github.com/bayesimpact/representative-population-generator/issues).
 
 ### Adding new features
 You can contribute to this repository by opening a pull request and assigning it to @ericboucher, @tetraptych, @mjamei or @philip.dickinson. After resolving all comments and passing all tests, your PR could be merged. 
