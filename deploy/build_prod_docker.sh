@@ -36,11 +36,11 @@ then
     echo "Building and pushing database Docker."
     docker rmi bayesimpact/$DB_DOCKER_IMAGE
     eval docker build \
-        -f data/Dockerfile.prod \
+        -f web-app/data/Dockerfile.prod \
         -t bayesimpact/$DB_DOCKER_IMAGE:$TAG \
         -t bayesimpact/$DB_DOCKER_IMAGE:latest \
         "${CACHE}" \
-        ./data
+        ./web-app/data
     docker push bayesimpact/$DB_DOCKER_IMAGE
 
     echo "Building and pushing backend Docker."
