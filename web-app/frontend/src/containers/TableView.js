@@ -12,12 +12,13 @@ import {
 } from 'material-ui/Table'
 import FlatButton from 'material-ui/FlatButton'
 import FileDownloadIcon from 'material-ui/svg-icons/file/file-download'
-import {CSVLink} from 'react-csv'
 
 import LoadingOverlay from '../components/LoadingOverlay'
 import styles from '../styles'
 import {getAllPoints} from './tableViewSelectorHelpers'
 
+var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
+const {CSVLink} = isIE11 ? require('react-csv-ie11patch') : require('react-csv-chromepatch')
 
 const MAX_DISPLAY_POINTS = 500
 
