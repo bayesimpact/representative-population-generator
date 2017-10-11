@@ -28,6 +28,9 @@ To prepare the local enviroment for development follow these steps:
 git clone git@github.com:bayesimpact/representative-population-generator.git
 ```
 
+- setup an API for MapBox
+Setup the environment variable MAPBOX_TOKEN in your bash_profile, or as prefix to your docker-compose commands.
+
 - start docker services in detached mode
 ```
 docker-compose up -d 

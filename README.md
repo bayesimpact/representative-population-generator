@@ -36,7 +36,7 @@ Our reasons for open-sourcing the network adequacy algorithm and web app are two
 
 2. [Web application](web-app/)
 
-    - [Database](web-app/database)
+    - [database](web-app/database)
     - [backend](web-app/backend)
     - [frontend](web-app/frontend)
 

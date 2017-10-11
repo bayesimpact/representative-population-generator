@@ -9,6 +9,7 @@ This is why I decided to use alex3165/react-mapbox-gl, the second most
 popular component to interface from React to Mapbox. It seems well documented
 and I have used it in the past.
 */
+
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
@@ -18,7 +19,6 @@ import ReactMapboxGl, {Layer, Feature, Popup, ZoomControl} from 'react-mapbox-gl
 import LoadingOverlay from '../components/LoadingOverlay'
 import types from '../types'
 import {getBoundingBoxCoordinates, getAllPointsCollection, getGroupedPoints} from './mapViewSelectorHelpers'
-
 
 const CENTER_OF_CALIFORNIA = [-119.182111, 36.250471]
 const INITIAL_ZOOM_LEVEL = [3]
@@ -34,8 +34,8 @@ const AREA_COLORS = [
   '#D62728',
 ]
 
-// Mapbox Access Token.
-const accessToken = 'pk.eyJ1IjoiZGVkYW4iLCJhIjoiY2o3c29wcThlM3ZlZjMzdXdzczQ3bzIwMSJ9.pvxNu-R28kuQ6CXsHJST_w'
+// Mapbox Access Token & Map
+const accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 const Map = ReactMapboxGl({ accessToken });
 
 class MapView extends Component {

@@ -10,6 +10,9 @@ We use `.prod` Dockerfiles to build prod version of the app and push to Docker H
 - Run `ecs-cli configure --profile bayes --cluster network-adequacy --region us-west-1`
 - Get the `na-server.pem` key (look it up on 1password)
 
+## Mapbox
+- Make sure that the environment variable MAPBOX_TOKEN is set up in your bash_profile, or as prefix to your deploy command.
+
 ## Initialize the network-adequacy cluster (Once only)
 To create the ECS cluster used to deploy the Docker images, run
 
