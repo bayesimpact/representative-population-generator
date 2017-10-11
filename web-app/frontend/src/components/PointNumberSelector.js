@@ -1,11 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
-import ReactTooltip from 'react-tooltip'
 import Slider from 'material-ui/Slider'
-import ActionInfo from 'material-ui/svg-icons/action/info'
-
-import styles from '../styles'
 
 
 // Material UI uses a slider value between 0 and 1 which has to be mapped
@@ -40,12 +36,6 @@ class PointNumberSelector extends Component {
     const {value} = this.state
     return (
       <div>
-        <ReactTooltip id="points">
-          <span>The maximum number of points generated per service area.<br />
-          Some service areas will display fewer points than the input due<br />
-          to the number of available addresses in the service area.</span>
-        </ReactTooltip>
-        <div>Number of points <TooltipIcon id="points" /></div>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <Slider
               value={value}
@@ -62,24 +52,6 @@ class PointNumberSelector extends Component {
       </div>
     )
   }
-}
-
-
-const TooltipIcon = ({id}) => {
-  const style = {
-    color: styles.secondaryText,
-    width: 16,
-    height: 16,
-    verticalAlign: 'text-top',
-  }
-  return (
-    <a data-tip data-for={id}>
-      <ActionInfo style={style} />
-    </a>
-  )
-}
-TooltipIcon.propTypes = {
-  id: PropTypes.string.isRequired,
 }
 
 

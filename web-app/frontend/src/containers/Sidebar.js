@@ -29,6 +29,9 @@ import {
 import styles from '../styles'
 import types from '../types'
 
+import ReactTooltip from 'react-tooltip'
+
+import ActionInfo from 'material-ui/svg-icons/action/info'
 
 class Sidebar extends Component {
 
@@ -132,7 +135,12 @@ class Sidebar extends Component {
                 onRemoveCountyZip={this.handleRemoveCountyZip} />
           </div>
         </SidebarContent>
-        <SidebarHeadline icon={PointsIcon} text="Enrollees" />
+        <ReactTooltip id="enrollees">
+          <span>Choose the maximum number of points generated per service area.<br />
+          Some service areas will display fewer points than the input due<br />
+          to the number of available addresses in the service area.</span>
+        </ReactTooltip>
+        <SidebarHeadline icon={PointsIcon} text="Enrollees" id="enrollees" />
         <SidebarContent style={{flex: 'none'}}>
           <PointNumberSelector
               value={nPoints}
@@ -154,10 +162,11 @@ class SidebarHeadline extends Component {
   static propTypes = {
     icon: PropTypes.func.isRequired,
     text: PropTypes.string.isRequired,
+    id: PropTypes.string,
   };
 
   render() {
-    const {icon, text} = this.props
+    const {icon, text, id} = this.props
     const IconTag = icon
     const style = {
       display: 'flex',
@@ -177,6 +186,8 @@ class SidebarHeadline extends Component {
         <div style={textStyle}>
           {text}
         </div>
+        <div style={{flex: 0.2}} />
+        {id ? <TooltipIcon id={id} /> : null}
       </div>
     )
   }
@@ -236,6 +247,24 @@ class InputSeparator extends Component {
       </div>
     )
   }
+}
+
+const TooltipIcon = ({id}) => {
+  const style = {
+    color: styles.secondaryText,
+    width: 16,
+    height: 16,
+    verticalAlign: 'text-top',
+  }
+  return (
+    <a data-tip data-for={id}>
+      <ActionInfo style={style} />
+    </a>
+  )
+}
+
+TooltipIcon.propTypes = {
+  id: PropTypes.string.isRequired,
 }
 
 
