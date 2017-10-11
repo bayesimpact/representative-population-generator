@@ -33,7 +33,7 @@ def _handle_json_request(app, flask_request):
         raw_data = flask_request.data
     try:
         data = json.loads(raw_data)
-    except JSONDecodeError:
+    except json.JSONDecodeError:
         raise InvalidFormat(message='Invalid JSON format.')
     standardized_data = standardize_request(data)
     if standardized_data:

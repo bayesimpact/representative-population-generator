@@ -1,9 +1,9 @@
 """Routing for backend API."""
-from backend.lib.exceptions import InvalidPayload
+from backend.app.requests.zip_county_requests import handle_zip_counties_request
 from backend.lib.db_requests import fetch_representative_points
+from backend.lib.exceptions import InvalidPayload
 from backend.lib.standardize_input import standardize_request
 from backend.lib.timer import timed
-from backend.app.requests.zip_county_requests import handle_zip_counties_request
 
 import flask
 
