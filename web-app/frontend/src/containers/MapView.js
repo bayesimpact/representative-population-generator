@@ -34,9 +34,12 @@ const AREA_COLORS = [
   '#D62728',
 ]
 
+
 // Mapbox Access Token & Map
 const accessToken = process.env.REACT_APP_MAPBOX_TOKEN
+const networkAdequacyMapStyle = 'mapbox://styles/bayesimpact/cj8qeq6cpajqc2ts1xfw8rf2q'
 const Map = ReactMapboxGl({ accessToken });
+
 
 class MapView extends Component {
 
@@ -68,7 +71,7 @@ class MapView extends Component {
         {isLoading ? <LoadingOverlay /> : null}
         <Map
             // eslint-disable-next-line
-            style="mapbox://styles/mapbox/light-v9"
+            style={networkAdequacyMapStyle}
             center={CENTER_OF_CALIFORNIA}
             zoom={INITIAL_ZOOM_LEVEL}
             fitBounds={boundingBoxCoordinates}
