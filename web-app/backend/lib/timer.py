@@ -22,7 +22,6 @@ def timed(f):
         timer_message = '%s took %d seconds to complete.' % (f.__name__, elapsed)
         if logger:
             logger.warn(timer_message)
-        else:
-            print(timer_message)
+        print(timer_message)
         return result
     return wrapper
