@@ -20,8 +20,7 @@ read -p "You are going to replace the database, backend and frontend Docker imag
 # TODO - Add branch name to this prompt.
 echo    # Move to a new line.
 
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
+if [[ $REPLY =~ ^[Yy]$ ]]; then
     read -p "Would you like to rebuild without cache? " -n 1 -r
     # TODO - Add branch name to this prompt.
     echo    # Move to a new line.
@@ -36,11 +35,10 @@ then
     echo "Building and pushing database Docker."
     docker rmi bayesimpact/$DB_DOCKER_IMAGE
     eval docker build \
-        -f web-app/data/Dockerfile.prod \
+        -f web-app/database/Dockerfile.prod \
         -t bayesimpact/$DB_DOCKER_IMAGE:$TAG \
-        -t bayesimpact/$DB_DOCKER_IMAGE:latest \
         "${CACHE}" \
-        ./web-app/data
+        ./web-app/database
     docker push bayesimpact/$DB_DOCKER_IMAGE
 
     echo "Building and pushing backend Docker."
@@ -48,7 +46,6 @@ then
     eval docker build \
         -f web-app/backend/Dockerfile.prod \
         -t bayesimpact/$BACKEND_DOCKER_IMAGE:$TAG \
-        -t bayesimpact/$BACKEND_DOCKER_IMAGE:latest \
         "${CACHE}" \
         ./web-app/backend
     docker push bayesimpact/$BACKEND_DOCKER_IMAGE
@@ -58,18 +55,15 @@ then
     eval docker build \
         -f web-app/frontend/Dockerfile.prod \
         -t bayesimpact/$FRONTEND_DOCKER_IMAGE:$TAG \
-        -t bayesimpact/$FRONTEND_DOCKER_IMAGE:latest \
         "${CACHE}" \
         ./web-app/frontend
     docker push bayesimpact/$FRONTEND_DOCKER_IMAGE
 fi
 
-
 # Deploy to ECS.
 read -p "Would you like to deploy these new images with tag ${TAG}? Are you sure? " -n 1 -r
 echo    # Move to a new line.
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1 # Handle exits from shell or function but don't exit interactive shell.
 fi
 
