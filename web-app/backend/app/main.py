@@ -14,6 +14,10 @@ app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/na-db'
 app.config['MONGO_CONNECT'] = False
 
+from flask_cors import CORS
+
+CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
+
 _FETCHED_AREAS = None
 
 mongo = PyMongo(app)
@@ -76,4 +80,4 @@ def handle_invalid_payload(error):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=80)
+    app.run(host='0.0.0.0', debug=True, port=8080)
