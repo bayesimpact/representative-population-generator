@@ -7,6 +7,8 @@ from backend.lib.timer import timed
 
 import flask
 
+import time
+
 from flask_pymongo import PyMongo
 
 
@@ -41,7 +43,7 @@ def fetch_available_service_areas():
     fetched_areas = _FETCHED_AREAS
 
     app.logger.debug('Fetched available service areas.')
-
+    time.sleep(30)
     return flask.jsonify({'result': fetched_areas})
 
 

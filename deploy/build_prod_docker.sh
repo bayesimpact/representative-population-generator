@@ -76,4 +76,4 @@ if [ -z "${MAPBOX_TOKEN}" ]; then
 fi
 
 ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service up
-# ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service scale 2
+ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service scale 1

@@ -1,21 +1,37 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.6
+FROM python:3.6
+ 
+# Install uwsgi Python web server
+RUN pip install uwsgi
 
+# Install app requirements
 COPY requirements.txt ./requirements.txt
 RUN pip install -qr ./requirements.txt
 
+# Create app directory
+RUN mkdir /app
+ 
+# Set the default directory for our environment
+ENV HOME /app
+WORKDIR /app
+ 
+# Expose port 8080 for uwsgi
+EXPOSE 8080
+
+COPY ./config/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["uwsgi", "--ini", "uwsgi.ini"]
+
+######
+# Only the lines below may differ between Dockerfile and Dockerfile.prod.
+######
+
+# App files and libs
 COPY ./app/main.py /app/main.py
 COPY ./lib /usr/local/lib/python3.6/site-packages/backend/lib
 COPY ./app /usr/local/lib/python3.6/site-packages/backend/app
 
-# UWSGI and NGINX configs
+# UWSGI configs
 COPY ./config/uwsgi.ini /app/uwsgi.ini
-COPY ./config/nginx.conf /etc/nginx/conf.d/nginx.conf
-
-COPY ./config/entrypoint_bis.sh /entrypoint_bis.sh
-RUN chmod +x /entrypoint_bis.sh
-
-ENTRYPOINT ["/entrypoint_bis.sh"]
-
-CMD ["/usr/bin/supervisord"]
-
-EXPOSE 80

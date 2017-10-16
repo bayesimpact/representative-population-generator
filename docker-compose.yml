@@ -18,7 +18,6 @@ services:
         volumes:
           - ./web-app/backend/app/main.py:/app/main.py:ro
           - ./web-app/backend/config/uwsgi.ini:/app/uwsgi.ini:ro
-          - ./web-app/backend/config/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
           - ./web-app/backend/app/:/var/local/app/:ro
           - ./web-app/backend/tests:/app/tests:ro
           - .flake8:/app/.flake8:ro
