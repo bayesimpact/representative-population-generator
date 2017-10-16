@@ -6,13 +6,20 @@ from backend.lib.standardize_input import standardize_request
 from backend.lib.timer import timed
 
 import flask
+import logging
+import sys
 
 from flask_pymongo import PyMongo
 
+from flask_cors import CORS
 
 app = flask.Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb://mongo:27017/na-db'
 app.config['MONGO_CONNECT'] = False
+app.config['PROPAGATE_EXCEPTIONS'] = True
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+
+CORS(app, resources={r'/*': {'origins': '*'}}, supports_credentials=True)
 
 _FETCHED_AREAS = None
 
@@ -30,13 +37,13 @@ def fetch_available_service_areas():
     global _FETCHED_AREAS
 
     if not _FETCHED_AREAS:
-        app.logger.debug('Fetching available service areas.')
+        app.logger.info('Fetching available service areas.')
         _FETCHED_AREAS = list(service_areas.find({}, {'_id': 0}))
     else:
-        app.logger.debug('Using pre-loaded available service areas.')
+        app.logger.info('Using pre-loaded available service areas.')
     fetched_areas = _FETCHED_AREAS
 
-    app.logger.debug('Fetched available service areas.')
+    app.logger.info('Fetched available service areas.')
 
     return flask.jsonify({'result': fetched_areas})
 
@@ -58,12 +65,16 @@ def get_multiple_zip_county_points():
     ]
     returns: json object with info about area and a list of points.
     """
-    app.logger.debug('Extracting zip counties.')
+    app.logger.info('Extracting zip counties.')
     raw_zipcounties = handle_zip_counties_request(app)
     zipcounties = standardize_request(raw_zipcounties)
-    app.logger.debug('Received {} zipcounties.'.format(len(zipcounties)))
+    app.logger.info('Received {} zipcounties.'.format(len(zipcounties)))
     outputs = fetch_representative_points(repr_points, zipcounties, boundaries, logger=app.logger)
-    return flask.jsonify({'result': outputs})
+    try:
+        return flask.jsonify({'result': outputs})
+    except Exception as e:
+        print(e)
+        return
 
 
 @app.errorhandler(InvalidPayload)
@@ -76,4 +87,6 @@ def handle_invalid_payload(error):
 
 
 if __name__ == '__main__':
+    # uwsgi_logger = logging.getLogger('uwsgi')
+    # app.logger.addHandler(uwsgi_logger)
     app.run(host='0.0.0.0', debug=True, port=8080)
