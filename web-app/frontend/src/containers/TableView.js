@@ -36,11 +36,13 @@ class TableView extends Component {
       censusTract: PropTypes.number.isRequired,
       censusBlockGroup: PropTypes.number.isRequired,
     })).isRequired,
+    nAreas: PropTypes.number.isRequired,
+    nPoints: PropTypes.number.isRequired,
     style: PropTypes.object,
   };
 
   render() {
-    const {isLoading, points, style} = this.props
+    const {isLoading, points, nAreas, nPoints, style} = this.props
     const tableViewStyle = {
       display: 'flex',
       flexDirection: 'column',
@@ -64,8 +66,11 @@ class TableView extends Component {
           </CSVLink>
         </div>
         {points.length > MAX_DISPLAY_POINTS ?
-          <div style={noticeStyle}>(Displaying first {MAX_DISPLAY_POINTS} records)</div> :
-          null}
+          <div style={noticeStyle}>Displaying first {MAX_DISPLAY_POINTS} out of {points.length} records for {nAreas} service area{nAreas > 1 ? 's' : null}</div> :
+          <div style={noticeStyle}>
+            Displaying {points.length} records for {nAreas} service area{nAreas > 1 ? 's' : null}
+          </div>
+        }
         <Table selectable={false} wrapperStyle={{flex: 1, display: 'flex', flexDirection: 'column'}}>
           <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
             <TableRow>
@@ -104,6 +109,8 @@ const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
   return {
     isLoading: isLoading.counties || isLoading.areas,
     points: getAllPoints(areas, nPoints),
+    nAreas: areas.length,
+    nPoints: Math.round(Number(nPoints))
   }
 }
 
