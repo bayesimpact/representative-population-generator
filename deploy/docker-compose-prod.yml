@@ -6,6 +6,7 @@ services:
             - 8080:8080
         links:
             - mongo
+        command: python main.py
 
     frontend:
         image: bayesimpact/na-frontend:$TAG
