@@ -39,7 +39,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         -t bayesimpact/$DB_DOCKER_IMAGE:$TAG \
         "${CACHE}" \
         ./web-app/database
-    docker push bayesimpact/$DB_DOCKER_IMAGE
+    docker push bayesimpact/$DB_DOCKER_IMAGE:$TAG 
 
     echo "Building and pushing backend Docker."
     docker rmi bayesimpact/$BACKEND_DOCKER_IMAGE
@@ -48,7 +48,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         -t bayesimpact/$BACKEND_DOCKER_IMAGE:$TAG \
         "${CACHE}" \
         ./web-app/backend
-    docker push bayesimpact/$BACKEND_DOCKER_IMAGE
+    docker push bayesimpact/$BACKEND_DOCKER_IMAGE:$TAG 
 
     echo "Building and pushing frontend Docker."
     docker rmi bayesimpact/$FRONTEND_DOCKER_IMAGE
@@ -57,7 +57,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
         -t bayesimpact/$FRONTEND_DOCKER_IMAGE:$TAG \
         "${CACHE}" \
         ./web-app/frontend
-    docker push bayesimpact/$FRONTEND_DOCKER_IMAGE
+    docker push bayesimpact/$FRONTEND_DOCKER_IMAGE:$TAG 
 fi
 
 # Deploy to ECS.
