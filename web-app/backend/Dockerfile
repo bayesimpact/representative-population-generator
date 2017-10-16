@@ -11,4 +11,4 @@ ENTRYPOINT ["/entrypoint_bis.sh"]
 
 CMD ["/usr/bin/supervisord"]
 
-EXPOSE 80
+EXPOSE 8080

@@ -3,7 +3,7 @@ services:
     backend:
         image: bayesimpact/na-backend-api:$TAG
         ports:
-            - 8080:80
+            - 8080:8080
         links:
             - mongo
 
@@ -19,7 +19,7 @@ services:
         environment:
             - REACT_APP_API_HOSTNAME=http://network-adequacy-lb-950847297.us-west-1.elb.amazonaws.com:8080
             - REACT_APP_VERSION=$TAG
-            - MAPBOX_TOKEN=$MAPBOX_TOKEN
+            - REACT_APP_MAPBOX_TOKEN=$MAPBOX_TOKEN
 
     mongo:
         image: bayesimpact/na-mongodb:$TAG
