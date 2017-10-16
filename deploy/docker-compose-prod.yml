@@ -3,9 +3,10 @@ services:
     backend:
         image: bayesimpact/na-backend-api:$TAG
         ports:
-            - 8080:80
+            - 8080:8080
         links:
             - mongo
+        mem_limit: 2100000000
 
     frontend:
         image: bayesimpact/na-frontend:$TAG
