@@ -1,3 +1,9 @@
+local:
+	docker-compose up
+
+rebuild:
+	docker-compose build --no-cache
+
 models-lint:
 	flake8 models models/tests
 	pep257 models

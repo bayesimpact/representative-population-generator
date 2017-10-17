@@ -33,8 +33,9 @@ Setup the environment variable MAPBOX_TOKEN in your bash_profile, or as prefix t
 
 - start docker services in detached mode
 ```
-docker-compose up -d 
+make local
 ```
+
 
 This spins up three docker services:
 
