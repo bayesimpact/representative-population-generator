@@ -60,7 +60,7 @@ class App extends Component {
         <Snackbar
             open={!!snackMessage}
             message={snackMessage}
-            autoHideDuration={4000}
+            autoHideDuration={8000}
             onRequestClose={this.handleSnackbarRequestClose} />
         <Header />
         <div style={{display: 'flex', flex: 1, position: 'relative'}}>

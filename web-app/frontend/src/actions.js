@@ -78,6 +78,10 @@ export const fetchCounties = () => dispatch => {
   api.getCounties().then(counties => {
     dispatch(finishRequestAction('counties', counties))
   })
+  .catch(error => {
+    dispatch(finishRequestAction('counties', []))
+    dispatch(setAppVariableAction('snackMessage', 'Error - Available Areas - ' + error.message))
+  })
 }
 
 export const fetchAreas = selectedCountyZips => dispatch => {
