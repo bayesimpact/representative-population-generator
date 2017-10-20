@@ -6,7 +6,7 @@ import Slider from 'material-ui/Slider'
 
 // Material UI uses a slider value between 0 and 1 which has to be mapped
 // to the scale we want (max number of points).
-const SLIDER_FACTOR = 200
+const SLIDER_FACTOR = 3
 
 
 class PointNumberSelector extends Component {
@@ -39,8 +39,8 @@ class PointNumberSelector extends Component {
         <div style={{display: 'flex', alignItems: 'center'}}>
           <Slider
               value={value}
-              min={0.05}
-              step={0.005}
+              min={0.3333}
+              step={0.3333}
               style={{flex: 1}}
               onChange={this.handleSliderChange}
               onDragStop={this.handleDragStop}

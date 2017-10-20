@@ -23,7 +23,7 @@ const initialState = {
     selectedCounties: [],
     selectedCountyZips: [],
     viewMode: 'table',
-    nPoints: 50,
+    nPoints: 1,
     missingAreas: [],
     selectedCSVFileName: '',
     snackMessage: '',

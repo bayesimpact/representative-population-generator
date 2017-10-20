@@ -79,7 +79,7 @@ class Sidebar extends Component {
 
   handlePointNumberChange = _.throttle(nPoints => {
     this.props.dispatch(setPointNumber(nPoints))
-  }, 300);
+  }, 2);
 
   handleCSVFileSelected = file => {
     const {dispatch} = this.props

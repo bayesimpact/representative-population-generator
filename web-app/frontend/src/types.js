@@ -19,7 +19,7 @@ const types = {
       census_block_group: PropTypes.string.isRequired,
       census_tract: PropTypes.string.isRequired,
       county: PropTypes.string.isRequired,
-      population: PropTypes.number,
+      population: PropTypes.arrayOf(PropTypes.number).isRequired,
       zip: PropTypes.string.isRequired,
     }),
   })

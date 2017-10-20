@@ -63,7 +63,7 @@ class MapView extends Component {
   };
 
   render() {
-    const {groupedPoints, isLoading, style, boundingBoxCoordinates} = this.props
+    const {groupedPoints, isLoading, style, boundingBoxCoordinates, cutoffIndex} = this.props
     const {hoveredPoint} = this.state
     const fullContainerStyle = {height: '100%', width: '100%'}
     return (
@@ -91,7 +91,7 @@ class MapView extends Component {
             )
           })}
           <div className="popup-container">
-            {hoveredPoint && <DetailsPopup point={hoveredPoint} />}
+            {hoveredPoint && <DetailsPopup point={hoveredPoint} cutoffIndex={cutoffIndex} />}
           </div>
           <ZoomControl
             position="bottomLeft"/>
@@ -140,10 +140,11 @@ class DetailsPopup extends Component {
 
   static propTypes = {
     point: types.pointShape,
+    cutoffIndex: PropTypes.number.isRequired,
   };
 
   render() {
-    const {point} = this.props
+    const {point, cutoffIndex} = this.props
     const pointProps = point.properties
     return (
       <Popup
@@ -154,7 +155,11 @@ class DetailsPopup extends Component {
           <tbody>
             <TableRow name="County" value={pointProps.county} />
             <TableRow name="ZIP" value={pointProps.zip} />
-            <TableRow name="No. Residents" value={Math.round(pointProps.population).toString()} />
+            <TableRow name="No. Residents" value={
+              Math.round(
+                pointProps.population[
+                Math.min(cutoffIndex, pointProps.population.length)-1]
+              ).toString()} />
             <TableRow name="Lat" value={point.geometry.coordinates[1].toFixed(6)} />
             <TableRow name="Long" value={point.geometry.coordinates[0].toFixed(6)} />
             <TableRow name="Tract" value={pointProps.census_tract} />
@@ -186,6 +191,7 @@ const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
     isLoading: isLoading.counties || isLoading.areas,
     boundingBoxCoordinates: getBoundingBoxCoordinates(allPointsCollection),
     groupedPoints,
+    cutoffIndex: Math.round(nPoints)
   }
 }
 

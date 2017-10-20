@@ -1,8 +1,10 @@
 import bbox from 'geojson-bbox'
 
-export function getAllPointsCollection(areas=[], nPointsPerArea) {
+export function getAllPointsCollection(areas=[], cutoffIndex) {
   const allPoints = areas.reduce((accu, area) => {
-    return accu.concat(area.points.slice(0, nPointsPerArea))
+    return accu.concat(area.points.filter(
+      point => point.properties.population.length > 3 - Math.round(cutoffIndex))
+    )
   }, [])
   return {
     type: 'FeatureCollection',
@@ -26,7 +28,9 @@ export function getGroupedPoints(areas=[], nGroups, nPointsPerArea) {
   return areas.reduce((accu, area, i) => {
     const groupIndex = i % nGroups
     const group = accu[groupIndex] || []
-    accu[groupIndex] = group.concat(area.points.slice(0, nPointsPerArea))
+    accu[groupIndex] = group.concat(area.points.filter(
+      point => point.properties.population.length > 3 - Math.round(nPointsPerArea))
+    )
     return accu
   }, {})
 }
