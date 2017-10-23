@@ -136,11 +136,11 @@ class Sidebar extends Component {
           </div>
         </SidebarContent>
         <ReactTooltip id="enrollees">
-          <span>Choose the maximum number of points generated per service area.<br />
-          Some service areas will display fewer points than the input due<br />
-          to the number of available addresses in the service area.</span>
+          <span>Choose the maximum allowable distance between any<br />
+          address and its nearest representative point. Number of<br />
+          points will vary based on land area and population density.</span>
         </ReactTooltip>
-        <SidebarHeadline icon={PointsIcon} text="Enrollees" id="enrollees" />
+        <SidebarHeadline icon={PointsIcon} text="Enrollee Distribution" id="enrollees" />
         <SidebarContent style={{flex: 'none'}}>
           <PointNumberSelector
               value={nPoints}
