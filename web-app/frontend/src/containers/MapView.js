@@ -156,10 +156,7 @@ class DetailsPopup extends Component {
             <TableRow name="County" value={pointProps.county} />
             <TableRow name="ZIP" value={pointProps.zip} />
             <TableRow name="No. Residents" value={
-              Math.round(
-                pointProps.population[
-                Math.min(cutoffIndex, pointProps.population.length)-1]
-              ).toString()} />
+                pointProps.population[Math.min(cutoffIndex, pointProps.population.length)-1]} />
             <TableRow name="Lat" value={point.geometry.coordinates[1].toFixed(6)} />
             <TableRow name="Long" value={point.geometry.coordinates[0].toFixed(6)} />
             <TableRow name="Tract" value={pointProps.census_tract} />

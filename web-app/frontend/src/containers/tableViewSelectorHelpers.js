@@ -7,8 +7,7 @@ export function getAllPoints(areas=[], cutoffIndex) {
       points.push({
         zipCode: point.properties.zip,
         county: point.properties.county,
-        population: point.properties.population[
-          Math.min(cutoffIndex, point.properties.population.length)-1],
+        population: point.properties.population,
         longitude: point.geometry.coordinates[0],
         latitude: point.geometry.coordinates[1],
         censusTract: Math.round(point.properties.census_tract),

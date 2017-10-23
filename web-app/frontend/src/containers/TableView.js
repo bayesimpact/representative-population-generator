@@ -90,7 +90,7 @@ class TableView extends Component {
                 <TableRowColumn>{i}</TableRowColumn>
                 <TableRowColumn>{point.zipCode}</TableRowColumn>
                 <TableRowColumn>{point.county}</TableRowColumn>
-                <TableRowColumn>{point.population}</TableRowColumn>
+                <TableRowColumn>{point.population[Math.min(nPoints, point.population.length)-1]}</TableRowColumn>
                 <TableRowColumn>{point.latitude}</TableRowColumn>
                 <TableRowColumn>{point.longitude}</TableRowColumn>
                 <TableRowColumn>{point.censusTract}</TableRowColumn>
@@ -110,7 +110,7 @@ const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
     isLoading: isLoading.counties || isLoading.areas,
     points: getAllPoints(areas, nPoints),
     nAreas: areas.length,
-    nPoints: Math.round(Number(nPoints))
+    nPoints: Math.round(nPoints)
   }
 }
 
