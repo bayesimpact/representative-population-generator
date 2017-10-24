@@ -14,7 +14,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
-import ReactMapboxGl, {Layer, Feature, Popup, ZoomControl} from 'react-mapbox-gl'
+import ReactMapboxGl, {Layer, Feature, Popup, ScaleControl, ZoomControl} from 'react-mapbox-gl'
 
 import LoadingOverlay from '../components/LoadingOverlay'
 import types from '../types'
@@ -38,7 +38,7 @@ const AREA_COLORS = [
 // Mapbox Access Token & Map
 const accessToken = process.env.REACT_APP_MAPBOX_TOKEN
 const networkAdequacyMapStyle = 'mapbox://styles/bayesimpact/cj8qeq6cpajqc2ts1xfw8rf2q'
-const Map = ReactMapboxGl({ accessToken });
+const Map = ReactMapboxGl({accessToken, attributionControl:true});
 
 
 class MapView extends Component {
@@ -93,8 +93,10 @@ class MapView extends Component {
           <div className="popup-container">
             {hoveredPoint && <DetailsPopup point={hoveredPoint} cutoffIndex={cutoffIndex} />}
           </div>
-          <ZoomControl
-            position="bottomLeft"/>
+          <ZoomControl position="bottomLeft" />
+          <ScaleControl measurement="mi" position="bottomLeft" style={{ left: 48 }} />
+          <div>
+          </div>
         </Map>
 
       </div>
