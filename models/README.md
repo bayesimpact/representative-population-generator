@@ -21,7 +21,7 @@
 
 ### Problem Statement
 
-The ultimate purpose of the representative population points generator is to assist in measuring the adequacy of insurance networks. If a remote cluster of points has no representative point among them, the ensuing network adequacy analysis will utterly overlook the people who live there. Accordingly, good algorithms for this particular use case should ensure that _all_ points are near to at least one representative point.
+The purpose of the representative population points generator is to assist in measuring the adequacy of health insurance networks. If a remote cluster of points has no representative point among them, the ensuing network adequacy analysis will utterly overlook the people who live there. Accordingly, good algorithms for this particular use case should ensure that _all_ points are near to at least one representative point.
 
 **Caveat**: the _Garbage In, Garbage Out_ principle applies here. If the input data does not accurately reflect where people actually live and work, then any points selected by an algorithm won’t either. For the purposes of this document, we assume that the input is valid and concern ourselves only with the problem of selecting representative points from trustworthy data. See [this section](#data-sources) for an explanation of the data sources underlying the application.
 
@@ -83,7 +83,7 @@ Unlike census data, the EDDM data comes with points assigned to ZIP codes. Becau
 
 #### 2. Reliability
 
-Unlike other open source address data (e.g., Openaddresses, OpenStreetMap, DoT National Address Database), the EDDM data appears to closely correspond to the truth "on the ground." When the EDDM tool has a point, there typically is a building there (as validated by satellite imagery).
+Unlike other open source address data (e.g., Openaddresses.io, OpenStreetMap, DoT National Address Database), the EDDM data appears to closely correspond to the truth "on the ground." When the EDDM tool has a point, there typically is a building there (as validated by satellite imagery).
 
 #### 3. Has population estimates
 
@@ -97,17 +97,13 @@ No data source is perfect. The following are some potential concerns with the us
 
 Not every ZIP code is present in the EDDM tool. For example, zip code 92055 corresponds to Camp Pendleton, a Marine Corps base. It makes sense that the USPS would not allow for commercial mailers to target this ZIP for advertising campaigns.
 
-There are also 236 ZIP codes that contain only one point in Quest but are missing from the EDDM tool entirely. Examples include 94615, 94617, 94622, 94649, 94659. These could be deprecated ZIPs no longer in use or PO boxes for which EDDM is unavailable for whatever reason (similar to Camp Pendleton).
-
-Overall, EDDM contains X of the Y zips contained in Quest.
+There are ZIP codes found in other sources such as Google Maps that are missing from the EDDM tool entirely. Examples include 94615, 94617, 94622, 94649, 94659. These could be deprecated ZIPs no longer in use, or PO boxes for which EDDM is unavailable for whatever reason (similar to Camp Pendleton).
 
 #### 2. ZIP codes with one point
 
 In certain rural ZIPs, every resident gets their mail at the nearest post office: There are no mailing routes. This means that the EDDM tool will have only a single point (corresponding to the PO Box) for the entire ZIP. Examples include 95915, 93627, 95426, 96006, 95701.
 
 These ZIPs can cover large areas, so representing them with a single point is problematic when performing adequacy calculations.
-
-Quest typically has ~70 points for each of these ZIPs. Quest uses a commercial data set from Pitney Bowes; it is unclear how they generate these points.
 
 Using county polygons from the census and ZIP code polygons from EDDM yields the following: (a) 1292 ZIP / county pairs with the full 200 points; (b) 744 ZIP / county pairs with a single point; (c) 403 ZIP / county pairs with somewhere between 2 and 199 points. Using a more definitive source of what ZIP codes belong to what counties should cut down on this third group, of which ~30% consist of fewer than 20 points (and 50% consist of fewer than 50 points).
 
