@@ -41,3 +41,6 @@ data/*.json
 # Editor config.
 network-adequacy.sublime-project
 network-adequacy.sublime-workspace
+
+# Docker env file
+.env

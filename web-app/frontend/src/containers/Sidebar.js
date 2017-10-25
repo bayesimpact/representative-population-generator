@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import _ from 'underscore'
 
 import PlaceIcon from 'material-ui/svg-icons/maps/place'
 import PointsIcon from 'material-ui/svg-icons/image/grain'
@@ -77,9 +76,8 @@ class Sidebar extends Component {
     }
   };
 
-  handlePointNumberChange = _.throttle(nPoints => {
-    this.props.dispatch(setPointNumber(nPoints))
-  }, 2);
+  handlePointNumberChange = nPoints =>
+    this.props.dispatch(setPointNumber(nPoints));
 
   handleCSVFileSelected = file => {
     const {dispatch} = this.props
@@ -141,10 +139,10 @@ class Sidebar extends Component {
           points will vary based on land area and population density.</span>
         </ReactTooltip>
         <SidebarHeadline icon={PointsIcon} text="Enrollee Distribution" id="enrollees" />
-        <SidebarContent style={{flex: 'none'}}>
+        <SidebarContent style={{ flex: 'none' }}>
           <PointNumberSelector
-              value={nPoints}
-              onChange={this.handlePointNumberChange} />
+            onChange={this.handlePointNumberChange}
+            value={nPoints} />
         </SidebarContent>
         <FlatButton
           style={{alignSelf: 'flex-start', flex: 'none'}}
