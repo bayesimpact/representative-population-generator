@@ -32,7 +32,7 @@ class TableView extends Component {
       county: PropTypes.string.isRequired,
       longitude: PropTypes.number.isRequired,
       latitude: PropTypes.number.isRequired,
-      population: PropTypes.number.isRequired,
+      population: PropTypes.arrayOf(PropTypes.number).isRequired,
       censusTract: PropTypes.number.isRequired,
       censusBlockGroup: PropTypes.number.isRequired,
     })).isRequired,
@@ -42,7 +42,8 @@ class TableView extends Component {
   };
 
   render() {
-    const {isLoading, points, nAreas, nPoints, style} = this.props
+    const { isLoading, nAreas, nPoints, style } = this.props
+    const points = deserializePoints(this.props.points, nPoints)
     const tableViewStyle = {
       display: 'flex',
       flexDirection: 'column',
@@ -90,7 +91,7 @@ class TableView extends Component {
                 <TableRowColumn>{i}</TableRowColumn>
                 <TableRowColumn>{point.zipCode}</TableRowColumn>
                 <TableRowColumn>{point.county}</TableRowColumn>
-                <TableRowColumn>{point.population[Math.min(nPoints, point.population.length)-1]}</TableRowColumn>
+                <TableRowColumn>{point.population}</TableRowColumn>
                 <TableRowColumn>{point.latitude}</TableRowColumn>
                 <TableRowColumn>{point.longitude}</TableRowColumn>
                 <TableRowColumn>{point.censusTract}</TableRowColumn>
@@ -104,6 +105,12 @@ class TableView extends Component {
   }
 }
 
+function deserializePoints(points, cutoffIndex) {
+  return points.map(_ => ({
+    ..._,
+    population: _.population[Math.min(cutoffIndex, _.population.length)-1]
+  }))
+}
 
 const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
   return {
