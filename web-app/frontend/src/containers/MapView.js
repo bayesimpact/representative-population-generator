@@ -183,14 +183,14 @@ TableRow.propTypes = {
 };
 
 
-const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
-  const allPointsCollection = getAllPointsCollection(areas, nPoints)
-  const groupedPoints = getGroupedPoints(areas, AREA_COLORS.length, nPoints)
+const mapStateToProps = ({data: {areas}, app: {cutoffIndex}, isLoading}) => {
+  const allPointsCollection = getAllPointsCollection(areas, cutoffIndex)
+  const groupedPoints = getGroupedPoints(areas, AREA_COLORS.length, cutoffIndex)
   return {
     isLoading: isLoading.counties || isLoading.areas,
     boundingBoxCoordinates: getBoundingBoxCoordinates(allPointsCollection),
     groupedPoints,
-    cutoffIndex: Math.round(nPoints)
+    cutoffIndex: Math.round(cutoffIndex)
   }
 }
 

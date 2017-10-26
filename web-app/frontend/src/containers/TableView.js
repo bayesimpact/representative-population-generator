@@ -37,13 +37,13 @@ class TableView extends Component {
       censusBlockGroup: PropTypes.number.isRequired,
     })).isRequired,
     nAreas: PropTypes.number.isRequired,
-    nPoints: PropTypes.number.isRequired,
+    cutoffIndex: PropTypes.number.isRequired,
     style: PropTypes.object,
   };
 
   render() {
-    const { isLoading, nAreas, nPoints, style } = this.props
-    const points = deserializePoints(this.props.points, nPoints)
+    const { isLoading, nAreas, cutoffIndex, style } = this.props
+    const points = deserializePoints(this.props.points, cutoffIndex)
     const tableViewStyle = {
       display: 'flex',
       flexDirection: 'column',
@@ -112,12 +112,12 @@ function deserializePoints(points, cutoffIndex) {
   }))
 }
 
-const mapStateToProps = ({data: {areas}, app: {nPoints}, isLoading}) => {
+const mapStateToProps = ({data: {areas}, app: {cutoffIndex}, isLoading}) => {
   return {
     isLoading: isLoading.counties || isLoading.areas,
-    points: getAllPoints(areas, nPoints),
+    points: getAllPoints(areas, cutoffIndex),
     nAreas: areas.length,
-    nPoints: Math.round(nPoints)
+    cutoffIndex: Math.round(cutoffIndex)
   }
 }
 

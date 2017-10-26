@@ -9,7 +9,7 @@ const OPTIONS = [
   [1, '5 miles']
 ]
 
-const PointNumberSelector = ({ onChange, value }) =>
+const CutoffSelector = ({ onChange, value }) =>
   <SelectField
     value={OPTIONS.find(([val]) => val === value)[0]}
     onChange={(_, __, value) => onChange(value)}
@@ -24,4 +24,4 @@ const PointNumberSelector = ({ onChange, value }) =>
     )}
   </SelectField>;
 
-export default PointNumberSelector;
+export default CutoffSelector;

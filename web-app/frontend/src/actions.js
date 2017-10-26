@@ -111,8 +111,9 @@ export function setViewMode(viewMode) {
   return setAppVariableAction('viewMode', viewMode)
 }
 
-export function setPointNumber(nPoints) {
-  return setAppVariableAction('nPoints', nPoints)
+export function setCutoff
+(cutoffIndex) {
+  return setAppVariableAction('cutoffIndex', cutoffIndex)
 }
 
 export const resetAreaSelector = () => dispatch => {

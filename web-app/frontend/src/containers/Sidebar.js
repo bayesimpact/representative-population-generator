@@ -10,7 +10,7 @@ import Paper from 'material-ui/Paper'
 import StateSelector from '../components/StateSelector'
 import CountySelector from '../components/CountySelector'
 import ZipCodeSelector, {ZipCodeSelectorHeadline} from '../components/ZipCodeSelector'
-import PointNumberSelector from '../components/PointNumberSelector'
+import CutoffSelector from '../components/CutoffSelector'
 import LoadingOverlay from '../components/LoadingOverlay'
 import CSVUploader from '../components/CSVUploader'
 import {
@@ -22,7 +22,7 @@ import {
   removeCountyZipAndFetchAreas,
   setSelectAllCheckedAndFetchAreas,
   setSelectAllUnchecked,
-  setPointNumber,
+  setCutoff,
   resetAreaSelector,
 } from '../actions'
 import styles from '../styles'
@@ -38,7 +38,7 @@ class Sidebar extends Component {
     isLoading: PropTypes.bool.isRequired,
     selectedCounties: PropTypes.arrayOf(PropTypes.string).isRequired,
     selectedCountyZips: PropTypes.arrayOf(PropTypes.string).isRequired,
-    nPoints: PropTypes.number.isRequired,
+    cutoffIndex: PropTypes.number.isRequired,
     style: PropTypes.object.isRequired,
     selectedCSVFileName: PropTypes.string.isRequired,
     isSelectAllChecked: PropTypes.bool.isRequired,
@@ -74,8 +74,8 @@ class Sidebar extends Component {
     }
   };
 
-  handlePointNumberChange = nPoints =>
-    this.props.dispatch(setPointNumber(nPoints));
+  handleCutoffChange = cutoffIndex =>
+    this.props.dispatch(setCutoff(cutoffIndex));
 
   handleCSVFileSelected = file => {
     const {dispatch} = this.props
@@ -90,7 +90,7 @@ class Sidebar extends Component {
   render() {
     const {
       counties, isLoading, selectedCounties, selectedCountyZips,
-      nPoints, style, selectedCSVFileName, isSelectAllChecked,
+      cutoffIndex, style, selectedCSVFileName, isSelectAllChecked,
     } = this.props
     const sidebarStyle = {
       display: 'block',
@@ -136,9 +136,9 @@ class Sidebar extends Component {
         </SidebarContent>
         <SidebarHeadline icon={PointsIcon} text="Enrollee Distribution" />
         <SidebarContent style={{ flex: 'none' }}>
-          <PointNumberSelector
-            onChange={this.handlePointNumberChange}
-            value={nPoints} />
+          <CutoffSelector
+            onChange={this.handleCutoffChange}
+            value={cutoffIndex} />
           <span style={{
             color: styles.secondaryText,
             fontSize: 12,
@@ -272,7 +272,7 @@ const mapStateToProps = state => ({
   counties: state.data.counties,
   selectedCounties: state.app.selectedCounties,
   selectedCountyZips: state.app.selectedCountyZips,
-  nPoints: state.app.nPoints,
+  cutoffIndex: state.app.cutoffIndex,
   selectedCSVFileName: state.app.selectedCSVFileName,
   isSelectAllChecked: state.app.isSelectAllChecked,
 })
