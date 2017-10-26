@@ -28,8 +28,6 @@ import {
 import styles from '../styles'
 import types from '../types'
 
-import ReactTooltip from 'react-tooltip'
-
 import ActionInfo from 'material-ui/svg-icons/action/info'
 
 class Sidebar extends Component {
@@ -95,8 +93,11 @@ class Sidebar extends Component {
       nPoints, style, selectedCSVFileName, isSelectAllChecked,
     } = this.props
     const sidebarStyle = {
+      display: 'block',
       zIndex: 2,
+      overflowY: 'auto',
       padding: '30px 25px',
+      width: 445
     }
     const areaSelectorStyle = {
       position: 'relative',
@@ -105,7 +106,7 @@ class Sidebar extends Component {
       flexDirection: 'column',
     }
     return (
-      <Paper style={{...sidebarStyle, ...style}}>
+      <Paper style={{...style, ...sidebarStyle}}>
         <SidebarHeadline icon={PlaceIcon} text="Service Area" />
         <SidebarContent style={{flex: '1 1 0%', minHeight: 0}}>
           <CSVUploader
@@ -133,19 +134,19 @@ class Sidebar extends Component {
                 onRemoveCountyZip={this.handleRemoveCountyZip} />
           </div>
         </SidebarContent>
-        <ReactTooltip id="enrollees">
-          <span>Choose the maximum allowable distance between any<br />
-          address and its nearest representative point. Number of<br />
-          points will vary based on land area and population density.</span>
-        </ReactTooltip>
-        <SidebarHeadline icon={PointsIcon} text="Enrollee Distribution" id="enrollees" />
+        <SidebarHeadline icon={PointsIcon} text="Enrollee Distribution" />
         <SidebarContent style={{ flex: 'none' }}>
           <PointNumberSelector
             onChange={this.handlePointNumberChange}
             value={nPoints} />
+          <span style={{
+            color: styles.secondaryText,
+            fontSize: 12,
+            height: 24
+          }}>Choose max allowable distance between any address and its nearest representative point</span>
         </SidebarContent>
         <FlatButton
-          style={{alignSelf: 'flex-start', flex: 'none'}}
+          style={{alignSelf: 'flex-start', flex: 'none', marginTop: 20}}
           onClick={this.handleClearInputsClick}
           primary={true}
           label="clear inputs" />
@@ -223,7 +224,7 @@ class InputSeparator extends Component {
     const style = {
       display: 'flex',
       alignItems: 'center',
-      margin: '20px 0',
+      margin: '10px 0',
     }
     const lineStyle = {
       height: 0,

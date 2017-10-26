@@ -48,21 +48,25 @@ class ZipCodeSelector extends Component {
           null}
         {(selectedCounties || []).sort().map(countyKey => {
           const county = counties[countyKey]
+          // The 151px max-height ensures that we show 4.5 items
+          // (the .5 is an affordance that the list is scrollable)
           return <List key={countyKey}>
             <Subheader style={{marginBottom: '-16px'}}>
               {countyKey}
             </Subheader>
-            {county.zips.sort().map(zip => {
-              const countyZipKey = countyKey + '-' + zip
-              const checkbox = <Checkbox
-                  checked={selectedCountyZips.includes(countyZipKey)}
-                  onCheck={(e, isInputChecked) => this.handleChange(countyZipKey, isInputChecked)} />
-              return <ListItem
-                  innerDivStyle={{height: 10, padding: '16px 16px 6px 72px'}}
-                  key={countyZipKey}
-                  primaryText={zip}
-                  leftCheckbox={checkbox} />
-            })}
+            <div style={{maxHeight: 151, overflowY: 'auto'}}>
+              {county.zips.sort().map(zip => {
+                const countyZipKey = countyKey + '-' + zip
+                const checkbox = <Checkbox
+                    checked={selectedCountyZips.includes(countyZipKey)}
+                    onCheck={(e, isInputChecked) => this.handleChange(countyZipKey, isInputChecked)} />
+                return <ListItem
+                    innerDivStyle={{height: 10, padding: '16px 16px 6px 72px'}}
+                    key={countyZipKey}
+                    primaryText={zip}
+                    leftCheckbox={checkbox} />
+                })}
+            </div>
           </List>
         })}
       </div>

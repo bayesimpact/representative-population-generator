@@ -23,6 +23,7 @@ class CSVUploader extends Component {
     const fileNameStyle = {
       maxWidth: 250,
       color: styles.secondaryText,
+      marginTop: 10,
       textOverflow: 'ellipsis',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
@@ -33,6 +34,17 @@ class CSVUploader extends Component {
       <div>
         <div style={{display: 'flex', alignItems: 'center'}}>
           <div>
+            <RaisedButton
+              containerElement="label"
+              primary={true}
+              label="upload CSV"
+            >
+              <input
+                onChange={this.handleFileSelect}
+                type="file"
+                accept=".csv"
+                style={{display: 'none'}} />
+            </RaisedButton>
             {selectedCSVFileName ?
               <div style={fileNameStyle}>
                 Uploaded - {selectedCSVFileName}
@@ -41,16 +53,6 @@ class CSVUploader extends Component {
                 Upload valid ZIP Codes and/or Counties
               </div>
             }
-            <RaisedButton
-                containerElement="label"
-                primary={true}
-                label="upload CSV">
-              <input
-                onChange={this.handleFileSelect}
-                type="file"
-                accept=".csv"
-                style={{display: 'none'}} />
-            </RaisedButton>
             <div style={{flex: 1, height: '2px'}} />
           </div>
         </div>
