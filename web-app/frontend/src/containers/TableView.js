@@ -70,7 +70,7 @@ class TableView extends Component {
             Representative Points of Enrollees&nbsp;
           </div>
           <div style={{flex: '1'}} />
-          <CSVLink filename="service_area_points.csv" data={renameHeaders(points)}>
+          <CSVLink filename={ "service_area_points_" + Date.now() + ".csv" } data={renameHeaders(points)}>
             <FlatButton style={{color: '#3F51B5'}} label="csv" icon={<FileDownloadIcon />} />
           </CSVLink>
         </div>
