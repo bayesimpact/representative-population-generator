@@ -22,6 +22,14 @@ const {CSVLink} = isIE11 ? require('react-csv-ie11patch') : require('react-csv-c
 
 const MAX_DISPLAY_POINTS = 500
 
+const tableHeaders = {
+  'zipCode': 'ZIP Code',
+  'county': 'County',
+  'population': 'No. Residents',
+  'latitude': 'Latitude',
+  'longitude': 'Longitude',
+  'censusTract': 'Tract',
+  'censusBlockGroup': 'Block Group'};
 
 class TableView extends Component {
 
@@ -62,7 +70,7 @@ class TableView extends Component {
             Representative Points of Enrollees&nbsp;
           </div>
           <div style={{flex: '1'}} />
-          <CSVLink filename="service_area_points.csv" data={points}>
+          <CSVLink filename="service_area_points.csv" data={renameHeaders(points)}>
             <FlatButton style={{color: '#3F51B5'}} label="csv" icon={<FileDownloadIcon />} />
           </CSVLink>
         </div>
@@ -110,6 +118,21 @@ function deserializePoints(points, cutoffIndex) {
     ..._,
     population: _.population[Math.min(cutoffIndex, _.population.length)-1]
   }))
+}
+
+function renameHeaders(points) {
+  var newPoints = [];
+  for(var i = 0; i < points.length; i++)
+  {
+    var point = Object.assign({}, points[i]);
+    for (var originalHeader in tableHeaders) {
+      var newHeader = tableHeaders[originalHeader]
+      point[newHeader] = point[originalHeader];
+      delete(point[originalHeader]);
+    }
+    newPoints.push(point);
+  }
+  return newPoints;
 }
 
 const mapStateToProps = ({data: {areas}, app: {cutoffIndex}, isLoading}) => {
