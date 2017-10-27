@@ -130,11 +130,13 @@ def assign_county(point, counties):
 
 def assign_counties(points):
     """Assign each point of a GeoDataFrame to a county."""
-    counties = gpd.read_file('data/counties.json')
+    counties = gpd.read_file(initiate.COUNTIES_FILEPATH)
     points['county'] = points['geometry'].apply(lambda p: assign_county(p, counties))
 
     null_mask = points['county'].isnull()
-    print('{} points (of {}) could not be assigned a county!'.format(null_mask.sum(), len(points)))
+    if null_mask.sum() != 0:
+        print('{} points (of {}) could not be assigned a county!'.format(
+            null_mask.sum(), len(points)))
     return points[~null_mask]
 
 

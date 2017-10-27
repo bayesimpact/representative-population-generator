@@ -105,8 +105,6 @@ In certain rural ZIPs, every resident gets their mail at the nearest post office
 
 These ZIPs can cover large areas, so representing them with a single point is problematic when performing adequacy calculations.
 
-Using county polygons from the census and ZIP code polygons from EDDM yields the following: (a) 1292 ZIP / county pairs with the full 200 points; (b) 744 ZIP / county pairs with a single point; (c) 403 ZIP / county pairs with somewhere between 2 and 199 points. Using a more definitive source of what ZIP codes belong to what counties should cut down on this third group, of which ~30% consist of fewer than 20 points (and 50% consist of fewer than 50 points).
-
 #### 3. Lack of census information
 
 Because the points come from USPS, they do not come tagged with relevant census-type information (e.g., county, census block, etc.). Such information has to be determined by intersecting geometries.

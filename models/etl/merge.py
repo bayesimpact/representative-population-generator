@@ -20,8 +20,8 @@ def merge_predictions():
         for f in os.listdir(initiate.PREDICT_DIRECTORY) if '.json' in f
     ]
 
-    counties = gpd.read_file('data/counties.json')
-    census_data = gpd.read_file('data/cb_2016_06_bg_500k/').to_crs({'init': 'epsg:4326'})
+    counties = gpd.read_file(initiate.COUNTIES_FILEPATH)
+    census_data = gpd.read_file(initiate.CENSUS_FILEPATH).to_crs({'init': 'epsg:4326'})
 
     output = []
 

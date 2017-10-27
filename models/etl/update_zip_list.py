@@ -1,12 +1,14 @@
 """Methods to create a master list of California ZIP codes."""
 import os
 
+from models.etl import initiate
+
 import pandas as pd
 
 
 def update_zip_list(input_filepath, output_filepath):
     """From county-level census data, generate polygons for California counties."""
-    df = pd.read_csv(input_filepath, encoding='latin')
+    df = pd.read_csv(input_filepath, dtype={'zip': str}, encoding='latin')
     california_only = df[df['state'] == 'CA']
 
     try:
@@ -19,7 +21,9 @@ def update_zip_list(input_filepath, output_filepath):
 
 
 if __name__ == '__main__':
+    input_filepath = os.path.join(initiate.RAW_DIRECTORY, 'zips.csv')
+
     update_zip_list(
-        input_filepath='data/raw/uszipsv1.1.csv',
+        input_filepath=input_filepath,
         output_filepath='data/california_zips.tsv'
     )

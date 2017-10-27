@@ -12,7 +12,10 @@ RUN sudo apt-get install -y libgeos-dev
 RUN sudo apt-get install -y \
     wget \
     build-essential \
-    gdal-bin
+    gdal-bin \
+    curl \
+    zip \
+    unzip
 
 RUN sudo apt-get install -y \
     libspatialindex-dev --fix-missing

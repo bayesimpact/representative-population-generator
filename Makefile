@@ -43,3 +43,20 @@ webapp-lint:
 webapp-test:
 	$(MAKE) backend-test
 	$(MAKE) frontend-test
+
+
+# Run ETL process using prior results.
+etl:
+	docker-compose run --no-deps explorer bash -c "python models/etl/runner.py"
+
+# Run ETL process using prior results.
+etl_from_scratch:
+	docker-compose run --no-deps explorer bash -c "python models/etl/runner.py --teardown"
+
+# Fetch raw data for use in the ETL
+S3_BUCKET='https://s3-us-west-1.amazonaws.com/network-adequacy/'
+fetch_raw_etl_data:
+	curl -o 'data/etl/raw_etl_data.zip' ${S3_BUCKET}'raw_etl_data.zip'
+	unzip -o data/etl/raw_etl_data.zip
+	rm data/etl/raw_etl_data.zip
+

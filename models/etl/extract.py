@@ -111,6 +111,6 @@ def extract_concurrently(zips):
 
 
 if __name__ == '__main__':
-    zip_df = pd.read_csv('data/california_zips.tsv', sep='\t')
+    zip_df = pd.read_csv(initiate.ZIP_LIST_FILEPATH, sep='\t')
     zips = [str(code) for code in zip_df['zip'].values if str(code)]
     extract_concurrently(zips)

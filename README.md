@@ -35,7 +35,9 @@ The methods and algorithms used in this web app are open-sourced to: (1) foster 
 
 1. [Model Selection and Validation and Data Sources](models/README.md)
 
-2. [Web application](web-app/)
+2. [Instructions for running the model locally](models/etl/README.md)
+
+3. [Web application](web-app/)
 
     - [database](web-app/database)
     - [backend](web-app/backend)

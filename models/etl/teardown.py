@@ -1,6 +1,5 @@
 """Methods to conclude the ETL process and remove artifacts."""
 import shutil
-import sys
 
 from models.etl import initiate
 
@@ -22,5 +21,4 @@ def remove_all_etl_data():
 
 
 if __name__ == '__main__':
-    if '--full' in sys.argv[1:]:
-        remove_all_etl_data()
+    remove_all_etl_data()

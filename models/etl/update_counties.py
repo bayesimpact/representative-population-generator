@@ -3,10 +3,12 @@ import os
 
 import geopandas as gpd
 
+from models.etl import initiate
 
-def update_counties(census_filepath, output_filepath):
+
+def update_counties(input_filepath, output_filepath):
     """From county-level census data, generate polygons for California counties."""
-    gdf = gpd.read_file(census_filepath)
+    gdf = gpd.read_file(input_filepath)
     california_code = gdf[gdf['NAME'] == 'Los Angeles'].iloc[0]['STATEFP']
     california_only = gdf[gdf['STATEFP'] == california_code]
 
@@ -21,7 +23,9 @@ def update_counties(census_filepath, output_filepath):
 
 
 if __name__ == '__main__':
+    raw_county_filepath = os.path.join(initiate.RAW_DIRECTORY, 'cb_2016_us_county_500k')
+
     update_counties(
-        census_filepath='data/cb_2016_us_county_500k',
-        output_filepath='data/counties.json'
+        input_filepath=raw_county_filepath,
+        output_filepath=initiate.COUNTIES_FILEPATH
     )

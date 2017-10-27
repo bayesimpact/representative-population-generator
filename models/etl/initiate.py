@@ -18,7 +18,11 @@ TRANSFORM_DIRECTORY = 'data/etl/EDDM/transform/'
 PREDICT_DIRECTORY = 'data/etl/EDDM/predict/'
 SCORES_DIRECTORY = 'data/etl/EDDM/score/'
 ARTIFACTS_DIRECTORY = 'data/etl/artifacts/'
+RAW_DIRECTORY = 'data/etl/raw/'
 
+COUNTIES_FILEPATH = 'data/counties.json'
+CENSUS_FILEPATH = 'data/etl/raw/cb_2016_06_bg_500k'
+ZIP_LIST_FILEPATH = 'data/california_zips.tsv'
 
 ETLResult = collections.namedtuple('ETLResult', 'name, status, message')
 
@@ -30,7 +34,8 @@ def create_all_necessary_directories():
         TRANSFORM_DIRECTORY,
         PREDICT_DIRECTORY,
         ARTIFACTS_DIRECTORY,
-        SCORES_DIRECTORY
+        SCORES_DIRECTORY,
+        RAW_DIRECTORY,
     ]:
         os.makedirs(path, exist_ok=True)
 
