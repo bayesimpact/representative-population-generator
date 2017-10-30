@@ -1,8 +1,17 @@
 #!/bin/bash
 # Simple script to build production Docker images
-DB_DOCKER_IMAGE="na-mongodb"
-BACKEND_DOCKER_IMAGE="na-backend-api"
-FRONTEND_DOCKER_IMAGE="na-frontend"
+
+# Docker Settings
+DOCKER_URL="bayesimpact"
+export BACKEND_IMAGE="$DOCKER_URL/na-mongodb"
+export FRONTEND_IMAGE="$DOCKER_URL/na-backend-api"
+export DATABASE_IMAGE="$DOCKER_URL/na-frontend"
+export API_URL="http://network-adequacy-lb-950847297.us-west-1.elb.amazonaws.com:8080"
+
+# Cluster Settings - (should mimick initialize_cluster.sh)
+CLUSTER_NAME="network-adequacy"
+LOAD_BALANCER_NAME="network-adequacy-lb"
+N_INSTANCES=1
 
 
 # Get TAG.
@@ -33,31 +42,31 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     fi
 
     echo "Building and pushing database Docker."
-    docker rmi bayesimpact/$DB_DOCKER_IMAGE
+    docker rmi $DATABASE_IMAGE
     eval docker build \
         -f web-app/database/Dockerfile.prod \
-        -t bayesimpact/$DB_DOCKER_IMAGE:$TAG \
+        -t $DATABASE_IMAGE:$TAG \
         "${CACHE}" \
         ./web-app/database
-    docker push bayesimpact/$DB_DOCKER_IMAGE:$TAG 
+    docker push $DATABASE_IMAGE:$TAG 
 
     echo "Building and pushing backend Docker."
-    docker rmi bayesimpact/$BACKEND_DOCKER_IMAGE
+    docker rmi $BACKEND_IMAGE
     eval docker build \
         -f web-app/backend/Dockerfile.prod \
-        -t bayesimpact/$BACKEND_DOCKER_IMAGE:$TAG \
+        -t $BACKEND_IMAGE:$TAG \
         "${CACHE}" \
         ./web-app/backend
-    docker push bayesimpact/$BACKEND_DOCKER_IMAGE:$TAG 
+    docker push $BACKEND_IMAGE:$TAG 
 
     echo "Building and pushing frontend Docker."
-    docker rmi bayesimpact/$FRONTEND_DOCKER_IMAGE
+    docker rmi $FRONTEND_IMAGE
     eval docker build \
         -f web-app/frontend/Dockerfile.prod \
-        -t bayesimpact/$FRONTEND_DOCKER_IMAGE:$TAG \
+        -t $FRONTEND_IMAGE:$TAG \
         "${CACHE}" \
         ./web-app/frontend
-    docker push bayesimpact/$FRONTEND_DOCKER_IMAGE:$TAG 
+    docker push $FRONTEND_IMAGE:$TAG 
 fi
 
 # Deploy to ECS.
@@ -75,5 +84,5 @@ if [ -z "${MAPBOX_TOKEN}" ]; then
     [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
 fi
 
-ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service up
-# ecs-cli compose --file deploy/docker-compose-prod.yml --cluster network-adequacy service scale 2
+ecs-cli compose --file deploy/docker-compose-prod.yml --cluster $CLUSTER_NAME service up
+ecs-cli compose --file deploy/docker-compose-prod.yml --cluster $CLUSTER_NAME service scale $N_INSTANCES
