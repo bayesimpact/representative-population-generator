@@ -47,21 +47,17 @@ This solution has an approximation factor of 2, ensuring that the objective func
 
 A further advantage of this algorithm is the sequential selection of points: once some number _K_ of representative points are chosen, each initial segment of size _k_ for _k < K_ can be taken as a selection of _k_ representative population points. This means that a single calculation with a high value of _K_ is sufficient to provide users with sets of representative population points of all smaller sizes.
 
+The implementation allows users to specify alternative stopping rules based on the value of the objective function. Given a fixed distance (in miles), once all input points are within this distance of their nearest selected point, the model will stop selecting new points. This feature allows the model to select only a few representative population points in the situation when selecting additional points has diminishing returns. This is especially valuable for the performance of downstream applications, as points will not be needlessly generated in regions of high density.
+
+The implementation selects the first point as the nearest input point to the population-weighted center of mass. This ensures that the algorithm is fully deterministic, in contrast to other implementations using a random initial point. This feature is especially helpful when the number of points for the region is small; e.g., when using a relatively large distance cutoff as described above.
+
 For an illustration of the algorithm applied to the application's underlying data, see [this IPython notebook](./data_analysis/notebooks/Farthest%20First%20Traversal.ipynb).
 
 ### Next Steps
 
-__Defining Alternative Halting Rules__. The implementation of the algorithm has a single pre-defined halting rule: stop once _k_ points have been selected. For dense regions, there will be diminishing returns to selecting more points. Knowing when to stop early can save computation time, especially for downstream applications using the results of the algorithm. These rules could take the following forms:
-
--  Based on the value of the objective function: Stop once all input points are within a fixed distance of the nearest selected point.
-- Based on the delta of the objective function: Stop once the objective function has reached a plateau and is unlikely to decrease more as new points are chosen.
-
-__Account for Population Density__. The current algorithm doesn't take population information into account when selected the next point, but such information is present in the source data. A weighted version of the algorithm could more accurately reflect where people live _on average_. Care must be taken to ensure that the modified algorithm does not systematically ignore points in regions of low population density.
-
-__Explore Alternative Methods for Selecting the First Point__. At present, the first point is chosen randomly. While this may sound less-than-ideal, the typical use case involves generating sufficiently many points for the initial conditions not to matter. However, for use cases that depend on using small values of _k_, choosing the initial point in a more deliberate manner could have a substantial impact.
-
 __Apply Methods from Supervised Learning__. We can treat the problem of representative population points as a supervised problem and use standard cross-validation techniques to evaluate the algorithm's expected performance on unseen data. This would help to account for the uncertainty inherent in the source data.
 
+__Account for Population Density__. The current algorithm doesn't take population information into account when selected the next point, but such information is present in the source data. A weighted version of the algorithm could more accurately reflect where people live _on average_. Care must be taken to ensure that the modified algorithm does not systematically ignore points in regions of low population density.
 
 ## Data Sources
 
