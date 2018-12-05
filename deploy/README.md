@@ -12,6 +12,11 @@ We use ECS to deploy our docker images. The following scripts assume that you ha
 
 ### Mapbox
 - Make sure that the environment variable MAPBOX_TOKEN is set up in your bash_profile, or as prefix to your deploy command.
+- If you do not have a token yet:
+  - Go to the [Mapbox website](https://www.mapbox.com/)
+  - Create a new account (it's free)
+  - In the main [account dashboar](https://www.mapbox.com/account/) look in the "Access tokens" section the default public token
+  - This is the token to use in your app.
 
 ### API URL & Docker Repository
 Before your first run, you will need to configure all the necessary variables at the top of the two deploy files:
