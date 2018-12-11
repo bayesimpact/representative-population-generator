@@ -24,6 +24,34 @@ Before your first run, you will need to configure all the necessary variables at
 	deploy/build_prod_docker.sh
 
 ## Deploy
+
+### Standalone Server on AWS
+
+Instructions to run the service on a standalone server on AWS:
+
+- Go on AWS EC2 service
+- Create a new Instance
+- Choose the basic Linux AMI
+- Choose a server size (mostly depending on your traffic)
+- Specify a new security group:
+  - Name if "representative-population-generator-server-access"
+  - Allow SSH from your IP
+  - Allow HTTP traffic from everywhere
+  - Allow TCP port 8080 traffic from everywhere
+- Validate and then check that you have access to the keypair you are selecting (or create a new one)
+- Wait for the instance to be created
+- Find your newly launched instance and retrieves its IP
+- Log in a shell to your instance using its IP, the username "ec2-user" and the private key
+- Install Docker: `sudo amazon-linux-extras install docker`
+- Install [Docker Compose](https://docs.docker.com/compose/install/#install-compose)
+- Start Docker: `sudo service docker start`
+- Add user to the docker group: `sudo usermod -a -G docker ec2-user`
+- Disconnect and reconnect (to load the new authorizations)
+- Update the `start_ec2.sh` file with the `MAPBOX_TOKEN` and `SERVER_IP` values
+- Copy the `start_ec2.sh` and `docker-compose-prod.yml` files to the server
+- On the server, run `./start_ec2.sh`
+- Congrats!
+
 ### Initialization
 #### AWS ELB (Once Only!)
 To ensure that the website address that you have setup and your cluster are always linked, we recommand setting up a new ELB on AWS. The ELB will then be used when initializing the ECS cluster. Once this is done, update the LOAD_BALANCER_NAME variable in `deploy/initialize_cluster.sh`.
