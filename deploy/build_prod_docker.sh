@@ -3,9 +3,9 @@
 
 # Docker Settings
 DOCKER_URL="bayesimpact"
-export BACKEND_IMAGE="$DOCKER_URL/na-mongodb"
-export FRONTEND_IMAGE="$DOCKER_URL/na-backend-api"
-export DATABASE_IMAGE="$DOCKER_URL/na-frontend"
+export BACKEND_IMAGE="$DOCKER_URL/na-backend-api"
+export FRONTEND_IMAGE="$DOCKER_URL/na-frontend"
+export DATABASE_IMAGE="$DOCKER_URL/na-mongodb"
 export API_URL="http://network-adequacy-lb-950847297.us-west-1.elb.amazonaws.com:8080"
 
 # Cluster Settings - (should mimick initialize_cluster.sh)
