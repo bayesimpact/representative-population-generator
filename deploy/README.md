@@ -47,9 +47,9 @@ Instructions to run the service on a standalone server on AWS:
 - Start Docker: `sudo service docker start`
 - Add user to the docker group: `sudo usermod -a -G docker ec2-user`
 - Disconnect and reconnect to the server (to load the new authorizations)
-- Update the `start_ec2.sh` file with the `MAPBOX_TOKEN` and `SERVER_IP` values
-- Copy the `start_ec2.sh` and `docker-compose-prod.yml` files to the server
-- On the server, run `./start_ec2.sh`
+- Update the `dc_ec2.sh` file with the `MAPBOX_TOKEN` and `SERVER_IP` values
+- Copy the `dc_ec2.sh` and `docker-compose-prod.yml` files to the server
+- On the server, run `./dc_ec2.sh up -d`
 - Try it out at `http://<IP of the server>`
 - Congrats!
 
