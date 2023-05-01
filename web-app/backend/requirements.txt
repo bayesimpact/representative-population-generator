@@ -1,4 +1,4 @@
-flask==0.12.2
+flask==2.3.2
 Flask-PyMongo==0.5.1
 # Need to rollback to an older pymongo version
 # due to threading errors.
